@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:id="@+id/make_public"
+    android:orderInCategory="100"
+    android:showAsAction="ifRoom"
+    android:visible="false"
+    android:title="@string/make_public" />
+
+  <item android:id="@+id/share"
+    android:orderInCategory="200"
+    android:showAsAction="ifRoom"
+    android:visible="false"
+    android:title="@string/share"
+    android:actionProviderClass="android.widget.ShareActionProvider" />
+
+</menu>

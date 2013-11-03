@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingBottom="@dimen/activity_vertical_margin"
+  android:paddingLeft="@dimen/activity_horizontal_margin"
+  android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin">
+
+  <TextView android:id="@+id/adn_info"
+    android:textSize="18sp"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <EditText
+    android:id="@+id/username"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin"
+    android:hint="@string/username_hint"
+    android:inputType="text|textNoSuggestions"
+    android:imeOptions="flagNoExtractUi" />
+
+  <EditText
+    android:id="@+id/password"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin"
+    android:hint="@string/password_hint"
+    android:inputType="textPassword"
+    android:imeOptions="flagNoExtractUi" />
+
+  <TextView android:text="@string/perm_info"
+    android:textSize="12sp"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <Button android:id="@+id/login_with_password"
+    android:text="@string/login_with_password"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <TextView android:text="@string/or"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <Button android:id="@+id/login_with_passport"
+    android:visibility="gone"
+    android:text="@string/login_with_passport"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <Button android:id="@+id/install_passport"
+    android:visibility="gone"
+    android:text="@string/install_passport"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+</LinearLayout>
