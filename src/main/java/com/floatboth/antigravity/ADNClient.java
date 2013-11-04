@@ -3,8 +3,8 @@ package com.floatboth.antigravity;
 import java.util.List;
 import retrofit.Callback;
 import retrofit.http.*;
-import com.floatboth.antigravity.data.ADNResponse;
-import com.floatboth.antigravity.data.File;
+import retrofit.mime.*;
+import com.floatboth.antigravity.data.*;
 
 public interface ADNClient {
   @GET("/users/me/files?include_incomplete=0")
@@ -12,4 +12,8 @@ public interface ADNClient {
 
   @PUT("/files/{id}")
   void updateFile(@Path("id") String id, @Body File file, Callback<ADNResponse<File>> cb);
+
+  @Multipart
+  @POST("/files")
+  void uploadFile(@Part("content") TypedContent content, @Part("type") TypedString type, @Part("public") TypedString isPublic, Callback<ADNResponse<File>> cb);
 }

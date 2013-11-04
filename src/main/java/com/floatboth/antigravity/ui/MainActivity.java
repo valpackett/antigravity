@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.app.Activity;
 import android.os.Bundle;
+import android.net.Uri;
 import android.view.Window;
 import android.view.View;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class MainActivity extends Activity
   Button loadMoreButton;
 
   public static final int REQUEST_CODE_UPDATE_FILE = 1;
+  public static final int REQUEST_CODE_PICK_FILE = 2;
 
   private void startLogin() {
     LoginActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
@@ -150,6 +152,16 @@ public class MainActivity extends Activity
     }
   }
 
+  @OnActivityResult(REQUEST_CODE_PICK_FILE)
+  public void onPickedFile(Intent resultIntent) {
+    if (resultIntent != null) {
+      Intent uploadIntent = new Intent(Intent.ACTION_SEND);
+      uploadIntent.setClass(this, UploadActivity_.class);
+      uploadIntent.putExtra(Intent.EXTRA_STREAM, resultIntent.getData());
+      startActivity(uploadIntent);
+    }
+  }
+
   public void onRefresh() {
     fileadapter.clearFiles();
     loadFiles("", new FileLoadCallback() {
@@ -157,6 +169,14 @@ public class MainActivity extends Activity
         filelist.onRefreshComplete();
       }
     });
+  }
+
+  @OptionsItem(R.id.pick_to_upload)
+  public void pickToUpload() {
+    Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
+    pickIntent.addCategory(Intent.CATEGORY_OPENABLE);
+    pickIntent.setType("*/*");
+    startActivityForResult(Intent.createChooser(pickIntent, getString(R.string.chooser_title)), REQUEST_CODE_PICK_FILE);
   }
 
   @OptionsItem(R.id.log_out)

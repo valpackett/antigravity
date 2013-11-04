@@ -9,8 +9,10 @@
   <string name="login_with_password">Log in!</string>
   <string name="login_with_passport">Log in with App.net Passport</string>
   <string name="install_passport">Install App.net Passport</string>
+  <string name="upload">Upload</string>
   <string name="share">Share</string>
   <string name="make_public">Make public</string>
+  <string name="chooser_title">Pick a file to upload</string>
   <string name="adn_info">
     <![CDATA[
     An <a href="https://app.net">App.net account</a> is required to use Antigravity.
