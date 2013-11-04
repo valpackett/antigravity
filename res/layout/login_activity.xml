@@ -14,6 +14,30 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
+  <Button android:id="@+id/login_with_passport"
+    android:visibility="gone"
+    android:text="@string/login_with_passport"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+  <Button android:id="@+id/install_passport"
+    android:visibility="gone"
+    android:text="@string/install_passport"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+
+  <TextView android:text="@string/or"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_marginBottom="@dimen/after_field_margin" />
+
+
   <EditText
     android:id="@+id/username"
     android:layout_height="wrap_content"
@@ -44,25 +68,4 @@
     android:layout_width="fill_parent"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
-  <TextView android:text="@string/or"
-    android:textSize="14sp"
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin" />
-
-  <Button android:id="@+id/login_with_passport"
-    android:visibility="gone"
-    android:text="@string/login_with_passport"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-    android:layout_marginBottom="@dimen/after_field_margin" />
-
-  <Button android:id="@+id/install_passport"
-    android:visibility="gone"
-    android:text="@string/install_passport"
-    android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
-    android:layout_marginBottom="@dimen/after_field_margin" />
 </LinearLayout>
