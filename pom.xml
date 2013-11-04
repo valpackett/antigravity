@@ -117,6 +117,9 @@
               <zipalign>
                 <skip>false</skip>
               </zipalign>
+              <manifest>
+                <debuggable>false</debuggable>
+              </manifest>
             </configuration>
           </plugin>
         </plugins>
