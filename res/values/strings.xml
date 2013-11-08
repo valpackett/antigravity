@@ -2,6 +2,7 @@
 <resources>
   <string name="app_name">Antigravity</string>
   <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
   <string name="load_more">Load More</string>
   <string name="log_out">Log out</string>
   <string name="username_hint">Username</string>
@@ -11,6 +12,7 @@
   <string name="install_passport">Install App.net Passport</string>
   <string name="upload">Upload</string>
   <string name="share">Share</string>
+  <string name="delete">Delete</string>
   <string name="make_public">Make public</string>
   <string name="chooser_title">Pick a file to upload</string>
   <string name="adn_info">

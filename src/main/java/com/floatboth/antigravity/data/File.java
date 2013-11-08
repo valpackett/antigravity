@@ -17,4 +17,7 @@ public final class File implements Serializable {
   @SerializedName("file_token") public String fileToken;
   @SerializedName("file_token_read") public String fileTokenRead;
   @SerializedName("derived_files") public DerivedFiles derivedFiles;
+
+  public boolean isDeleted; // used by the app, not ADN as a flag
+                            // to remove the file from the cache.
 }

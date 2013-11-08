@@ -142,7 +142,7 @@ public class MainActivity extends Activity
       List<File> updatedFiles = new ArrayList<File>();
       for (File f : fileadapter.getFiles()) {
         if (f.id.equals(file.id)) {
-          updatedFiles.add(file);
+          if (file.isDeleted != true) updatedFiles.add(file);
         } else {
           updatedFiles.add(f);
         }

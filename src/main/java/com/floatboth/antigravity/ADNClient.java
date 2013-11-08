@@ -13,6 +13,9 @@ public interface ADNClient {
   @PUT("/files/{id}")
   void updateFile(@Path("id") String id, @Body File file, Callback<ADNResponse<File>> cb);
 
+  @DELETE("/files/{id}")
+  void deleteFile(@Path("id") String id, Callback<ADNResponse<File>> cb);
+
   @Multipart
   @POST("/files")
   void uploadFile(@Part("content") TypedContent content, @Part("type") TypedString type, @Part("public") TypedString isPublic, Callback<ADNResponse<File>> cb);

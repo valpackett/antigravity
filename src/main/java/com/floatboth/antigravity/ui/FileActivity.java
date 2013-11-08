@@ -2,7 +2,9 @@ package com.floatboth.antigravity.ui;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.Window;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,6 +106,36 @@ public class FileActivity extends Activity
         Toast.makeText(self, "Network error :-(", Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  @OptionsItem(R.id.delete)
+  public void deleteFile() {
+    final FileActivity self = this;
+    new AlertDialog.Builder(this)
+      .setTitle("Delete this file?")
+      .setMessage("This file might be used in things like Posts.")
+      // TODO: if public, tell about broken links
+      .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          self.setProgressBarIndeterminateVisibility(true);
+          self.adnClient.deleteFile(self.file.id, new retrofit.Callback<ADNResponse<File>>() {
+            public void success(ADNResponse<File> adnResponse, Response rawResponse) {
+              self.file.isDeleted = true;
+              self.updateResultIntent();
+              self.setProgressBarIndeterminateVisibility(false);
+              Toast.makeText(self, "File has been deleted.", Toast.LENGTH_SHORT).show();
+              self.finish();
+            }
+
+            public void failure(RetrofitError err) {
+              self.setProgressBarIndeterminateVisibility(false);
+              Toast.makeText(self, "Network error :-(", Toast.LENGTH_SHORT).show();
+            }
+          });
+        }
+      })
+      .setNegativeButton(R.string.cancel, null)
+      .show();
   }
 
   @AfterViews
