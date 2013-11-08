@@ -1,5 +1,7 @@
 package com.floatboth.antigravity.ui;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.io.InputStream;
 import java.io.IOException;
 import android.app.Activity;
@@ -24,24 +26,34 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.*;
+import org.apache.commons.io.IOUtils;
+import com.samskivert.mustache.*;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
-import org.apache.commons.io.IOUtils;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
 
 @EActivity(R.layout.upload_activity)
 public class UploadActivity extends Activity {
+  @StringRes String invalid_intent;
+  @StringRes String network_error;
+  @StringRes String file_error;
+  @StringRes String io_error;
+  @StringRes String copied;
+  @StringRes String upload_description_template;
+  @StringRes String not_logged_in;
+  Template descTpl;
+
   @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
-  // @SystemService
-  ClipboardManager clipboardManager;
   @ViewById(R.id.upload_desc) TextView descView;
   @ViewById(R.id.image_upload_preview) ImageView imageView;
   @ViewById(R.id.cancel_upload) Button cancelButton;
   @ViewById(R.id.ok_upload) Button okButton;
   ContentResolver rslv;
+  ClipboardManager clipboardManager;
   ADNClient adnClient;
   Uri uri;
   String mimeType;
@@ -51,10 +63,11 @@ public class UploadActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    descTpl = Mustache.compiler().compile(upload_description_template);
     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
     rslv = getContentResolver();
     if (!adnPrefs.accessToken().exists()) {
-      Toast.makeText(this, "You're not logged into Antigravity!", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, not_logged_in, Toast.LENGTH_LONG).show();
       finish();
     } else {
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -81,11 +94,11 @@ public class UploadActivity extends Activity {
             fileSize = -1;
           }
         } catch (IOException ex) {
-          Toast.makeText(this, "File error: " + uri.toString(), Toast.LENGTH_SHORT).show();
+          Toast.makeText(this, file_error + ": " + uri.toString(), Toast.LENGTH_SHORT).show();
           finish();
         }
       } else {
-        Toast.makeText(this, "Invalid intent :-(", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, invalid_intent, Toast.LENGTH_SHORT).show();
         finish();
       }
     }
@@ -93,13 +106,11 @@ public class UploadActivity extends Activity {
 
   @AfterViews
   public void setUpViews() {
-    String desc = "The following file will be shared to App.net:<br><br>";
-    desc += "<b>Name:</b> " + fileName + "<br>";
-    desc += "<b>Type:</b> " + mimeType + "<br>";
-    if (fileSize != -1) {
-      desc += "<b>Size:</b> " + FileDescriptionHelper.size(fileSize, false) + "<br>";
-    }
-    descView.setText(Html.fromHtml(desc));
+    Map<String, String> desc = new HashMap<String, String>();
+    desc.put("name", fileName);
+    desc.put("type", mimeType);
+    if (fileSize != -1) desc.put("size", FileDescriptionHelper.size(fileSize, false));
+    descView.setText(Html.fromHtml(descTpl.execute(desc)));
     if (mimeType.startsWith("image")) {
       Picasso.with(this).load(uri).into(imageView);
     }
@@ -125,17 +136,17 @@ public class UploadActivity extends Activity {
               self.setProgressStatus(false);
               String url = adnResponse.data.shortUrl;
               clipboardManager.setPrimaryClip(ClipData.newPlainText(url, url));
-              Toast.makeText(self, "Copied to clipboard: " + url, Toast.LENGTH_LONG).show();
+              Toast.makeText(self, copied + ": " + url, Toast.LENGTH_LONG).show();
               self.finish();
             }
             public void failure(RetrofitError err) {
               self.setProgressStatus(false);
-              Toast.makeText(self, "Upload error :-(", Toast.LENGTH_LONG).show();
+              Toast.makeText(self, network_error, Toast.LENGTH_LONG).show();
             }
           });
     } catch (IOException ex) {
       self.setProgressStatus(false);
-      Toast.makeText(self, "I/O error :-(", Toast.LENGTH_LONG).show();
+      Toast.makeText(self, io_error, Toast.LENGTH_LONG).show();
     }
   }
 

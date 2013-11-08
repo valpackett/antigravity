@@ -19,6 +19,7 @@ import retrofit.client.Response;
 import eu.erikw.PullToRefreshListView;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -28,12 +29,14 @@ import com.floatboth.antigravity.data.*;
 public class MainActivity extends Activity
   implements AdapterView.OnItemClickListener,
              PullToRefreshListView.OnRefreshListener {
-  ADNClient adnClient;
+  @StringRes String network_error;
+  @StringRes String chooser_title;
   @Bean ADNClientFactory adnClientFactory;
   @Bean DataCache dataCache;
   @Pref ADNPrefs_ adnPrefs;
   @SystemService LayoutInflater layoutInflater;
   @ViewById PullToRefreshListView filelist;
+  ADNClient adnClient;
   FileListAdapter fileadapter;
   String minId;
   Button loadMoreButton;
@@ -70,7 +73,7 @@ public class MainActivity extends Activity
 
   private void loadFiles(String beforeId, FileLoadCallback callback) {
     final FileLoadCallback callbackF = callback; // F is for "Fuck you, Java".
-    final Context actx = getApplicationContext();
+    final MainActivity self = this;
     adnClient.myFiles(beforeId, new Callback<ADNResponse<List<File>>>() {
       public void success(ADNResponse<List<File>> adnResponse, Response rawResponse) {
         applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
@@ -79,7 +82,7 @@ public class MainActivity extends Activity
       }
 
       public void failure(RetrofitError err) {
-        Toast.makeText(actx, "Network error :-(", Toast.LENGTH_SHORT).show();
+        Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
         callbackF.callback();
         err.printStackTrace();
       }
@@ -176,7 +179,7 @@ public class MainActivity extends Activity
     Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
     pickIntent.addCategory(Intent.CATEGORY_OPENABLE);
     pickIntent.setType("*/*");
-    startActivityForResult(Intent.createChooser(pickIntent, getString(R.string.chooser_title)), REQUEST_CODE_PICK_FILE);
+    startActivityForResult(Intent.createChooser(pickIntent, chooser_title), REQUEST_CODE_PICK_FILE);
   }
 
   @OptionsItem(R.id.log_out)

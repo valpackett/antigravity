@@ -3,18 +3,16 @@
   <string name="app_name">Antigravity</string>
   <string name="ok">OK</string>
   <string name="cancel">Cancel</string>
-  <string name="load_more">Load More</string>
-  <string name="log_out">Log out</string>
+  <string name="network_error">Network error :-(</string>
+  <string name="io_error">I/O error :-(</string>
+
+  <!-- Login -->
+  <string name="login_with_passport">Log in with App.net Passport</string>
+  <string name="install_passport">Install App.net Passport</string>
+  <string name="or">OR</string>
   <string name="username_hint">Username</string>
   <string name="password_hint">Password</string>
   <string name="login_with_password">Log in!</string>
-  <string name="login_with_passport">Log in with App.net Passport</string>
-  <string name="install_passport">Install App.net Passport</string>
-  <string name="upload">Upload</string>
-  <string name="share">Share</string>
-  <string name="delete">Delete</string>
-  <string name="make_public">Make public</string>
-  <string name="chooser_title">Pick a file to upload</string>
   <string name="adn_info">
     <![CDATA[
     An <a href="https://app.net">App.net account</a> is required to use Antigravity.
@@ -24,9 +22,38 @@
   <string name="perm_info">
     Antigravity will be able to see basic information about you, create new posts for you and manage your files.
   </string>
-  <string name="or">OR</string>
+
+  <!-- File list -->
+  <string name="load_more">Load More</string>
+  <string name="upload">Upload</string>
+  <string name="chooser_title">Pick a file to upload</string>
+  <string name="log_out">Log out</string>
   <string name="ptr_pull_to_refresh">Pull to refresh</string>
   <string name="ptr_release_to_refresh">Release to refresh</string>
   <string name="ptr_refreshing">Refreshing…</string>
   <string name="ptr_last_updated">Updated: %1$s</string>
+
+  <!-- File view -->
+  <string name="share">Share</string>
+  <string name="delete">Delete</string>
+  <string name="make_public">Make public</string>
+  <string name="make_public_success">The file is now public.</string>
+  <string name="delete_confirm_title">Delete this file?</string>
+  <string name="delete_confirm_message">It might be used by Posts.</string>
+  <string name="delete_confirm_message_if_public">And it is public, so deleting it might also break links.</string>
+  <string name="delete_success">File has been deleted.</string>
+
+  <!-- Upload -->
+  <string name="upload_description_template">
+    <![CDATA[
+    The following file will be shared to App.net:<br><br>
+    <b>Name:</b>&nbsp;{{name}}<br>
+    <b>Type:</b>&nbsp;{{type}}<br>
+    {{#size}}<b>Size:</b>&nbsp;{{size}}{{/size}}
+    ]]>
+  </string>
+  <string name="copied">Copied to clipboard</string>
+  <string name="not_logged_in">You are not logged into Antigravity!</string>
+  <string name="file_error">File error</string>
+  <string name="invalid_intent">Invalid intent :-(</string>
 </resources>

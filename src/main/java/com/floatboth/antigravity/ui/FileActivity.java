@@ -18,6 +18,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -25,6 +26,14 @@ import com.floatboth.antigravity.data.*;
 @EActivity(R.layout.file_activity)
 public class FileActivity extends Activity
   implements Callback {
+  @StringRes String make_public_success;
+  @StringRes String delete_confirm_title;
+  @StringRes String delete_confirm_message;
+  @StringRes String delete_confirm_message_if_public;
+  @StringRes String delete_success;
+  @StringRes String network_error;
+  @StringRes String io_error;
+
   @Bean ADNClientFactory adnClientFactory;
   @ViewById ImageView fullimage;
   @Extra File file;
@@ -98,12 +107,12 @@ public class FileActivity extends Activity
         self.setProgressBarIndeterminateVisibility(false);
         menu.findItem(R.id.make_public).setVisible(false);
         menu.findItem(R.id.share).setVisible(true);
-        Toast.makeText(self, "File is now public.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(self, make_public_success, Toast.LENGTH_SHORT).show();
       }
 
       public void failure(RetrofitError err) {
         self.setProgressBarIndeterminateVisibility(false);
-        Toast.makeText(self, "Network error :-(", Toast.LENGTH_SHORT).show();
+        Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
       }
     });
   }
@@ -111,10 +120,11 @@ public class FileActivity extends Activity
   @OptionsItem(R.id.delete)
   public void deleteFile() {
     final FileActivity self = this;
+    String deleteConfirmMsg = delete_confirm_message;
+    if (file.isPublic) deleteConfirmMsg += " " + delete_confirm_message_if_public;
     new AlertDialog.Builder(this)
-      .setTitle("Delete this file?")
-      .setMessage("This file might be used in things like Posts.")
-      // TODO: if public, tell about broken links
+      .setTitle(delete_confirm_title)
+      .setMessage(deleteConfirmMsg)
       .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           self.setProgressBarIndeterminateVisibility(true);
@@ -123,13 +133,13 @@ public class FileActivity extends Activity
               self.file.isDeleted = true;
               self.updateResultIntent();
               self.setProgressBarIndeterminateVisibility(false);
-              Toast.makeText(self, "File has been deleted.", Toast.LENGTH_SHORT).show();
+              Toast.makeText(self, delete_success, Toast.LENGTH_SHORT).show();
               self.finish();
             }
 
             public void failure(RetrofitError err) {
               self.setProgressBarIndeterminateVisibility(false);
-              Toast.makeText(self, "Network error :-(", Toast.LENGTH_SHORT).show();
+              Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
             }
           });
         }
