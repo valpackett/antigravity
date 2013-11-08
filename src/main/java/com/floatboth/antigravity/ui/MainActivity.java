@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
+import android.content.DialogInterface;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.net.Uri;
 import android.view.Window;
@@ -31,6 +33,8 @@ public class MainActivity extends Activity
              PullToRefreshListView.OnRefreshListener {
   @StringRes String network_error;
   @StringRes String chooser_title;
+  @StringRes String log_out_confirm_title;
+
   @Bean ADNClientFactory adnClientFactory;
   @Bean DataCache dataCache;
   @Pref ADNPrefs_ adnPrefs;
@@ -184,9 +188,18 @@ public class MainActivity extends Activity
 
   @OptionsItem(R.id.log_out)
   public void logOut() {
-    adnPrefs.clear();
-    deleteData();
-    startLogin();
+    final MainActivity self = this;
+    new AlertDialog.Builder(this)
+      .setTitle(log_out_confirm_title)
+      .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          adnPrefs.clear();
+          self.deleteData();
+          self.startLogin();
+        }
+      })
+      .setNegativeButton(R.string.cancel, null)
+      .show();
   }
 
   @Override
