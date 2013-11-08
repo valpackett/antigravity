@@ -150,7 +150,7 @@ public class UploadActivity extends Activity {
     }
   }
 
-  private void setProgressStatus(boolean p) {
+  public void setProgressStatus(boolean p) {
     setProgressBarIndeterminateVisibility(p);
     cancelButton.setEnabled(!p);
     okButton.setEnabled(!p);
