@@ -6,4 +6,5 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.*;
 public interface ADNPrefs {
   String accessToken();
   boolean refreshFlag();
+  long lastUrlExpires();
 }

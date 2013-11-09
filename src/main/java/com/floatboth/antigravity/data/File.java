@@ -14,6 +14,7 @@ public final class File implements Serializable {
   @SerializedName("public") public boolean isPublic;
   @SerializedName("url_short") public String shortUrl;
   @SerializedName("created_at") public Date createdAt;
+  @SerializedName("url_expires") public Date urlExpires;
   @SerializedName("file_token") public String fileToken;
   @SerializedName("file_token_read") public String fileTokenRead;
   @SerializedName("derived_files") public DerivedFiles derivedFiles;

@@ -1,5 +1,6 @@
 package com.floatboth.antigravity.ui;
 
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import android.content.Context;
@@ -66,6 +67,7 @@ public class MainActivity extends Activity
   }
 
   private void applyData(List<File> files, String minId, boolean more) {
+    adnPrefs.lastUrlExpires().put(files.get(files.size()-1).urlExpires.getTime() / 1000L);
     fileadapter.appendFiles(files);
     loadMoreButton.setEnabled(more); // YAY :-)
     this.minId = minId;
@@ -109,8 +111,7 @@ public class MainActivity extends Activity
     String minIdFromCache = (String) dataCache.get("minId");
     Boolean moreFromCache = (Boolean) dataCache.get("more");
     boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
-    boolean cacheNotExpired = !adnPrefs.refreshFlag().getOr(false);
-    if (cacheExists && cacheNotExpired) {
+    if (cacheExists && !filesNeedRefreshing()) {
       applyData(filesFromCache, minIdFromCache, moreFromCache);
       loadMoreButton.setEnabled(true);
       setProgressBarIndeterminateVisibility(false);
@@ -174,9 +175,11 @@ public class MainActivity extends Activity
 
   public void onRefresh() {
     fileadapter.clearFiles();
+    loadMoreButton.setEnabled(false);
     loadFiles("", new FileLoadCallback() {
       public void callback() {
         filelist.onRefreshComplete();
+        loadMoreButton.setEnabled(true);
       }
     });
   }
@@ -184,7 +187,7 @@ public class MainActivity extends Activity
   @Override
   public void onResume() {
     super.onResume();
-    if (adnPrefs.refreshFlag().getOr(false)) {
+    if (filesNeedRefreshing()) {
       filelist.setRefreshing();
       onRefresh();
     }
@@ -233,5 +236,10 @@ public class MainActivity extends Activity
     filelist.setOnItemClickListener(this);
     filelist.addFooterView(getLoadMoreButton());
     if (adnPrefs.accessToken().exists()) loadInitialFiles();
+  }
+
+  private boolean filesNeedRefreshing() {
+    return adnPrefs.refreshFlag().getOr(false)
+      || (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE);
   }
 }
