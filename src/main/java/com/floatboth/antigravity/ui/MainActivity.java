@@ -80,6 +80,7 @@ public class MainActivity extends Activity
     final MainActivity self = this;
     adnClient.myFiles(beforeId, new Callback<ADNResponse<List<File>>>() {
       public void success(ADNResponse<List<File>> adnResponse, Response rawResponse) {
+        self.adnPrefs.refreshFlag().put(false);
         applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
         cacheData(fileadapter.getFiles(), adnResponse.meta.minId, adnResponse.meta.more);
         callbackF.callback();
@@ -103,11 +104,13 @@ public class MainActivity extends Activity
   }
 
   private void loadInitialFiles() {
+    setProgressBarIndeterminateVisibility(true);
     List<File> filesFromCache = (List<File>) dataCache.get("files");
     String minIdFromCache = (String) dataCache.get("minId");
     Boolean moreFromCache = (Boolean) dataCache.get("more");
-    setProgressBarIndeterminateVisibility(true);
-    if (filesFromCache != null && minIdFromCache != null && moreFromCache != null) {
+    boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
+    boolean cacheNotExpired = !adnPrefs.refreshFlag().getOr(false);
+    if (cacheExists && cacheNotExpired) {
       applyData(filesFromCache, minIdFromCache, moreFromCache);
       loadMoreButton.setEnabled(true);
       setProgressBarIndeterminateVisibility(false);
@@ -176,6 +179,15 @@ public class MainActivity extends Activity
         filelist.onRefreshComplete();
       }
     });
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (adnPrefs.refreshFlag().getOr(false)) {
+      filelist.setRefreshing();
+      onRefresh();
+    }
   }
 
   @OptionsItem(R.id.pick_to_upload)

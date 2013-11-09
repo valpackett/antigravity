@@ -133,9 +133,10 @@ public class UploadActivity extends Activity {
           new TypedString("true"),
           new Callback<ADNResponse<File>>() {
             public void success(ADNResponse<File> adnResponse, Response rawResponse) {
-              self.setProgressStatus(false);
               String url = adnResponse.data.shortUrl;
               clipboardManager.setPrimaryClip(ClipData.newPlainText(url, url));
+              self.adnPrefs.refreshFlag().put(true);
+              self.setProgressStatus(false);
               Toast.makeText(self, copied + ": " + url, Toast.LENGTH_LONG).show();
               self.finish();
             }
