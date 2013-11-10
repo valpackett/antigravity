@@ -30,6 +30,7 @@
   <string name="chooser_title">Pick a file to upload</string>
   <string name="log_out">Log out</string>
   <string name="log_out_confirm_title">Are you sure you want to log out?</string>
+  <string name="about">About</string>
   <string name="ptr_pull_to_refresh">Pull to refresh</string>
   <string name="ptr_release_to_refresh">Release to refresh</string>
   <string name="ptr_refreshing">Refreshing…</string>
@@ -58,4 +59,39 @@
   <string name="not_logged_in">You are not logged into Antigravity!</string>
   <string name="file_error">File error</string>
   <string name="invalid_intent">Invalid intent :-(</string>
+
+  <!-- About -->
+  <string name="app_info">
+    <![CDATA[
+    <h1>Antigravity!</h1>
+    <p>
+      Antigravity is a file manager for <a href="https://app.net">App.net</a>.
+      It is <a href="http://floatboth.com">a { float: both } production</a>.
+    </p>
+    <h2>Open source libraries:</h2>
+    <p>
+      <a href="http://androidannotations.org/">AndroidAnnotations</a>
+      &mdash; <a href="com.floatboth.antigravity.license://androidannotations">view copyright notice</a>
+    </p>
+    <p>
+      <a href="https://tika.apache.org/">Apache Tika</a>
+      &mdash; <a href="com.floatboth.antigravity.license://tika">view copyright notice</a>
+    </p>
+    <p>
+      <a href="https://commons.apache.org/proper/commons-io/">Apache Commons IO</a>
+      &mdash; <a href="com.floatboth.antigravity.license://commons_io">view copyright notice</a>
+    </p>
+    <p>
+      <a href="http://square.github.io/retrofit/">Retrofit</a>,
+      <a href="http://square.github.io/picasso/">Picasso</a>,
+      <a href="http://square.github.io/okhttp/">OkHttp</a>,
+      <a href="https://github.com/square/mimecraft">Mime Craft</a>
+      &mdash; <a href="com.floatboth.antigravity.license://square">view copyright notice</a>
+    </p>
+    <p>
+      <a href="https://github.com/samskivert/jmustache">jmustache</a>
+      &mdash; <a href="com.floatboth.antigravity.license://jmustache">view copyright notice</a>
+    </p>
+    ]]>
+  </string>
 </resources>

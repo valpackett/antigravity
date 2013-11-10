@@ -19,4 +19,9 @@
     android:showAsAction="never"
     android:title="@string/log_out" />
 
+  <item android:id="@+id/about"
+    android:orderInCategory="400"
+    android:showAsAction="never"
+    android:title="@string/about" />
+
 </menu>

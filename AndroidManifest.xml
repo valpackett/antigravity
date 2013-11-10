@@ -48,5 +48,24 @@
       android:configChanges="orientation|screenSize">
     </activity>
 
+    <activity android:name=".ui.AboutActivity_"
+      android:configChanges="orientation|screenSize">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.MainActivity_" />
+    </activity>
+
+    <activity android:name=".ui.LicenseActivity_"
+      android:configChanges="orientation|screenSize">
+      <intent-filter>
+        <category android:name="android.intent.category.DEFAULT" />
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="com.floatboth.antigravity.license" />
+      </intent-filter>
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".ui.AboutActivity_" />
+    </activity>
+
   </application>
 </manifest>

@@ -240,6 +240,11 @@ public class MainActivity extends Activity
       .show();
   }
 
+  @OptionsItem(R.id.about)
+  public void openAbout() {
+    AboutActivity_.intent(this).start();
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
