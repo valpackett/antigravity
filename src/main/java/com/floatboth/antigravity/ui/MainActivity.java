@@ -153,19 +153,18 @@ public class MainActivity extends Activity
 
   @OnActivityResult(REQUEST_CODE_UPDATE_FILE)
   public void updateFileCache(Intent updateIntent) {
-    if (updateIntent != null) {
-      File file = (File) updateIntent.getSerializableExtra("file");
-      List<File> updatedFiles = new ArrayList<File>();
-      for (File f : fileadapter.getFiles()) {
-        if (f.id.equals(file.id)) {
-          if (file.isDeleted != true) updatedFiles.add(file);
-        } else {
-          updatedFiles.add(f);
-        }
+    if (updateIntent == null) return;
+    File file = (File) updateIntent.getSerializableExtra("file");
+    List<File> updatedFiles = new ArrayList<File>();
+    for (File f : fileadapter.getFiles()) {
+      if (f.id.equals(file.id)) {
+        if (file.isDeleted != true) updatedFiles.add(file);
+      } else {
+        updatedFiles.add(f);
       }
-      fileadapter.setFiles(updatedFiles);
-      dataCache.set("files", updatedFiles);
     }
+    fileadapter.setFiles(updatedFiles);
+    dataCache.set("files", updatedFiles);
   }
 
   @OnActivityResult(REQUEST_CODE_PICK_FILE)
