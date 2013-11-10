@@ -25,7 +25,8 @@
 
   <!-- File list -->
   <string name="load_more">Load More</string>
-  <string name="upload">Upload</string>
+  <string name="upload">Pick to upload</string>
+  <string name="camera">Upload from camera</string>
   <string name="chooser_title">Pick a file to upload</string>
   <string name="log_out">Log out</string>
   <string name="log_out_confirm_title">Are you sure you want to log out?</string>

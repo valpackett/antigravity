@@ -13,9 +13,12 @@ import android.net.Uri;
 import android.view.Window;
 import android.view.View;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.AdapterView;
+import android.provider.MediaStore;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -28,7 +31,6 @@ import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
 
 @EActivity(R.layout.main_activity)
-@OptionsMenu(R.menu.main)
 public class MainActivity extends Activity
   implements AdapterView.OnItemClickListener,
              PullToRefreshListView.OnRefreshListener {
@@ -45,9 +47,12 @@ public class MainActivity extends Activity
   FileListAdapter fileadapter;
   String minId;
   Button loadMoreButton;
+  MenuItem cameraToUploadItem;
+  Uri camImageUri;
 
   public static final int REQUEST_CODE_UPDATE_FILE = 1;
   public static final int REQUEST_CODE_PICK_FILE = 2;
+  public static final int REQUEST_CODE_CAMERA = 3;
 
   private void startLogin() {
     LoginActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
@@ -165,12 +170,23 @@ public class MainActivity extends Activity
 
   @OnActivityResult(REQUEST_CODE_PICK_FILE)
   public void onPickedFile(Intent resultIntent) {
-    if (resultIntent != null) {
-      Intent uploadIntent = new Intent(Intent.ACTION_SEND);
-      uploadIntent.setClass(this, UploadActivity_.class);
-      uploadIntent.putExtra(Intent.EXTRA_STREAM, resultIntent.getData());
-      startActivity(uploadIntent);
-    }
+    if (resultIntent == null) return;
+    Intent uploadIntent = new Intent(Intent.ACTION_SEND);
+    uploadIntent.setClass(this, UploadActivity_.class);
+    uploadIntent.putExtra(Intent.EXTRA_STREAM, resultIntent.getData());
+    startActivity(uploadIntent);
+  }
+
+  @OnActivityResult(REQUEST_CODE_CAMERA)
+  public void onCameraImage(int resultCode) {
+    if (resultCode != -1) return;
+    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+    mediaScanIntent.setData(camImageUri);
+    sendBroadcast(mediaScanIntent);
+    Intent uploadIntent = new Intent(Intent.ACTION_SEND);
+    uploadIntent.setClass(this, UploadActivity_.class);
+    uploadIntent.putExtra(Intent.EXTRA_STREAM, camImageUri);
+    startActivity(uploadIntent);
   }
 
   public void onRefresh() {
@@ -201,6 +217,14 @@ public class MainActivity extends Activity
     startActivityForResult(Intent.createChooser(pickIntent, chooser_title), REQUEST_CODE_PICK_FILE);
   }
 
+  @OptionsItem(R.id.camera_to_upload)
+  public void cameraToUpload() {
+    Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    camImageUri = CanHasCamera.getImageUri();
+    camIntent.putExtra(MediaStore.EXTRA_OUTPUT, camImageUri);
+    startActivityForResult(camIntent, REQUEST_CODE_CAMERA);
+  }
+
   @OptionsItem(R.id.log_out)
   public void logOut() {
     final MainActivity self = this;
@@ -226,6 +250,14 @@ public class MainActivity extends Activity
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
       adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
     }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main, menu);
+    cameraToUploadItem = menu.findItem(R.id.camera_to_upload);
+    cameraToUploadItem.setVisible(CanHasCamera.isAvailable(this));
+    return true;
   }
 
   @AfterViews

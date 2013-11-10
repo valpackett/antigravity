@@ -56,8 +56,8 @@ public class UploadActivity extends Activity {
   ClipboardManager clipboardManager;
   ADNClient adnClient;
   Uri uri;
-  String mimeType;
-  String fileName;
+  String mimeType = "";
+  String fileName = "";
   long fileSize;
 
   @Override
