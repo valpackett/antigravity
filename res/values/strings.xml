@@ -5,6 +5,7 @@
   <string name="cancel">Cancel</string>
   <string name="network_error">Network error :-(</string>
   <string name="io_error">I/O error :-(</string>
+  <string name="copied">Copied to clipboard</string>
 
   <!-- Login -->
   <string name="login_with_passport">Log in with App.net Passport</string>
@@ -39,6 +40,7 @@
   <!-- File view -->
   <string name="share">Share</string>
   <string name="delete">Delete</string>
+  <string name="copy_to_clipboard">Copy public link</string>
   <string name="make_public">Make public</string>
   <string name="make_public_success">The file is now public.</string>
   <string name="delete_confirm_title">Delete this file?</string>
@@ -55,7 +57,6 @@
     {{#size}}<b>Size:</b>&nbsp;{{size}}{{/size}}
     ]]>
   </string>
-  <string name="copied">Copied to clipboard</string>
   <string name="not_logged_in">You are not logged into Antigravity!</string>
   <string name="file_error">File error</string>
   <string name="invalid_intent">Invalid intent :-(</string>

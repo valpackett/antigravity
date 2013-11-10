@@ -1,10 +1,13 @@
 package com.floatboth.antigravity.ui;
 
 import android.os.Bundle;
-import android.content.Intent;
-import android.content.DialogInterface;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.ClipboardManager;
+import android.content.ClipData;
 import android.view.Window;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +36,7 @@ public class FileActivity extends Activity
   @StringRes String delete_success;
   @StringRes String network_error;
   @StringRes String io_error;
+  @StringRes String copied;
 
   @Bean ADNClientFactory adnClientFactory;
   @ViewById ImageView fullimage;
@@ -41,13 +45,15 @@ public class FileActivity extends Activity
   ADNClient adnClient;
   Menu menu;
   MenuItem shareItem;
+  ClipboardManager clipboardManager;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    getActionBar().setDisplayHomeAsUpEnabled(true);
     setProgressBarIndeterminateVisibility(true);
+    clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+    getActionBar().setDisplayHomeAsUpEnabled(true);
     if (!adnPrefs.accessToken().exists()) {
       finish();
     } else {
@@ -83,6 +89,7 @@ public class FileActivity extends Activity
   public boolean onPrepareOptionsMenu(Menu menu) {
     if (file.isPublic) {
       menu.findItem(R.id.share).setVisible(true);
+      menu.findItem(R.id.copy_to_clipboard).setVisible(true);
     } else {
       menu.findItem(R.id.make_public).setVisible(true);
     }
@@ -107,6 +114,7 @@ public class FileActivity extends Activity
         self.setProgressBarIndeterminateVisibility(false);
         menu.findItem(R.id.make_public).setVisible(false);
         menu.findItem(R.id.share).setVisible(true);
+        menu.findItem(R.id.copy_to_clipboard).setVisible(true);
         Toast.makeText(self, make_public_success, Toast.LENGTH_SHORT).show();
       }
 
@@ -146,6 +154,12 @@ public class FileActivity extends Activity
       })
       .setNegativeButton(R.string.cancel, null)
       .show();
+  }
+
+  @OptionsItem(R.id.copy_to_clipboard)
+  public void copyToClipboard() {
+    clipboardManager.setPrimaryClip(ClipData.newPlainText(file.shortUrl, file.shortUrl));
+    Toast.makeText(this, copied + ": " + file.shortUrl, Toast.LENGTH_LONG).show();
   }
 
   @AfterViews
