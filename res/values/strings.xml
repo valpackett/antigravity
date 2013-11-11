@@ -93,6 +93,14 @@
       <a href="https://github.com/samskivert/jmustache">jmustache</a>
       &mdash; <a href="com.floatboth.antigravity.license://jmustache">view copyright notice</a>
     </p>
+    <p>
+      <a href="https://github.com/erikwt/PullToRefresh-ListView">PullToRefresh-ListView</a>
+      &mdash; <a href="com.floatboth.antigravity.license://ptr">view copyright notice</a>
+    </p>
+    <p>
+      <a href="https://github.com/appdotnet/ADNLogin-SDK-Android">ADNLogin-SDK-Android</a>
+      &mdash; <a href="com.floatboth.antigravity.license://adnlogin">view copyright notice</a>
+    </p>
     ]]>
   </string>
 </resources>
