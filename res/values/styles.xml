@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Base application theme, dependent on API level. This theme is replaced
-       by AppBaseTheme from res/values-vXX/styles.xml on newer devices. -->
-  <style name="AppBaseTheme" parent="android:Theme.Holo">
-    <!-- Theme customizations available in newer API levels can go in
-           res/values-vXX/styles.xml, while customizations related to
-           backward-compatibility can go here. -->
+  <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
   </style>
 
-  <!-- Application theme. -->
+  <style name="ActionBar.Solid.Ag" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <item name="android:background">@drawable/ab_solid_ag</item>
+    <item name="android:backgroundStacked">@drawable/ab_stacked_solid_ag</item>
+    <item name="android:backgroundSplit">@drawable/ab_bottom_solid_ag</item>
+    <item name="android:progressBarStyle">@style/ProgressBar.Ag</item>
+  </style>
+
+  <style name="ActionBar.Transparent.Ag" parent="@android:style/Widget.Holo.ActionBar">
+    <item name="android:background">@drawable/ab_transparent_ag</item>
+    <item name="android:progressBarStyle">@style/ProgressBar.Ag</item>
+  </style>
+
+  <style name="PopupMenu.Ag" parent="@android:style/Widget.Holo.ListPopupWindow">
+    <item name="android:popupBackground">@drawable/menu_dropdown_panel_ag</item>	
+  </style>
+
+  <style name="DropDownListView.Ag" parent="@android:style/Widget.Holo.ListView.DropDown">
+    <item name="android:listSelector">@drawable/selectable_background_ag</item>
+  </style>
+
+  <style name="ActionBarTabStyle.Ag" parent="@android:style/Widget.Holo.ActionBar.TabView">
+    <item name="android:background">@drawable/tab_indicator_ab_ag</item>
+  </style>
+
+  <style name="DropDownNav.Ag" parent="@android:style/Widget.Holo.Spinner">
+    <item name="android:background">@drawable/spinner_background_ab_ag</item>
+    <item name="android:popupBackground">@drawable/menu_dropdown_panel_ag</item>
+    <item name="android:dropDownSelector">@drawable/selectable_background_ag</item>
+  </style>
+
+  <style name="ProgressBar.Ag" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+    <item name="android:progressDrawable">@drawable/progress_horizontal_ag</item>
+  </style>
+
+  <style name="ActionButton.CloseMode.Ag" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+    <item name="android:background">@drawable/btn_cab_done_ag</item>
+  </style>
+
+  <style name="Theme.Ag.Widget" parent="@android:style/Theme.Holo">
+    <item name="android:popupMenuStyle">@style/PopupMenu.Ag</item>
+    <item name="android:dropDownListViewStyle">@style/DropDownListView.Ag</item>
+  </style>
+
   <style name="AppTheme" parent="AppBaseTheme">
-    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <item name="android:actionBarItemBackground">@drawable/selectable_background_ag</item>
+    <item name="android:popupMenuStyle">@style/PopupMenu.Ag</item>
+    <item name="android:dropDownListViewStyle">@style/DropDownListView.Ag</item>
+    <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Ag</item>
+    <item name="android:actionDropDownStyle">@style/DropDownNav.Ag</item>
+    <item name="android:actionBarStyle">@style/ActionBar.Solid.Ag</item>
+    <item name="android:actionModeBackground">@drawable/cab_background_top_ag</item>
+    <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_ag</item>
+    <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Ag</item>
+    <item name="android:actionBarWidgetTheme">@style/Theme.Ag.Widget</item>
   </style>
 </resources>

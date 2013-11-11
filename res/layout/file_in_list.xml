@@ -23,7 +23,6 @@
     android:layout_toRightOf="@id/thumbnail"
     android:ellipsize="marquee"
     android:text="filename"
-    android:textColor="@android:color/white"
     android:textSize="16sp" />
 
   <TextView
