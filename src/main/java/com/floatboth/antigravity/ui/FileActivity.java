@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.text.Html;
+import android.net.Uri;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Callback;
 import retrofit.RetrofitError;
@@ -93,6 +94,7 @@ public class FileActivity extends Activity
     if (file.isPublic) {
       menu.findItem(R.id.share).setVisible(true);
       menu.findItem(R.id.copy_to_clipboard).setVisible(true);
+      menu.findItem(R.id.open_in_browser).setVisible(true);
     } else {
       menu.findItem(R.id.make_public).setVisible(true);
     }
@@ -118,6 +120,7 @@ public class FileActivity extends Activity
         menu.findItem(R.id.make_public).setVisible(false);
         menu.findItem(R.id.share).setVisible(true);
         menu.findItem(R.id.copy_to_clipboard).setVisible(true);
+        menu.findItem(R.id.open_in_browser).setVisible(true);
         Toast.makeText(self, make_public_success, Toast.LENGTH_SHORT).show();
       }
 
@@ -163,6 +166,14 @@ public class FileActivity extends Activity
   public void copyToClipboard() {
     clipboardManager.setPrimaryClip(ClipData.newPlainText(file.shortUrl, file.shortUrl));
     Toast.makeText(this, copied + ": " + file.shortUrl, Toast.LENGTH_LONG).show();
+  }
+
+  @OptionsItem(R.id.open_in_browser)
+  public void openInBrowser() {
+    Intent browseIntent = new Intent();
+    browseIntent.setAction(Intent.ACTION_VIEW);
+    browseIntent.setData(Uri.parse(file.shortUrl));
+    startActivity(browseIntent);
   }
 
   @AfterViews

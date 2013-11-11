@@ -41,6 +41,7 @@
   <string name="share">Share</string>
   <string name="delete">Delete</string>
   <string name="copy_to_clipboard">Copy public link</string>
+  <string name="open_in_browser">Open in browser</string>
   <string name="make_public">Make public</string>
   <string name="make_public_success">The file is now public.</string>
   <string name="delete_confirm_title">Delete this file?</string>
