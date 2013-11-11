@@ -13,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.Toast;
+import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
+import android.text.Html;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Callback;
 import retrofit.RetrofitError;
@@ -39,7 +41,8 @@ public class FileActivity extends Activity
   @StringRes String copied;
 
   @Bean ADNClientFactory adnClientFactory;
-  @ViewById ImageView fullimage;
+  @ViewById ImageView image_preview;
+  @ViewById TextView file_description;
   @Extra File file;
   @Pref ADNPrefs_ adnPrefs;
   ADNClient adnClient;
@@ -164,7 +167,8 @@ public class FileActivity extends Activity
 
   @AfterViews
   public void setUpViews() {
-    Picasso.with(this).load(file.url).into(fullimage, this);
+    Picasso.with(this).load(file.url).into(image_preview, this);
+    file_description.setText(Html.fromHtml(FileDescriptionHelper.longDescription(this, file)));
   }
 
   @Override
@@ -179,7 +183,7 @@ public class FileActivity extends Activity
 
   @Override
   public void onDestroy() {
-    Picasso.with(this).cancelRequest(fullimage);
+    Picasso.with(this).cancelRequest(image_preview);
     super.onDestroy();
   }
 

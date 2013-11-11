@@ -47,6 +47,14 @@
   <string name="delete_confirm_message">It might be used by Posts.</string>
   <string name="delete_confirm_message_if_public">And it is public, so deleting it might also break links.</string>
   <string name="delete_success">File has been deleted.</string>
+  <string name="file_description_template">
+    <![CDATA[
+    <b>Name:</b>&nbsp;{{name}}<br>
+    <b>Date:</b>&nbsp;{{date}}<br>
+    <b>Type:</b>&nbsp;{{type}}<br>
+    <b>Size:</b>&nbsp;{{size}}
+    ]]>
+  </string>
 
   <!-- Upload -->
   <string name="upload_description_template">
