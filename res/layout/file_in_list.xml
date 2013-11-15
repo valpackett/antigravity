@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="?android:attr/listPreferredItemHeight"
-  android:padding="6dp">
+  android:paddingBottom="@dimen/file_vertical_padding"
+  android:paddingLeft="@dimen/file_horizontal_padding"
+  android:paddingRight="@dimen/file_horizontal_padding"
+  android:paddingTop="@dimen/file_vertical_padding">
 
   <ImageView
       android:id="@+id/thumbnail"
@@ -10,7 +13,7 @@
       android:layout_height="64dp"
       android:layout_alignParentBottom="true"
       android:layout_alignParentTop="true"
-      android:layout_marginRight="6dip"
+      android:layout_marginRight="@dimen/file_horizontal_padding"
       android:contentDescription="thumbnail"
       android:src="@drawable/ic_launcher" />
 
