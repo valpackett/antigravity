@@ -70,22 +70,26 @@ public class PostActivity extends Activity
   }
 
   private void refreshPostTextLimit() {
-    postTextLimit = adnPrefs.postTextLimit().getOr(256);
+    setPostTextLimit(adnPrefs.postTextLimit().getOr(256));
     final long curTime = new Date().getTime() / 1000L;
     final PostActivity self = this;
     if (!adnPrefs.lastConfigFetch().exists() || curTime - adnPrefs.lastConfigFetch().get() > 60*60*24) {
       adnClient.getConfiguration(new Callback<ADNResponse<Configuration>>() {
         public void success(ADNResponse<Configuration> adnResponse, Response rawResponse) {
-          self.postTextLimit = adnResponse.data.post.maxLength;
-          adnPrefs.postTextLimit().put(postTextLimit);
+          self.setPostTextLimit(adnResponse.data.post.maxLength);
           adnPrefs.lastConfigFetch().put(curTime);
-          try {
-            self.postCharsLeft.setText(Integer.toString(self.postTextLimit - self.postCharsCurrent));
-          } catch (Exception ex) {}
         }
         public void failure(RetrofitError err) { }
       });
     }
+  }
+
+  public void setPostTextLimit(int lim) {
+    postTextLimit = lim;
+    adnPrefs.postTextLimit().put(lim);
+    try {
+      postCharsLeft.setText(Integer.toString(postTextLimit - postCharsCurrent));
+    } catch (Exception ex) {}
   }
 
   @AfterViews
@@ -114,7 +118,8 @@ public class PostActivity extends Activity
     postEditText.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable s) {
         postCharsCurrent = s.length();
-        postCharsLeft.setText(Integer.toString(postTextLimit - s.length()));
+        postCharsLeft.setText(Integer.toString(postTextLimit - postCharsCurrent));
+        okButton.setEnabled(postCharsCurrent <= postTextLimit);
       }
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       public void onTextChanged(CharSequence s, int start, int before, int count) { }
@@ -154,5 +159,6 @@ public class PostActivity extends Activity
     setProgressBarIndeterminateVisibility(p);
     cancelButton.setEnabled(!p);
     okButton.setEnabled(!p);
+    postEditText.setFocusable(!p);
   }
 }
