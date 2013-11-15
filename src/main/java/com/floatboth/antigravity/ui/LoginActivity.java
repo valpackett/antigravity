@@ -41,6 +41,7 @@ public class LoginActivity extends Activity {
   public void onLoginSuccess(String token) {
     adnPrefs.accessToken().put(token);
     MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+    finish();
   }
 
   @UiThread
@@ -57,7 +58,6 @@ public class LoginActivity extends Activity {
   private final BroadcastReceiver passportInstallReceiver = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
-      System.out.println("YO GOT TEH BRODCAST");
       if (Intent.ACTION_PACKAGE_ADDED.equals(intent.getAction()) &&
           intent.getDataString().equals(String.format("package:%s", ADNPassportUtility.APP_PACKAGE)))
         loginWithPassport();
