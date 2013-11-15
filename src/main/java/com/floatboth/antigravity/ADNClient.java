@@ -22,4 +22,7 @@ public interface ADNClient {
 
   @POST("/posts")
   void createPost(@Body Post post, Callback<ADNResponse<Post>> cb);
+
+  @GET("/config")
+  void getConfiguration(Callback<ADNResponse<Configuration>> cb);
 }

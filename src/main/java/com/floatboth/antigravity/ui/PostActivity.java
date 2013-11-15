@@ -1,5 +1,6 @@
 package com.floatboth.antigravity.ui;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +11,15 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Spinner;
 import android.widget.Button;
 import android.widget.Toast;
 import android.view.Window;
 import android.view.View;
 import android.text.Html;
+import android.text.Editable;
+import android.text.TextWatcher;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -39,6 +43,7 @@ public class PostActivity extends Activity
   @ViewById(R.id.cancel_post) Button cancelButton;
   @ViewById(R.id.ok_post) Button okButton;
   @ViewById(R.id.post_text) EditText postEditText;
+  @ViewById(R.id.post_chars_left) TextView postCharsLeft;
   @ViewById(R.id.post_type_spinner) Spinner postTypeSpinner;
   @Bean ADNClientFactory adnClientFactory;
   @Bean LinkPostFactory linkPostFactory;
@@ -48,6 +53,8 @@ public class PostActivity extends Activity
   ADNClient adnClient;
   PostFactory currentPostFactory;
   HashMap<String, PostFactory> factoriesMap;
+  int postTextLimit;
+  int postCharsCurrent = 0;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,26 @@ public class PostActivity extends Activity
     } else {
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
       adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
+      refreshPostTextLimit();
+    }
+  }
+
+  private void refreshPostTextLimit() {
+    postTextLimit = adnPrefs.postTextLimit().getOr(256);
+    final long curTime = new Date().getTime() / 1000L;
+    final PostActivity self = this;
+    if (!adnPrefs.lastConfigFetch().exists() || curTime - adnPrefs.lastConfigFetch().get() > 60*60*24) {
+      adnClient.getConfiguration(new Callback<ADNResponse<Configuration>>() {
+        public void success(ADNResponse<Configuration> adnResponse, Response rawResponse) {
+          self.postTextLimit = adnResponse.data.post.maxLength;
+          adnPrefs.postTextLimit().put(postTextLimit);
+          adnPrefs.lastConfigFetch().put(curTime);
+          try {
+            self.postCharsLeft.setText(Integer.toString(self.postTextLimit - self.postCharsCurrent));
+          } catch (Exception ex) {}
+        }
+        public void failure(RetrofitError err) { }
+      });
     }
   }
 
@@ -83,6 +110,15 @@ public class PostActivity extends Activity
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     postTypeSpinner.setAdapter(adapter);
     postTypeSpinner.setOnItemSelectedListener(this);
+    postCharsLeft.setText(Integer.toString(postTextLimit));
+    postEditText.addTextChangedListener(new TextWatcher() {
+      public void afterTextChanged(Editable s) {
+        postCharsCurrent = s.length();
+        postCharsLeft.setText(Integer.toString(postTextLimit - s.length()));
+      }
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+      public void onTextChanged(CharSequence s, int start, int before, int count) { }
+    });
   }
 
   public void onItemSelected(AdapterView parent, View view, int pos, long id) {
