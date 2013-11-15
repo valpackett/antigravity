@@ -8,6 +8,7 @@
     <item name="android:backgroundStacked">@drawable/ab_stacked_solid_ag</item>
     <item name="android:backgroundSplit">@drawable/ab_bottom_solid_ag</item>
     <item name="android:progressBarStyle">@style/ProgressBar.Ag</item>
+    <item name="android:icon">@android:color/transparent</item>
   </style>
 
   <style name="ActionBar.Transparent.Ag" parent="@android:style/Widget.Holo.ActionBar">

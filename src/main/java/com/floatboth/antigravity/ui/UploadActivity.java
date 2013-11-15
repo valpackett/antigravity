@@ -17,6 +17,7 @@ import android.provider.OpenableColumns;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.view.Window;
 import android.text.Html;
@@ -52,6 +53,7 @@ public class UploadActivity extends Activity {
   @ViewById(R.id.image_upload_preview) ImageView imageView;
   @ViewById(R.id.cancel_upload) Button cancelButton;
   @ViewById(R.id.ok_upload) Button okButton;
+  @ViewById(R.id.post_after_upload_switch) CompoundButton postAfterUploadSwitch;
   ContentResolver rslv;
   ClipboardManager clipboardManager;
   ADNClient adnClient;
@@ -59,6 +61,7 @@ public class UploadActivity extends Activity {
   String mimeType = "";
   String fileName = "";
   long fileSize;
+  boolean doPostAfterUpload = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,12 @@ public class UploadActivity extends Activity {
     if (mimeType.startsWith("image")) {
       Picasso.with(this).load(uri).into(imageView);
     }
+    final UploadActivity self = this;
+    postAfterUploadSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        self.doPostAfterUpload = isChecked;
+      }
+    });
   }
 
   @Click(R.id.cancel_upload)
@@ -138,6 +147,8 @@ public class UploadActivity extends Activity {
               self.adnPrefs.refreshFlag().put(true);
               self.setProgressStatus(false);
               Toast.makeText(self, copied + ": " + url, Toast.LENGTH_LONG).show();
+              if (doPostAfterUpload)
+                PostActivity_.intent(self).file(adnResponse.data).start();
               self.finish();
             }
             public void failure(RetrofitError err) {

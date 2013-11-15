@@ -162,6 +162,11 @@ public class FileActivity extends Activity
       .show();
   }
 
+  @OptionsItem(R.id.create_post)
+  public void createPost() {
+    PostActivity_.intent(this).file(file).start();
+  }
+
   @OptionsItem(R.id.copy_to_clipboard)
   public void copyToClipboard() {
     clipboardManager.setPrimaryClip(ClipData.newPlainText(file.shortUrl, file.shortUrl));

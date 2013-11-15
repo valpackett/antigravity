@@ -19,4 +19,7 @@ public interface ADNClient {
   @Multipart
   @POST("/files")
   void uploadFile(@Part("content") TypedContent content, @Part("type") TypedString type, @Part("public") TypedString isPublic, Callback<ADNResponse<File>> cb);
+
+  @POST("/posts")
+  void createPost(@Body Post post, Callback<ADNResponse<Post>> cb);
 }

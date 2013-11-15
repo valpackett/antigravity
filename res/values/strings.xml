@@ -39,6 +39,7 @@
 
   <!-- File view -->
   <string name="share">Share</string>
+  <string name="create_post">Post to App.net feed</string>
   <string name="delete">Delete</string>
   <string name="copy_to_clipboard">Copy public link</string>
   <string name="open_in_browser">Open in browser</string>
@@ -58,6 +59,7 @@
   </string>
 
   <!-- Upload -->
+  <string name="upload_activity">Upload to App.net</string>
   <string name="upload_description_template">
     <![CDATA[
     The following file will be shared to App.net:<br><br>
@@ -69,8 +71,17 @@
   <string name="not_logged_in">You are not logged into Antigravity!</string>
   <string name="file_error">File error</string>
   <string name="invalid_intent">Invalid intent :-(</string>
+  <string name="post_after_upload">Post to App.net after uploading</string>
+
+  <!-- Post -->
+  <string name="post_activity">Post to App.net</string>
+  <string name="post_text_hint">Text</string>
+  <string name="post_success">Post created!</string>
+  <string name="post_type_label">Post as:</string>
+  <string name="post_no_way">No way to post this file. Tap "Make public" and try again.</string>
 
   <!-- About -->
+  <string name="about_activity">About Antigravity</string>
   <string name="app_info">
     <![CDATA[
     <h1>Antigravity!</h1>
@@ -118,4 +129,7 @@
     </p>
     ]]>
   </string>
+
+  <!-- License -->
+  <string name="license_activity">License</string>
 </resources>
