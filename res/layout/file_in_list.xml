@@ -8,14 +8,14 @@
   android:paddingTop="@dimen/file_vertical_padding">
 
   <ImageView
-      android:id="@+id/thumbnail"
-      android:layout_width="64dp"
-      android:layout_height="64dp"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentTop="true"
-      android:layout_marginRight="@dimen/file_horizontal_padding"
-      android:contentDescription="thumbnail"
-      android:src="@drawable/ic_launcher" />
+    android:id="@+id/thumbnail"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginRight="@dimen/file_horizontal_padding"
+    android:contentDescription="thumbnail"
+    android:src="@drawable/ic_launcher" />
 
   <TextView
     android:id="@+id/filename"
