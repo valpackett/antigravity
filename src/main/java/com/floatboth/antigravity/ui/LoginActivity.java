@@ -50,8 +50,8 @@ public class LoginActivity extends Activity {
   }
 
   @OnActivityResult(REQUEST_CODE_AUTHORIZE)
-  public void onLoginWithPassportSuccess(Intent data) {
-    onLoginSuccess(data.getStringExtra("accessToken"));
+  public void onLoginWithPassportSuccess(int resultCode, Intent data) {
+    if (resultCode == 1) onLoginSuccess(data.getStringExtra("accessToken"));
   }
 
   private final BroadcastReceiver passportInstallReceiver = new BroadcastReceiver() {
