@@ -20,6 +20,7 @@
          https://github.com/excilys/androidannotations/wiki/HowItWorks -->
 
     <activity android:name=".ui.MainActivity_"
+      android:launchMode="singleTop"
       android:configChanges="orientation|screenSize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -55,6 +56,7 @@
     </activity>
 
     <activity android:name=".ui.AboutActivity_"
+      android:launchMode="singleTop"
       android:label="@string/about_activity"
       android:configChanges="orientation|screenSize">
       <meta-data
