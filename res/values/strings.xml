@@ -6,6 +6,8 @@
   <string name="network_error">Network error :-(</string>
   <string name="io_error">I/O error :-(</string>
   <string name="copied">Copied to clipboard</string>
+  <string name="empty_field">Empty field :-(</string>
+  <string name="must_not_be_empty">must not be empty.</string>
 
   <!-- Login -->
   <string name="login_with_passport">Log in with App.net Passport</string>

@@ -20,12 +20,18 @@ import android.text.method.LinkMovementMethod;
 import net.app.adnlogin.ADNPassportUtility;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
 
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends Activity {
+  @StringRes String empty_field;
+  @StringRes String username_hint;
+  @StringRes String password_hint;
+  @StringRes String must_not_be_empty;
+
   @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
   @ViewById(R.id.login_with_password) Button loginWithPasswordButton;
@@ -134,9 +140,9 @@ public class LoginActivity extends Activity {
     String username = usernameField.getText().toString().trim();
     String password = passwordField.getText().toString();
     if (username.matches("")) {
-      showError("Empty field :-(", "Username must not be empty.");
+      showError(empty_field, username_hint + " " + must_not_be_empty);
     } else if (password.matches("")) {
-      showError("Empty field :-(", "Password must not be empty.");
+      showError(empty_field, password_hint + " " + must_not_be_empty);
     } else {
       setProgressBarIndeterminateVisibility(true);
       doLoginWithPasswordRequest(username, password);
