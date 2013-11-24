@@ -79,6 +79,8 @@
   <string name="post_success">Post created!</string>
   <string name="post_type_label">Post as:</string>
   <string name="post_no_way">No way to post this file. Tap "Make public" and try again.</string>
+  <string name="post_cancel_confirm_title">Cancel this post?</string>
+  <string name="post_cancel_confirm_message">The text will be lost.</string>
 
   <!-- About -->
   <string name="about_activity">About Antigravity</string>

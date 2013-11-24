@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
@@ -39,6 +41,8 @@ public class PostActivity extends Activity
   @StringRes String network_error;
   @StringRes String post_success;
   @StringRes String post_no_way;
+  @StringRes String post_cancel_confirm_title;
+  @StringRes String post_cancel_confirm_message;
 
   @ViewById(R.id.cancel_post) Button cancelButton;
   @ViewById(R.id.ok_post) Button okButton;
@@ -135,7 +139,21 @@ public class PostActivity extends Activity
 
   @Click(R.id.cancel_post)
   public void onCancel() {
-    finish();
+    if (postEditText.getText().length() != 0) {
+      final PostActivity self = this;
+      new AlertDialog.Builder(this)
+        .setTitle(post_cancel_confirm_title)
+        .setMessage(post_cancel_confirm_message)
+        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id) {
+            self.finish();
+          }
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .show();
+    } else {
+      finish();
+    }
   }
 
   @Click(R.id.ok_post)
