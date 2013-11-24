@@ -34,12 +34,11 @@ public class LoginActivity extends Activity {
 
   @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
-  @ViewById(R.id.login_with_password) Button loginWithPasswordButton;
-  @ViewById(R.id.username) EditText usernameField;
-  @ViewById(R.id.password) EditText passwordField;
-  @ViewById(R.id.login_with_passport) Button loginWithPassportButton;
-  @ViewById(R.id.install_passport) Button installPassportButton;
-  @ViewById(R.id.adn_info) TextView adnInfo;
+  @ViewById EditText username_field;
+  @ViewById EditText password_field;
+  @ViewById Button login_with_passport;
+  @ViewById Button install_passport;
+  @ViewById TextView adn_info;
   @ViewById TextView or_label;
 
   private static final int REQUEST_CODE_AUTHORIZE = 1;
@@ -105,12 +104,12 @@ public class LoginActivity extends Activity {
 
   @AfterViews
   public void setUpPassportLogin() {
-    adnInfo.setText(Html.fromHtml(getString(R.string.adn_info)));
-    adnInfo.setMovementMethod(LinkMovementMethod.getInstance());
+    adn_info.setText(Html.fromHtml(getString(R.string.adn_info)));
+    adn_info.setMovementMethod(LinkMovementMethod.getInstance());
     if (ADNPassportUtility.isPassportAuthorizationAvailable(this)) {
-      loginWithPassportButton.setVisibility(View.VISIBLE);
+      login_with_passport.setVisibility(View.VISIBLE);
     } else if (hasMarketInstalled()) {
-      installPassportButton.setVisibility(View.VISIBLE);
+      install_passport.setVisibility(View.VISIBLE);
     } else {
       or_label.setVisibility(View.GONE);
     }
@@ -137,8 +136,8 @@ public class LoginActivity extends Activity {
 
   @Click(R.id.login_with_password)
   public void loginWithPassword() {
-    String username = usernameField.getText().toString().trim();
-    String password = passwordField.getText().toString();
+    String username = username_field.getText().toString().trim();
+    String password = password_field.getText().toString();
     if (username.matches("")) {
       showError(empty_field, username_hint + " " + must_not_be_empty);
     } else if (password.matches("")) {

@@ -40,7 +40,7 @@
 
 
   <EditText
-    android:id="@+id/username"
+    android:id="@+id/username_field"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:layout_marginBottom="@dimen/after_field_margin"
@@ -49,7 +49,7 @@
     android:imeOptions="flagNoExtractUi" />
 
   <EditText
-    android:id="@+id/password"
+    android:id="@+id/password_field"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:layout_marginBottom="@dimen/after_field_margin"

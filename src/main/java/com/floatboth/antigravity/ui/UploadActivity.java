@@ -49,11 +49,11 @@ public class UploadActivity extends Activity {
 
   @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
-  @ViewById(R.id.upload_desc) TextView descView;
-  @ViewById(R.id.image_upload_preview) ImageView imageView;
-  @ViewById(R.id.cancel_upload) Button cancelButton;
-  @ViewById(R.id.ok_upload) Button okButton;
-  @ViewById(R.id.post_after_upload_switch) CompoundButton postAfterUploadSwitch;
+  @ViewById TextView upload_desc;
+  @ViewById ImageView image_upload_preview;
+  @ViewById Button cancel_upload;
+  @ViewById Button ok_upload;
+  @ViewById CompoundButton post_after_upload_switch;
   ContentResolver rslv;
   ClipboardManager clipboardManager;
   ADNClient adnClient;
@@ -113,12 +113,12 @@ public class UploadActivity extends Activity {
     desc.put("name", fileName);
     desc.put("type", mimeType);
     if (fileSize != -1) desc.put("size", FileDescriptionHelper.size(fileSize, false));
-    descView.setText(Html.fromHtml(descTpl.execute(desc)));
+    upload_desc.setText(Html.fromHtml(descTpl.execute(desc)));
     if (mimeType.startsWith("image")) {
-      Picasso.with(this).load(uri).into(imageView);
+      Picasso.with(this).load(uri).into(image_upload_preview);
     }
     final UploadActivity self = this;
-    postAfterUploadSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    post_after_upload_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         self.doPostAfterUpload = isChecked;
       }
@@ -164,7 +164,7 @@ public class UploadActivity extends Activity {
 
   public void setProgressStatus(boolean p) {
     setProgressBarIndeterminateVisibility(p);
-    cancelButton.setEnabled(!p);
-    okButton.setEnabled(!p);
+    cancel_upload.setEnabled(!p);
+    ok_upload.setEnabled(!p);
   }
 }

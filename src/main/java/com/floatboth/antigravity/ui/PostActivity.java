@@ -44,11 +44,11 @@ public class PostActivity extends Activity
   @StringRes String post_cancel_confirm_title;
   @StringRes String post_cancel_confirm_message;
 
-  @ViewById(R.id.cancel_post) Button cancelButton;
-  @ViewById(R.id.ok_post) Button okButton;
-  @ViewById(R.id.post_text) EditText postEditText;
-  @ViewById(R.id.post_chars_left) TextView postCharsLeft;
-  @ViewById(R.id.post_type_spinner) Spinner postTypeSpinner;
+  @ViewById Button cancel_post;
+  @ViewById Button ok_post;
+  @ViewById EditText post_text;
+  @ViewById TextView post_chars_left;
+  @ViewById Spinner post_type_spinner;
   @Bean ADNClientFactory adnClientFactory;
   @Bean LinkPostFactory linkPostFactory;
   @Bean OembedPostFactory oembedPostFactory;
@@ -92,7 +92,7 @@ public class PostActivity extends Activity
     postTextLimit = lim;
     adnPrefs.postTextLimit().put(lim);
     try {
-      postCharsLeft.setText(Integer.toString(postTextLimit - postCharsCurrent));
+      post_chars_left.setText(Integer.toString(postTextLimit - postCharsCurrent));
     } catch (Exception ex) {}
   }
 
@@ -116,15 +116,15 @@ public class PostActivity extends Activity
     Collections.sort(factoryNames);
     ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, factoryNames);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    postTypeSpinner.setAdapter(adapter);
-    postTypeSpinner.setOnItemSelectedListener(this);
-    postCharsLeft.setText(Integer.toString(postTextLimit));
-    okButton.setEnabled(false);
-    postEditText.addTextChangedListener(new TextWatcher() {
+    post_type_spinner.setAdapter(adapter);
+    post_type_spinner.setOnItemSelectedListener(this);
+    post_chars_left.setText(Integer.toString(postTextLimit));
+    ok_post.setEnabled(false);
+    post_text.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable s) {
         postCharsCurrent = s.length();
-        postCharsLeft.setText(Integer.toString(postTextLimit - postCharsCurrent));
-        okButton.setEnabled(postCharsCurrent != 0 && postCharsCurrent <= postTextLimit);
+        post_chars_left.setText(Integer.toString(postTextLimit - postCharsCurrent));
+        ok_post.setEnabled(postCharsCurrent != 0 && postCharsCurrent <= postTextLimit);
       }
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       public void onTextChanged(CharSequence s, int start, int before, int count) { }
@@ -139,7 +139,7 @@ public class PostActivity extends Activity
 
   @Click(R.id.cancel_post)
   public void onCancel() {
-    if (postEditText.getText().length() != 0) {
+    if (post_text.getText().length() != 0) {
       final PostActivity self = this;
       new AlertDialog.Builder(this)
         .setTitle(post_cancel_confirm_title)
@@ -160,7 +160,7 @@ public class PostActivity extends Activity
   public void onOk() {
     setProgressStatus(true);
     final PostActivity self = this;
-    Post post = currentPostFactory.makePost(file, postEditText.getText().toString());
+    Post post = currentPostFactory.makePost(file, post_text.getText().toString());
     adnClient.createPost(post, new Callback<ADNResponse<Post>>() {
       public void success(ADNResponse<Post> adnResponse, Response rawResponse) {
         self.setProgressStatus(false);
@@ -176,8 +176,8 @@ public class PostActivity extends Activity
 
   public void setProgressStatus(boolean p) {
     setProgressBarIndeterminateVisibility(p);
-    cancelButton.setEnabled(!p);
-    okButton.setEnabled(!p);
-    postEditText.setFocusable(!p);
+    cancel_post.setEnabled(!p);
+    ok_post.setEnabled(!p);
+    post_text.setFocusable(!p);
   }
 }
