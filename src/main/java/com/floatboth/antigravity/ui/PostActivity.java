@@ -115,11 +115,12 @@ public class PostActivity extends Activity
     postTypeSpinner.setAdapter(adapter);
     postTypeSpinner.setOnItemSelectedListener(this);
     postCharsLeft.setText(Integer.toString(postTextLimit));
+    okButton.setEnabled(false);
     postEditText.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable s) {
         postCharsCurrent = s.length();
         postCharsLeft.setText(Integer.toString(postTextLimit - postCharsCurrent));
-        okButton.setEnabled(postCharsCurrent <= postTextLimit);
+        okButton.setEnabled(postCharsCurrent != 0 && postCharsCurrent <= postTextLimit);
       }
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       public void onTextChanged(CharSequence s, int start, int before, int count) { }
