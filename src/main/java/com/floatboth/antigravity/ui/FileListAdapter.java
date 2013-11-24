@@ -89,11 +89,11 @@ public class FileListAdapter extends BaseAdapter {
     if (file.derivedFiles != null && file.derivedFiles.thumbnailSmall != null) {
       Picasso.with(context)
         .load(file.derivedFiles.thumbnailSmall.url)
-        .placeholder(R.drawable.ic_launcher)
+        .placeholder(R.drawable.ic_file_basic)
         .fit()
         .into(view);
     } else {
-      Picasso.with(context).load(R.drawable.ic_launcher).into(view);
+      Picasso.with(context).load(R.drawable.ic_file_basic).into(view);
     }
   }
 }
