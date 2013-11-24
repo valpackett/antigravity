@@ -1,17 +1,20 @@
 package com.floatboth.antigravity.ui;
 
+import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import net.app.adnlogin.ADNPassportUtility;
@@ -31,6 +34,7 @@ public class LoginActivity extends Activity {
   @ViewById(R.id.login_with_passport) Button loginWithPassportButton;
   @ViewById(R.id.install_passport) Button installPassportButton;
   @ViewById(R.id.adn_info) TextView adnInfo;
+  @ViewById TextView or_label;
 
   private static final int REQUEST_CODE_AUTHORIZE = 1;
   private static final String AUTHORIZE_ACTION = "net.app.adnpassport.authorize";
@@ -99,8 +103,10 @@ public class LoginActivity extends Activity {
     adnInfo.setMovementMethod(LinkMovementMethod.getInstance());
     if (ADNPassportUtility.isPassportAuthorizationAvailable(this)) {
       loginWithPassportButton.setVisibility(View.VISIBLE);
-    } else {
+    } else if (hasMarketInstalled()) {
       installPassportButton.setVisibility(View.VISIBLE);
+    } else {
+      or_label.setVisibility(View.GONE);
     }
   }
 
@@ -149,5 +155,16 @@ public class LoginActivity extends Activity {
       ex.printStackTrace();
       showUnknownError(ex);
     }
+  }
+
+  // http://www.thiagorosa.com.br/how-to/check-if-market-is-installed
+  public boolean hasMarketInstalled() {
+    Intent market = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=dummy"));
+    List<ResolveInfo> list = getPackageManager().queryIntentActivities(market, 0);
+    if (list != null && list.size() > 0)
+      for (int i = 0; i < list.size(); i++)
+        if (list.get(i).activityInfo.packageName.startsWith("com.android.vending") == true)
+          return true;
+    return false;
   }
 }

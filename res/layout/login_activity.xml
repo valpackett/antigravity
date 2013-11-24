@@ -29,7 +29,8 @@
     android:layout_marginBottom="@dimen/after_field_margin" />
 
 
-  <TextView android:text="@string/or"
+  <TextView android:id="@+id/or_label"
+    android:text="@string/or"
     android:textSize="14sp"
     android:gravity="center"
     android:layout_gravity="center"
