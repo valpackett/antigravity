@@ -11,6 +11,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.View;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -103,7 +105,16 @@ public class LoginActivity extends Activity {
   }
 
   @AfterViews
-  public void setUpPassportLogin() {
+  public void setUpViews() {
+    password_field.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_GO) {
+          loginWithPassword();
+        }
+        return false;
+      }
+    });
     adn_info.setText(Html.fromHtml(getString(R.string.adn_info)));
     adn_info.setMovementMethod(LinkMovementMethod.getInstance());
     if (ADNPassportUtility.isPassportAuthorizationAvailable(this)) {
