@@ -56,6 +56,11 @@
     <item name="android:clickable">true</item>
   </style>
 
+  <style name="Theme.Ag.EditText" parent="android:Widget.EditText">
+    <item name="android:background">@drawable/ag_edit_text_holo_light</item>
+    <item name="android:textColor">#222222</item>
+  </style>
+
   <style name="Theme.Ag.Widget" parent="@android:style/Theme.Holo">
     <item name="android:popupMenuStyle">@style/PopupMenu.Ag</item>
     <item name="android:dropDownListViewStyle">@style/DropDownListView.Ag</item>
@@ -73,5 +78,7 @@
     <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Ag</item>
     <item name="android:actionBarWidgetTheme">@style/Theme.Ag.Widget</item>
     <item name="android:buttonStyle">@style/Theme.Ag.Button</item>
+    <item name="android:editTextStyle">@style/Theme.Ag.EditText</item>
+    <item name="android:editTextBackground">@drawable/ag_edit_text_holo_light</item>
   </style>
 </resources>
