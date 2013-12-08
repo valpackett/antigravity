@@ -240,6 +240,11 @@ public class MainActivity extends Activity
       .show();
   }
 
+  @OptionsItem(R.id.support)
+  public void openSupport() {
+    PostActivity_.intent(this).isSupport(true).start();
+  }
+
   @OptionsItem(R.id.about)
   public void openAbout() {
     AboutActivity_.intent(this).start();

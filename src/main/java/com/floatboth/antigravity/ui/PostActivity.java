@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
+import android.net.Uri;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -43,6 +44,9 @@ public class PostActivity extends Activity
   @StringRes String post_no_way;
   @StringRes String post_cancel_confirm_title;
   @StringRes String post_cancel_confirm_message;
+  @StringRes String supportapp_username;
+  @StringRes String supportapp_id;
+  @StringRes String supportapp_page;
 
   @ViewById Button cancel_post;
   @ViewById Button ok_post;
@@ -53,6 +57,7 @@ public class PostActivity extends Activity
   @Bean LinkPostFactory linkPostFactory;
   @Bean OembedPostFactory oembedPostFactory;
   @Extra File file;
+  @Extra boolean isSupport;
   @Pref ADNPrefs_ adnPrefs;
   ADNClient adnClient;
   PostFactory currentPostFactory;
@@ -96,9 +101,7 @@ public class PostActivity extends Activity
     } catch (Exception ex) {}
   }
 
-  @AfterViews
-  public void setUpViews() {
-    factoriesMap = new HashMap();
+  public void setUpViewsForFile() {
     PostFactory[] allPostFactories = {oembedPostFactory, linkPostFactory};
     boolean canAnyUseFile = false;
     for (PostFactory f : allPostFactories) {
@@ -110,7 +113,29 @@ public class PostActivity extends Activity
     if (canAnyUseFile == false) {
       Toast.makeText(this, post_no_way, Toast.LENGTH_LONG).show();
       finish();
-      return;
+    }
+  }
+
+  public void setUpViewsForSupport() {
+    PostFactory[] allPostFactories = {
+      new SupportPostFactory(supportapp_id, "praise", "Praise"),
+      new SupportPostFactory(supportapp_id, "ideas", "Idea"),
+      new SupportPostFactory(supportapp_id, "bugs", "Bug"),
+    };
+    for (PostFactory f : allPostFactories) {
+      factoriesMap.put(f.factoryName(null), f);
+    }
+    post_text.setText("@" + supportapp_username + " ");
+    post_text.setSelection(supportapp_username.length() + 2);
+  }
+
+  @AfterViews
+  public void setUpViews() {
+    factoriesMap = new HashMap();
+    if (isSupport) {
+      setUpViewsForSupport();
+    } else {
+      setUpViewsForFile();
     }
     ArrayList factoryNames = new ArrayList(factoriesMap.keySet());
     Collections.sort(factoryNames);
@@ -118,7 +143,7 @@ public class PostActivity extends Activity
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     post_type_spinner.setAdapter(adapter);
     post_type_spinner.setOnItemSelectedListener(this);
-    post_chars_left.setText(Integer.toString(postTextLimit));
+    post_chars_left.setText(Integer.toString(postTextLimit - post_text.getText().length()));
     ok_post.setEnabled(false);
     post_text.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable s) {
@@ -165,6 +190,9 @@ public class PostActivity extends Activity
       public void success(ADNResponse<Post> adnResponse, Response rawResponse) {
         self.setProgressStatus(false);
         Toast.makeText(self, post_success, Toast.LENGTH_LONG).show();
+        if (self.isSupport) {
+          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(supportapp_page + "/" + adnResponse.data.id)));
+        }
         self.finish();
       }
       public void failure(RetrofitError err) {

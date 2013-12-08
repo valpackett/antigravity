@@ -11,4 +11,5 @@ public final class Post implements Serializable {
   public List<Annotation> annotations;
   public Entities entities;
   @SerializedName("created_at") public Date createdAt;
+  @SerializedName("reply_to") public String replyTo;
 }
