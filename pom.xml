@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.floatboth</groupId>
   <artifactId>antigravity</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>apk</packaging>
   <name>antigravity</name>
 
@@ -95,6 +95,9 @@
           <artifactId>android-maven-plugin</artifactId>
           <version>${android.plugin.version}</version>
           <extensions>true</extensions>
+          <configuration>
+            <undeployBeforeDeploy>true</undeployBeforeDeploy>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -118,19 +121,47 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jarsigner-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>signing</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <phase>package</phase>
+                <inherited>true</inherited>
+                <configuration>
+                  <archiveDirectory></archiveDirectory>
+                  <includes>
+                    <include>target/*.apk</include>
+                  </includes>
+                  <arguments>
+                    <argument>-sigalg</argument><argument>SHA256withRSA</argument>
+                    <argument>-digestalg</argument><argument>SHA1</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <groupId>com.jayway.maven.plugins.android.generation2</groupId>
             <artifactId>android-maven-plugin</artifactId>
             <inherited>true</inherited>
             <configuration>
-              <!--sign>
+              <release>true</release>
+              <sign>
                 <debug>false</debug>
-              </sign-->
+              </sign>
               <proguard>
                 <skip>false</skip>
                 <config>proguard.cfg</config>
               </proguard>
               <zipalign>
                 <skip>false</skip>
+                <inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
+                <outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk</outputApk>
               </zipalign>
               <manifest>
                 <debuggable>false</debuggable>

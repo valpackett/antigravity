@@ -25,8 +25,11 @@ Debug build:
 $ mvn clean install
 ```
 
-Release build (with proguard and zipalign):
+Release build (with proguard, signing and zipaligning):
 
 ```shell
-$ mvn clean install -Prelease
+$ mvn clean install -Prelease -Djarsigner.keystore=~/path/to/keystore \
+  -Djarsigner.alias=release \
+  -Djarsigner.storepass=storePassword123 \
+  -Djarsigner.keypass=keyPassword456
 ```
