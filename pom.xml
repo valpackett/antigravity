@@ -160,8 +160,6 @@
               </proguard>
               <zipalign>
                 <skip>false</skip>
-                <inputApk>${project.build.directory}/${project.artifactId}.apk</inputApk>
-                <outputApk>${project.build.directory}/${project.artifactId}-signed-aligned.apk</outputApk>
               </zipalign>
               <manifest>
                 <debuggable>false</debuggable>
