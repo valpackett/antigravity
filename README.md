@@ -1,6 +1,10 @@
 # Antigravity
 
-An App.net file manager for Android.
+Antigravity lets you share images (like photos or screenshots) and any other files quickly and securely to anyone in the world.
+
+Upload a file with Antigravity and you'll get a short link you can share on any social network or through email or an instant messaging system. But there's more! Antigravity is powered by App.net and supports a lot of its features. App.net is your passport to great applications like this one. Besides using App.net for storage, you can post files – even already uploaded files – to your App.net microblogging feed as links or as embedded images. You can also delete uploaded files.
+
+[Get it on the Google Play Store](https://play.google.com/store/apps/details?id=com.floatboth.antigravity) | [App.net Directory page](https://directory.app.net/app/303/antigravity/)
 
 ## Building
 
@@ -32,4 +36,7 @@ $ mvn clean install -Prelease -Djarsigner.keystore=~/path/to/keystore \
   -Djarsigner.alias=release \
   -Djarsigner.storepass=storePassword123 \
   -Djarsigner.keypass=keyPassword456
+$ zipalign -v 4 target/antigravity.apk target/antigravity-a.apk
 ```
+
+TODO: Maven doesn't zipalign for some reason
