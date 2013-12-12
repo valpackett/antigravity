@@ -33,6 +33,8 @@ public class LoginActivity extends Activity {
   @StringRes String username_hint;
   @StringRes String password_hint;
   @StringRes String must_not_be_empty;
+  @StringRes String adn_info_text;
+  @StringRes String client_id;
 
   @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
@@ -115,7 +117,7 @@ public class LoginActivity extends Activity {
         return false;
       }
     });
-    adn_info.setText(Html.fromHtml(getString(R.string.adn_info)));
+    adn_info.setText(Html.fromHtml(adn_info_text));
     adn_info.setMovementMethod(LinkMovementMethod.getInstance());
     if (ADNPassportUtility.isPassportAuthorizationAvailable(this)) {
       login_with_passport.setVisibility(View.VISIBLE);
@@ -141,7 +143,7 @@ public class LoginActivity extends Activity {
 
   @Click(R.id.login_with_passport)
   public void loginWithPassport() {
-    Intent i = ADNPassportUtility.getAuthorizationIntent(getString(R.string.client_id), SCOPES);
+    Intent i = ADNPassportUtility.getAuthorizationIntent(client_id, SCOPES);
     startActivityForResult(i, REQUEST_CODE_AUTHORIZE);
   }
 

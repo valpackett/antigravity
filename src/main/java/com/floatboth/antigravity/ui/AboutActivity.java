@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod;
 import android.support.v4.app.NavUtils;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.res.DrawableRes;
+import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 
@@ -18,6 +19,7 @@ public class AboutActivity extends Activity {
   @ViewById TextView app_info;
   @ViewById ImageView app_logo;
   @DrawableRes Drawable ic_logo;
+  @StringRes String app_info_text;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,7 @@ public class AboutActivity extends Activity {
 
   @AfterViews
   public void setUpViews() {
-    app_info.setText(Html.fromHtml(getString(R.string.app_info)));
+    app_info.setText(Html.fromHtml(app_info_text));
     app_info.setMovementMethod(LinkMovementMethod.getInstance());
     app_logo.setImageDrawable(ic_logo);
   }

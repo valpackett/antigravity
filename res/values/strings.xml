@@ -16,7 +16,7 @@
   <string name="username_hint">Username</string>
   <string name="password_hint">Password</string>
   <string name="login_with_password">Log in!</string>
-  <string name="adn_info">
+  <string name="adn_info_text">
     <![CDATA[
     An <a href="https://app.net">App.net account</a> is required to use Antigravity.
     App.net is your passport to great applications like this one :-)
@@ -95,7 +95,7 @@
 
   <!-- About -->
   <string name="about_activity">About Antigravity</string>
-  <string name="app_info">
+  <string name="app_info_text">
     <![CDATA[
     <h1>Antigravity!</h1>
     <p>
