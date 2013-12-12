@@ -72,7 +72,9 @@ public class MainActivity extends Activity
   }
 
   private void applyData(List<File> files, String minId, boolean more) {
-    adnPrefs.lastUrlExpires().put(files.get(files.size()-1).urlExpires.getTime() / 1000L);
+    try {
+      adnPrefs.lastUrlExpires().put(files.get(files.size()-1).urlExpires.getTime() / 1000L);
+    } catch (ArrayIndexOutOfBoundsException ex) {}
     fileadapter.appendFiles(files);
     loadMoreButton.setEnabled(more); // YAY :-)
     this.minId = minId;
