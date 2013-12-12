@@ -12,13 +12,16 @@ import android.os.Bundle;
 import android.net.Uri;
 import android.view.Window;
 import android.view.View;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.provider.MediaStore;
+import android.text.Html;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,6 +40,7 @@ public class MainActivity extends Activity
   @StringRes String network_error;
   @StringRes String chooser_title;
   @StringRes String log_out_confirm_title;
+  @StringRes String no_posts;
 
   @Bean ADNClientFactory adnClientFactory;
   @Bean DataCache dataCache;
@@ -47,8 +51,10 @@ public class MainActivity extends Activity
   FileListAdapter fileadapter;
   String minId;
   Button loadMoreButton;
+  TextView noPostsTextView;
   MenuItem cameraToUploadItem;
   Uri camImageUri;
+  boolean isShowingWelcome = false;
 
   public static final int REQUEST_CODE_UPDATE_FILE = 1;
   public static final int REQUEST_CODE_PICK_FILE = 2;
@@ -92,6 +98,16 @@ public class MainActivity extends Activity
         self.adnPrefs.refreshFlag().put(false);
         applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
         cacheData(fileadapter.getFiles(), adnResponse.meta.minId, adnResponse.meta.more);
+        boolean isNoFiles = ((List<File>) adnResponse.data).size() == 0;
+        if (!self.isShowingWelcome && isNoFiles) {
+          filelist.removeFooterView(loadMoreButton);
+          filelist.addFooterView(noPostsTextView);
+          self.isShowingWelcome = true;
+        } else if (self.isShowingWelcome && !isNoFiles) {
+          filelist.removeFooterView(noPostsTextView);
+          filelist.addFooterView(loadMoreButton);
+          self.isShowingWelcome = false;
+        }
         callbackF.callback();
       }
 
@@ -123,6 +139,7 @@ public class MainActivity extends Activity
       loadMoreButton.setEnabled(true);
       setProgressBarIndeterminateVisibility(false);
     } else {
+      final MainActivity self = this;
       loadFiles("", new FileLoadCallback() {
         public void callback() {
           setProgressBarIndeterminateVisibility(false);
@@ -131,7 +148,7 @@ public class MainActivity extends Activity
     }
   }
 
-  private Button getLoadMoreButton() {
+  private void setUpLoadMoreButton() {
     loadMoreButton = new Button(this);
     loadMoreButton.setEnabled(false);
     loadMoreButton.setText(R.string.load_more);
@@ -143,13 +160,19 @@ public class MainActivity extends Activity
         loadMoreFiles();
       }
     });
-    return loadMoreButton;
+  }
+
+  private void setUpNoPostsTextView() {
+    noPostsTextView = (TextView) layoutInflater.inflate(R.layout.no_files, null);
+    noPostsTextView.setText(Html.fromHtml(no_posts));
   }
 
   public void onItemClick(AdapterView lst, View v, int position, long id) {
-    FileActivity_.intent(this)
-      .file(fileadapter.getItem(position))
-      .startForResult(REQUEST_CODE_UPDATE_FILE);
+    try {
+      FileActivity_.intent(this)
+        .file(fileadapter.getItem(position))
+        .startForResult(REQUEST_CODE_UPDATE_FILE);
+    } catch (IndexOutOfBoundsException ex) {}
   }
 
   @OnActivityResult(REQUEST_CODE_UPDATE_FILE)
@@ -271,11 +294,13 @@ public class MainActivity extends Activity
 
   @AfterViews
   public void setUpFileList() {
+    setUpLoadMoreButton();
+    setUpNoPostsTextView();
     fileadapter = new FileListAdapter(this, layoutInflater);
     filelist.setAdapter(fileadapter);
     filelist.setOnRefreshListener(this);
     filelist.setOnItemClickListener(this);
-    filelist.addFooterView(getLoadMoreButton());
+    filelist.addFooterView(loadMoreButton);
     if (adnPrefs.accessToken().exists()) loadInitialFiles();
   }
 

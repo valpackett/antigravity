@@ -39,6 +39,14 @@
   <string name="ptr_release_to_refresh">Release to refresh</string>
   <string name="ptr_refreshing">Refreshing…</string>
   <string name="ptr_last_updated">Updated: %1$s</string>
+  <string name="no_posts">
+    <![CDATA[
+    <h1>Welcome to Antigravity!</h1>
+    Looks like you have no files in your App.net account.
+    You can upload your first file using the buttons in the action bar at the top.
+    Also, you can share files to Antigravity from other apps like Gallery.
+    ]]>
+  </string>
 
   <!-- File view -->
   <string name="share">Share</string>
