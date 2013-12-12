@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ptr_headerContainer">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0px</item>
         <item name="android:gravity">bottom</item>
     </style>
     
     <style name="ptr_header">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center_vertical</item>
@@ -31,7 +31,7 @@
 
     <style name="ptr_textwrapper">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center_horizontal</item>
@@ -39,7 +39,7 @@
 
     <style name="ptr_text">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>

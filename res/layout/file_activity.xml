@@ -5,8 +5,8 @@
 
   <ImageView
     android:id="@+id/image_preview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:contentDescription="image"
@@ -16,7 +16,7 @@
     android:id="@+id/file_description"
     android:background="@color/file_description_background"
     android:textColor="@color/file_description_color"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_alignParentBottom="true"

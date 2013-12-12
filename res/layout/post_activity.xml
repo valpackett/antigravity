@@ -6,7 +6,7 @@
 
   <LinearLayout android:id="@+id/buttons"
     style="?android:attr/buttonBarStyle"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:gravity="bottom"
@@ -29,13 +29,13 @@
   </LinearLayout>
 
   <View android:id="@+id/buttons_separator"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="1dp"
     android:layout_above="@id/buttons"
     android:background="?android:attr/dividerHorizontal" />
 
-  <ScrollView android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+  <ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_above="@id/buttons_separator"
     android:layout_weight="1">
     <LinearLayout android:orientation="vertical"
@@ -47,7 +47,7 @@
       android:paddingTop="@dimen/activity_vertical_margin">
 
       <LinearLayout android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/after_field_margin">
 
@@ -56,13 +56,13 @@
           android:layout_height="wrap_content" />
 
         <Spinner android:id="@+id/post_type_spinner"
-          android:layout_width="fill_parent"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content" />
 
       </LinearLayout>
 
       <EditText android:id="@+id/post_text"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/after_field_margin"
         android:hint="@string/post_text_hint"

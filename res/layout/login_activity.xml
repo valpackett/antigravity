@@ -11,7 +11,7 @@
   <TextView android:id="@+id/adn_info"
     android:textSize="18sp"
     android:textColorLink="@color/accent_ag"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
@@ -19,14 +19,14 @@
     android:visibility="gone"
     android:text="@string/login_with_passport"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
   <Button android:id="@+id/install_passport"
     android:visibility="gone"
     android:text="@string/install_passport"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
 
@@ -43,7 +43,7 @@
   <EditText
     android:id="@+id/username_field"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_marginBottom="@dimen/after_field_margin"
     android:hint="@string/username_hint"
     android:inputType="text|textNoSuggestions"
@@ -52,7 +52,7 @@
   <EditText
     android:id="@+id/password_field"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_marginBottom="@dimen/after_field_margin"
     android:hint="@string/password_hint"
     android:inputType="textPassword"
@@ -60,14 +60,14 @@
 
   <TextView android:text="@string/perm_info"
     android:textSize="12sp"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
   <Button android:id="@+id/login_with_password"
     android:text="@string/login_with_password"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_marginBottom="@dimen/after_field_margin" />
 
 </LinearLayout>
