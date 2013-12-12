@@ -125,7 +125,6 @@ public class MainActivity extends Activity
     } else {
       loadFiles("", new FileLoadCallback() {
         public void callback() {
-          loadMoreButton.setEnabled(true);
           setProgressBarIndeterminateVisibility(false);
         }
       });
@@ -196,7 +195,6 @@ public class MainActivity extends Activity
     loadFiles("", new FileLoadCallback() {
       public void callback() {
         filelist.onRefreshComplete();
-        loadMoreButton.setEnabled(true);
       }
     });
   }
