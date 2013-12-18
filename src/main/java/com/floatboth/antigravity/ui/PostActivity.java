@@ -54,9 +54,6 @@ public class PostActivity extends Activity
   @ViewById TextView post_chars_left;
   @ViewById Spinner post_type_spinner;
   @Bean ADNClientFactory adnClientFactory;
-  @Bean LinkPostFactory linkPostFactory;
-  @Bean OembedPostFactory oembedPostFactory;
-  @Bean PlainPostFactory plainPostFactory;
   @Extra File file;
   @Extra String text;
   @Extra int postType;
@@ -107,26 +104,33 @@ public class PostActivity extends Activity
     } catch (Exception ex) {}
   }
 
-  public void setUpViewsForPlain() {
-    PostFactory[] allPostFactories = {plainPostFactory};
+  public boolean setFactories(PostFactory[] allPostFactories) {
+    boolean isAnyFactoryAvailable = false;
     for (PostFactory f : allPostFactories) {
-      factoriesMap.put(f.factoryName(null), f);
+      if (f.isAvailable()) {
+        factoriesMap.put(f.factoryName(), f);
+        isAnyFactoryAvailable = true;
+      }
     }
-    post_text.setText(text);
-    post_text.setSelection(text.length());
+    return isAnyFactoryAvailable;
+  }
+
+  public void setUpViewsForPlain() {
+    PostFactory[] allPostFactories = {new PlainPostFactory()};
+    setFactories(allPostFactories);
+    if (text != null) {
+      post_text.setText(text);
+      post_text.setSelection(text.length());
+    }
     afterTextChanged();
   }
 
   public void setUpViewsForFile() {
-    PostFactory[] allPostFactories = {oembedPostFactory, linkPostFactory};
-    boolean canAnyUseFile = false;
-    for (PostFactory f : allPostFactories) {
-      if (f.canUseFile(file)) {
-        factoriesMap.put(f.factoryName(file), f);
-        canAnyUseFile = true;
-      }
-    }
-    if (canAnyUseFile == false) {
+    PostFactory[] allPostFactories = {
+      new OembedPostFactory(file),
+      new LinkPostFactory(file)
+    };
+    if (setFactories(allPostFactories) == false) {
       Toast.makeText(this, post_no_way, Toast.LENGTH_LONG).show();
       finish();
     }
@@ -138,9 +142,7 @@ public class PostActivity extends Activity
       new SupportPostFactory(supportapp_id, "ideas", "Idea"),
       new SupportPostFactory(supportapp_id, "bugs", "Bug"),
     };
-    for (PostFactory f : allPostFactories) {
-      factoriesMap.put(f.factoryName(null), f);
-    }
+    setFactories(allPostFactories);
     post_text.setText("@" + supportapp_username + " ");
     post_text.setSelection(supportapp_username.length() + 2);
   }
@@ -213,7 +215,7 @@ public class PostActivity extends Activity
   public void onOk() {
     setProgressStatus(true);
     final PostActivity self = this;
-    Post post = currentPostFactory.makePost(file, post_text.getText().toString());
+    Post post = currentPostFactory.makePost(post_text.getText().toString());
     adnClient.createPost(post, new Callback<ADNResponse<Post>>() {
       public void success(ADNResponse<Post> adnResponse, Response rawResponse) {
         self.setProgressStatus(false);

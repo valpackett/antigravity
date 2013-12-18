@@ -2,17 +2,21 @@ package com.floatboth.antigravity.post;
 
 import java.util.List;
 import java.util.Arrays;
-import com.googlecode.androidannotations.annotations.*;
 
 import com.floatboth.antigravity.data.*;
 
-@EBean
 public class OembedPostFactory implements PostFactory {
-  public boolean canUseFile(File file) {
+  public final File file;
+
+  public OembedPostFactory(File file) {
+    this.file = file;
+  }
+
+  public boolean isAvailable() {
     return file.kind.matches("image");
   }
 
-  public Post makePost(File file, String text) {
+  public Post makePost(String text) {
     Post p = new Post();
     p.text = text;
 
@@ -36,7 +40,7 @@ public class OembedPostFactory implements PostFactory {
     return p;
   }
 
-  public String factoryName(File file) {
+  public String factoryName() {
     return "Attached image and photos.app.net link";
   }
 }

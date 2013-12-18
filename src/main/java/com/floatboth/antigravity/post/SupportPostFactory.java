@@ -15,11 +15,11 @@ public class SupportPostFactory implements PostFactory {
     supportTypeTitle = title;
   }
 
-  public boolean canUseFile(File file) {
+  public boolean isAvailable() {
     return true;
   }
 
-  public Post makePost(File file, String text) {
+  public Post makePost(String text) {
     Post p = new Post();
     p.text = text;
     p.replyTo = supportAppId;
@@ -33,7 +33,7 @@ public class SupportPostFactory implements PostFactory {
     return p;
   }
 
-  public String factoryName(File file) {
+  public String factoryName() {
     return supportTypeTitle;
   }
 }

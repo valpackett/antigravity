@@ -2,17 +2,21 @@ package com.floatboth.antigravity.post;
 
 import java.util.List;
 import java.util.Arrays;
-import com.googlecode.androidannotations.annotations.*;
 
 import com.floatboth.antigravity.data.*;
 
-@EBean
 public class LinkPostFactory implements PostFactory {
-  public boolean canUseFile(File file) {
+  public final File file;
+
+  public LinkPostFactory(File file) {
+    this.file = file;
+  }
+
+  public boolean isAvailable() {
     return file.isPublic;
   }
 
-  public Post makePost(File file, String text) {
+  public Post makePost(String text) {
     Post p = new Post();
     p.text = text;
     p.entities = new Entities();
@@ -24,7 +28,7 @@ public class LinkPostFactory implements PostFactory {
     return p;
   }
 
-  public String factoryName(File file) {
+  public String factoryName() {
     return "Direct link";
   }
 }
