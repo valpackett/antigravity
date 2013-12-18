@@ -164,7 +164,7 @@ public class FileActivity extends Activity
 
   @OptionsItem(R.id.create_post)
   public void createPost() {
-    PostActivity_.intent(this).file(file).start();
+    PostActivity_.intent(this).postType(PostActivity_.POST_TYPE_FILE).file(file).start();
   }
 
   @OptionsItem(R.id.copy_to_clipboard)
