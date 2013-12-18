@@ -265,7 +265,7 @@ public class MainActivity extends Activity
 
   @OptionsItem(R.id.support)
   public void openSupport() {
-    PostActivity_.intent(this).isSupport(true).start();
+    PostActivity_.intent(this).postType(PostActivity_.POST_TYPE_SUPPORT).start();
   }
 
   @OptionsItem(R.id.about)

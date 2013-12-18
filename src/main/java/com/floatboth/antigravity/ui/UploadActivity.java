@@ -77,8 +77,14 @@ public class UploadActivity extends Activity {
       adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
       Intent intent = getIntent();
       String action = intent.getAction();
+      String type = intent.getType();
       uri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-      if (action.equals(Intent.ACTION_SEND) && uri != null) {
+      boolean isSend = action.equals(Intent.ACTION_SEND);
+      if (isSend && "text/plain".equals(type)) {
+        PostActivity_.intent(this).postType(PostActivity_.POST_TYPE_PLAIN)
+          .text(intent.getStringExtra(Intent.EXTRA_TEXT)).start();
+        finish();
+      } else if (isSend && uri != null) {
         try {
           // FUCKING FUCK
           String uriString = uri.toString();
