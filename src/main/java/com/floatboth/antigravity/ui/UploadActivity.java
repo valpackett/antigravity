@@ -154,7 +154,8 @@ public class UploadActivity extends Activity {
               self.setProgressStatus(false);
               Toast.makeText(self, copied + ": " + url, Toast.LENGTH_LONG).show();
               if (doPostAfterUpload)
-                PostActivity_.intent(self).file(adnResponse.data).start();
+                PostActivity_.intent(self).postType(PostActivity_.POST_TYPE_FILE)
+                  .file(adnResponse.data).start();
               self.finish();
             }
             public void failure(RetrofitError err) {
