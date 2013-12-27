@@ -1,80 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.floatboth.antigravity"
-  android:versionCode="5"
-  android:versionName="1.1.1">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="5" android:versionName="1.1.1" package="com.floatboth.antigravity">
 
-  <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-feature android:name="android.hardware.camera" android:required="false" />
+  <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-feature android:name="android.hardware.camera" android:required="false"/>
 
-  <application
-    android:allowBackup="true"
-    android:icon="@drawable/ic_launcher"
-    android:label="@string/app_name"
-    android:theme="@style/AppTheme"
-    android:name=".AntigravityApplication_">
+  <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.floatboth.antigravity.AntigravityApplication_" android:theme="@style/AppTheme">
 
     <!-- why the underscore in SomeActivity_:
          https://github.com/excilys/androidannotations/wiki/HowItWorks -->
 
-    <activity android:name=".ui.MainActivity_"
-      android:launchMode="singleTop"
-      android:configChanges="orientation|screenSize">
+    <activity android:configChanges="orientation|screenSize" android:launchMode="singleTop" android:name="com.floatboth.antigravity.ui.MainActivity_">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-        <category android:name="android.intent.category.DEFAULT" />
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.FileActivity_"
-      android:configChanges="orientation|screenSize">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.MainActivity_" />
+    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.FileActivity_">
+      <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.MainActivity_"/>
     </activity>
 
-    <activity android:name=".ui.UploadActivity_"
-      android:label="@string/upload_activity"
-      android:configChanges="orientation|screenSize">
+    <activity android:configChanges="orientation|screenSize" android:label="@string/upload_activity" android:name="com.floatboth.antigravity.ui.UploadActivity_">
       <intent-filter>
-        <action android:name="android.intent.action.SEND" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="*/*" />
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="*/*"/>
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.PostActivity_"
-      android:label="@string/post_activity"
-      android:configChanges="orientation|screenSize">
+    <activity android:configChanges="orientation|screenSize" android:label="@string/post_activity" android:name="com.floatboth.antigravity.ui.PostActivity_">
     </activity>
 
-    <activity android:name=".ui.LoginActivity_"
-      android:configChanges="orientation|screenSize">
+    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.LoginActivity_">
     </activity>
 
-    <activity android:name=".ui.AboutActivity_"
-      android:launchMode="singleTop"
-      android:label="@string/about_activity"
-      android:configChanges="orientation|screenSize">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.MainActivity_" />
+    <activity android:configChanges="orientation|screenSize" android:label="@string/about_activity" android:launchMode="singleTop" android:name="com.floatboth.antigravity.ui.AboutActivity_">
+      <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.MainActivity_"/>
     </activity>
 
-    <activity android:name=".ui.LicenseActivity_"
-      android:label="@string/license_activity"
-      android:configChanges="orientation|screenSize">
+    <activity android:configChanges="orientation|screenSize" android:label="@string/license_activity" android:name="com.floatboth.antigravity.ui.LicenseActivity_">
       <intent-filter>
-        <category android:name="android.intent.category.DEFAULT" />
-        <action android:name="android.intent.action.VIEW" />
-        <data android:scheme="com.floatboth.antigravity.license" />
+        <category android:name="android.intent.category.DEFAULT"/>
+        <action android:name="android.intent.action.VIEW"/>
+        <data android:scheme="com.floatboth.antigravity.license"/>
       </intent-filter>
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".ui.AboutActivity_" />
+      <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.AboutActivity_"/>
     </activity>
 
   </application>

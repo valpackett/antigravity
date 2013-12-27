@@ -7,6 +7,8 @@
 
   <ListView android:id="@+id/filelist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:divider="@color/list_divider"
+    android:dividerHeight="@dimen/list_divider_height" />
 
 </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
