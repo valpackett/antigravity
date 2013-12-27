@@ -15,7 +15,6 @@ import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.ShareActionProvider;
 import android.text.Html;
 import android.net.Uri;
 import com.squareup.picasso.Picasso;
@@ -40,6 +39,7 @@ public class FileActivity extends Activity
   @StringRes String network_error;
   @StringRes String io_error;
   @StringRes String copied;
+  @StringRes String share_chooser_title;
 
   @Bean ADNClientFactory adnClientFactory;
   @ViewById ImageView image_preview;
@@ -48,7 +48,6 @@ public class FileActivity extends Activity
   @Pref ADNPrefs_ adnPrefs;
   ADNClient adnClient;
   Menu menu;
-  MenuItem shareItem;
   ClipboardManager clipboardManager;
 
   @Override
@@ -69,18 +68,7 @@ public class FileActivity extends Activity
   public boolean onCreateOptionsMenu(Menu menu) {
     this.menu = menu;
     getMenuInflater().inflate(R.menu.file, menu);
-    shareItem = menu.findItem(R.id.share);
-    updateShareIntent();
     return true;
-  }
-
-  private void updateShareIntent() {
-    ShareActionProvider shareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
-    Intent shareIntent = new Intent();
-    shareIntent.setAction(Intent.ACTION_SEND);
-    shareIntent.putExtra(Intent.EXTRA_TEXT, file.shortUrl);
-    shareIntent.setType("text/plain");
-    shareActionProvider.setShareIntent(shareIntent);
   }
 
   private void updateResultIntent() {
@@ -103,7 +91,6 @@ public class FileActivity extends Activity
 
   public void updateFile(File file) {
     this.file = file;
-    updateShareIntent();
     updateResultIntent();
   }
 
@@ -129,6 +116,15 @@ public class FileActivity extends Activity
         Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  @OptionsItem(R.id.share)
+  public void shareFile() {
+    Intent shareIntent = new Intent();
+    shareIntent.setAction(Intent.ACTION_SEND);
+    shareIntent.putExtra(Intent.EXTRA_TEXT, file.shortUrl);
+    shareIntent.setType("text/plain");
+    startActivity(Intent.createChooser(shareIntent, share_chooser_title));
   }
 
   @OptionsItem(R.id.delete)

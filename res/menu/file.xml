@@ -10,9 +10,9 @@
   <item android:id="@+id/share"
     android:orderInCategory="200"
     android:showAsAction="ifRoom"
+    android:icon="@drawable/ic_action_share"
     android:visible="false"
-    android:title="@string/share"
-    android:actionProviderClass="android.widget.ShareActionProvider" />
+    android:title="@string/share" />
 
   <item android:id="@+id/create_post"
     android:orderInCategory="300"
