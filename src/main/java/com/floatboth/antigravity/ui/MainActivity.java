@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.net.Uri;
+import android.net.ConnectivityManager;
 import android.view.Window;
 import android.view.View;
 import android.view.Gravity;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity
   @Bean DataCache dataCache;
   @Pref ADNPrefs_ adnPrefs;
   @SystemService LayoutInflater layoutInflater;
+  @SystemService ConnectivityManager connManager;
   @ViewById ListView filelist;
   @ViewById PullToRefreshLayout ptr_layout;
   ADNClient adnClient;
@@ -310,7 +312,8 @@ public class MainActivity extends Activity
   }
 
   private boolean filesNeedRefreshing() {
-    return adnPrefs.refreshFlag().getOr(false)
-      || (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE);
+    return connManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI &&
+      (adnPrefs.refreshFlag().getOr(false) ||
+       (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE));
   }
 }
