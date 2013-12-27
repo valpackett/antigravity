@@ -19,13 +19,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Button;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.provider.MediaStore;
 import android.text.Html;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import eu.erikw.PullToRefreshListView;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
 import com.googlecode.androidannotations.annotations.res.StringRes;
@@ -36,7 +39,7 @@ import com.floatboth.antigravity.data.*;
 @EActivity(R.layout.main_activity)
 public class MainActivity extends Activity
   implements AdapterView.OnItemClickListener,
-             PullToRefreshListView.OnRefreshListener {
+             OnRefreshListener {
   @StringRes String network_error;
   @StringRes String chooser_title;
   @StringRes String log_out_confirm_title;
@@ -46,7 +49,8 @@ public class MainActivity extends Activity
   @Bean DataCache dataCache;
   @Pref ADNPrefs_ adnPrefs;
   @SystemService LayoutInflater layoutInflater;
-  @ViewById PullToRefreshListView filelist;
+  @ViewById ListView filelist;
+  @ViewById PullToRefreshLayout ptr_layout;
   ADNClient adnClient;
   FileListAdapter fileadapter;
   String minId;
@@ -212,12 +216,13 @@ public class MainActivity extends Activity
     startActivity(uploadIntent);
   }
 
-  public void onRefresh() {
+  @Override
+  public void onRefreshStarted(View v) {
     fileadapter.clearFiles();
     loadMoreButton.setEnabled(false);
     loadFiles("", new FileLoadCallback() {
       public void callback() {
-        filelist.onRefreshComplete();
+        ptr_layout.setRefreshComplete();
       }
     });
   }
@@ -226,8 +231,7 @@ public class MainActivity extends Activity
   public void onResume() {
     super.onResume();
     if (filesNeedRefreshing()) {
-      filelist.setRefreshing();
-      onRefresh();
+      onRefreshStarted(null);
     }
   }
 
@@ -298,9 +302,10 @@ public class MainActivity extends Activity
     setUpNoPostsTextView();
     fileadapter = new FileListAdapter(this, layoutInflater);
     filelist.setAdapter(fileadapter);
-    filelist.setOnRefreshListener(this);
     filelist.setOnItemClickListener(this);
     filelist.addFooterView(loadMoreButton);
+    ActionBarPullToRefresh.from(this).allChildrenArePullable()
+      .listener(this).setup(ptr_layout);
     if (adnPrefs.accessToken().exists()) loadInitialFiles();
   }
 

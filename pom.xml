@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <platform.version>4.0.1.2</platform.version>
-    <android.plugin.version>3.6.0</android.plugin.version>
+    <android.plugin.version>3.8.1</android.plugin.version>
   </properties>
 
   <dependencies>
@@ -72,6 +72,24 @@
       <artifactId>jmustache</artifactId>
       <version>1.8</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.castorflex.smoothprogressbar</groupId>
+      <artifactId>library</artifactId>
+      <version>0.2.0</version>
+      <type>aar</type>
+    </dependency>
+    <dependency>
+      <groupId>com.github.chrisbanes.actionbarpulltorefresh</groupId>
+      <artifactId>library</artifactId>
+      <version>0.9.3</version>
+      <type>aar</type>
+      <exclusions>
+        <exclusion>
+          <groupId>com.github.castorflex.smoothprogressbar</groupId>
+          <artifactId>library</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -105,11 +123,13 @@
       <plugin>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <sdk>
             <platform>14</platform>
             <path>${env.ANDROID_HOME}</path>
           </sdk>
+          <mergeManifests>true</mergeManifests>
         </configuration>
       </plugin>
     </plugins>

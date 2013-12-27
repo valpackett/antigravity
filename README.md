@@ -8,7 +8,7 @@ Upload a file with Antigravity and you'll get a short link you can share on any 
 
 ## Building
 
-You need Maven and the following things in `Android SDK Manager`:
+You need Maven (at least version 3.1.1) and the following things in `Android SDK Manager`:
 
 - Android SDK Build-tools
 - Android 4.0 (API 14)

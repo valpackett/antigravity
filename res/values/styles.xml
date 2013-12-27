@@ -66,6 +66,11 @@
     <item name="android:dropDownListViewStyle">@style/DropDownListView.Ag</item>
   </style>
 
+  <style name="Theme.Ag.PtrHeader" parent="android:Widget">
+    <item name="ptrProgressBarStyle">inside</item>
+    <item name="ptrProgressBarColor">@android:color/white</item>
+  </style>
+
   <style name="AppTheme" parent="AppBaseTheme">
     <item name="android:actionBarItemBackground">@drawable/selectable_background_ag</item>
     <item name="android:popupMenuStyle">@style/PopupMenu.Ag</item>
@@ -80,5 +85,6 @@
     <item name="android:buttonStyle">@style/Theme.Ag.Button</item>
     <item name="android:editTextStyle">@style/Theme.Ag.EditText</item>
     <item name="android:editTextBackground">@drawable/ag_edit_text_holo_light</item>
+    <item name="ptrHeaderStyle">@style/Theme.Ag.PtrHeader</item>
   </style>
 </resources>
