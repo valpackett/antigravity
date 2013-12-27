@@ -1,7 +1,5 @@
 package com.floatboth.antigravity.ui;
 
-import java.util.List;
-import java.util.ArrayList;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import com.floatboth.antigravity.data.File;
 import com.floatboth.antigravity.R;
 
 public class FileListAdapter extends BaseAdapter {
-  private List<File> files;
+  private File.List files;
   private LayoutInflater layoutInflater;
   private Context context;
 
@@ -26,21 +24,21 @@ public class FileListAdapter extends BaseAdapter {
   }
 
   public void clearFiles() {
-    this.files = new ArrayList<File>();
+    this.files = new File.List();
     notifyDataSetChanged();
   }
 
-  public void appendFiles(List<File> newFiles) {
+  public void appendFiles(File.List newFiles) {
     files.addAll(newFiles);
     notifyDataSetChanged();
   }
 
-  public void setFiles(List<File> files) {
+  public void setFiles(File.List files) {
     this.files = files;
     notifyDataSetChanged();
   }
 
-  public List<File> getFiles() {
+  public File.List getFiles() {
     return files;
   }
 

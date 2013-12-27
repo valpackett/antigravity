@@ -2,6 +2,7 @@ package com.floatboth.antigravity.data;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.util.ArrayList;
 import com.google.gson.annotations.SerializedName;
 
 public final class File implements Serializable {
@@ -21,4 +22,8 @@ public final class File implements Serializable {
 
   public boolean isDeleted; // used by the app, not ADN as a flag
                             // to remove the file from the cache.
+
+  @SuppressWarnings("serial")
+  public static class List extends ArrayList<File> {
+  }
 }

@@ -77,13 +77,13 @@ public class MainActivity extends Activity
     dataCache.delete("more");
   }
 
-  private void cacheData(List<File> files, String minId, boolean more) {
+  private void cacheData(File.List files, String minId, boolean more) {
     dataCache.set("files", files);
     dataCache.set("minId", minId);
     dataCache.set("more", (Boolean) more);
   }
 
-  private void applyData(List<File> files, String minId, boolean more) {
+  private void applyData(File.List files, String minId, boolean more) {
     try {
       adnPrefs.lastUrlExpires().put(files.get(files.size()-1).urlExpires.getTime() / 1000L);
     } catch (ArrayIndexOutOfBoundsException ex) {}
@@ -99,12 +99,12 @@ public class MainActivity extends Activity
   private void loadFiles(String beforeId, FileLoadCallback callback) {
     final FileLoadCallback callbackF = callback; // F is for "Fuck you, Java".
     final MainActivity self = this;
-    adnClient.myFiles(beforeId, new Callback<ADNResponse<List<File>>>() {
-      public void success(ADNResponse<List<File>> adnResponse, Response rawResponse) {
+    adnClient.myFiles(beforeId, new Callback<ADNResponse<File.List>>() {
+      public void success(ADNResponse<File.List> adnResponse, Response rawResponse) {
         self.adnPrefs.refreshFlag().put(false);
         applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
         cacheData(fileadapter.getFiles(), adnResponse.meta.minId, adnResponse.meta.more);
-        boolean isNoFiles = ((List<File>) adnResponse.data).size() == 0;
+        boolean isNoFiles = ((File.List) adnResponse.data).size() == 0;
         if (!self.isShowingWelcome && isNoFiles) {
           filelist.removeFooterView(loadMoreButton);
           filelist.addFooterView(noPostsTextView);
@@ -136,7 +136,7 @@ public class MainActivity extends Activity
 
   private void loadInitialFiles() {
     setProgressBarIndeterminateVisibility(true);
-    List<File> filesFromCache = (List<File>) dataCache.get("files");
+    File.List filesFromCache = (File.List) dataCache.get("files");
     String minIdFromCache = (String) dataCache.get("minId");
     Boolean moreFromCache = (Boolean) dataCache.get("more");
     boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
@@ -185,7 +185,7 @@ public class MainActivity extends Activity
   public void updateFileCache(Intent updateIntent) {
     if (updateIntent == null) return;
     File file = (File) updateIntent.getSerializableExtra("file");
-    List<File> updatedFiles = new ArrayList<File>();
+    File.List updatedFiles = new File.List();
     for (File f : fileadapter.getFiles()) {
       if (f.id.equals(file.id)) {
         if (file.isDeleted != true) updatedFiles.add(file);
