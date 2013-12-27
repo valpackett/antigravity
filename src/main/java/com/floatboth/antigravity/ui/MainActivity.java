@@ -41,7 +41,7 @@ public class MainActivity extends Activity
   implements AdapterView.OnItemClickListener,
              OnRefreshListener {
   @StringRes String network_error;
-  @StringRes String chooser_title;
+  @StringRes String pick_chooser_title;
   @StringRes String log_out_confirm_title;
   @StringRes String no_posts;
 
@@ -240,7 +240,7 @@ public class MainActivity extends Activity
     Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
     pickIntent.addCategory(Intent.CATEGORY_OPENABLE);
     pickIntent.setType("*/*");
-    startActivityForResult(Intent.createChooser(pickIntent, chooser_title), REQUEST_CODE_PICK_FILE);
+    startActivityForResult(Intent.createChooser(pickIntent, pick_chooser_title), REQUEST_CODE_PICK_FILE);
   }
 
   @OptionsItem(R.id.camera_to_upload)
