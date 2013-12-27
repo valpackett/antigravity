@@ -3,14 +3,13 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <ImageView
-    android:id="@+id/image_preview"
+  <WebView
+    android:id="@+id/file_preview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
-    android:contentDescription="image"
-    android:src="@drawable/ic_launcher" />
+    android:contentDescription="File preview" />
 
   <TextView
     android:id="@+id/file_description"

@@ -1,5 +1,7 @@
 package com.floatboth.antigravity.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,11 +16,10 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 import android.widget.TextView;
-import android.widget.ImageView;
+import android.webkit.WebView;
+import android.webkit.WebSettings;
 import android.text.Html;
 import android.net.Uri;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import com.googlecode.androidannotations.annotations.*;
@@ -29,8 +30,7 @@ import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
 
 @EActivity(R.layout.file_activity)
-public class FileActivity extends Activity
-  implements Callback {
+public class FileActivity extends Activity {
   @StringRes String make_public_success;
   @StringRes String delete_confirm_title;
   @StringRes String delete_confirm_message;
@@ -42,7 +42,7 @@ public class FileActivity extends Activity
   @StringRes String share_chooser_title;
 
   @Bean ADNClientFactory adnClientFactory;
-  @ViewById ImageView image_preview;
+  @ViewById WebView file_preview;
   @ViewById TextView file_description;
   @Extra File file;
   @Pref ADNPrefs_ adnPrefs;
@@ -179,23 +179,24 @@ public class FileActivity extends Activity
 
   @AfterViews
   public void setUpViews() {
-    Picasso.with(this).load(file.url).into(image_preview, this);
+    WebSettings ws = file_preview.getSettings();
+    ws.setLoadWithOverviewMode(true);
+    if ("image".equals(file.kind)) {
+      ws.setUseWideViewPort(true);
+      ws.setBuiltInZoomControls(true);
+      ws.setDisplayZoomControls(false);
+      file_preview.loadUrl(file.url);
+    } else {
+      ws.setJavaScriptEnabled(true);
+      try {
+        file_preview.loadUrl("https://docs.google.com/viewer?url=" + URLEncoder.encode(file.url, "utf-8"));
+      } catch (UnsupportedEncodingException ex) {}
+    }
     file_description.setText(Html.fromHtml(FileDescriptionHelper.longDescription(this, file)));
   }
 
   @Override
-  public void onSuccess() {
-    setProgressBarIndeterminateVisibility(false);
-  }
-
-  @Override
-  public void onError() {
-    setProgressBarIndeterminateVisibility(false);
-  }
-
-  @Override
   public void onDestroy() {
-    Picasso.with(this).cancelRequest(image_preview);
     super.onDestroy();
   }
 
