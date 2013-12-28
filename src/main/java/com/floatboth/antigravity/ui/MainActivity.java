@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.net.Uri;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.Window;
 import android.view.View;
 import android.view.Gravity;
@@ -319,7 +320,8 @@ public class MainActivity extends Activity
   }
 
   private boolean networkIsWiFi() {
-    return connManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+    NetworkInfo ni = connManager.getActiveNetworkInfo();
+    return ni != null && ni.isAvailable() && ni.getType() == ConnectivityManager.TYPE_WIFI;
   }
 
   private boolean filesNeedRefreshing() {
