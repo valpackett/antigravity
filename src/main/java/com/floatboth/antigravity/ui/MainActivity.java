@@ -97,10 +97,18 @@ public class MainActivity extends Activity
   }
 
   private void loadFiles(String beforeId, FileLoadCallback callback) {
+    loadFiles(beforeId, callback, false);
+  }
+
+  private void loadFiles(String beforeId, FileLoadCallback callback, boolean clearOnSuccess) {
     final FileLoadCallback callbackF = callback; // F is for "Fuck you, Java".
+    final boolean clearOnSuccessF = clearOnSuccess;
     final MainActivity self = this;
     adnClient.myFiles(beforeId, new Callback<ADNResponse<File.List>>() {
       public void success(ADNResponse<File.List> adnResponse, Response rawResponse) {
+        if (clearOnSuccessF) {
+          fileadapter.clearFiles();
+        }
         self.adnPrefs.refreshFlag().put(false);
         applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
         cacheData(fileadapter.getFiles(), adnResponse.meta.minId, adnResponse.meta.more);
@@ -220,13 +228,12 @@ public class MainActivity extends Activity
 
   @Override
   public void onRefreshStarted(View v) {
-    fileadapter.clearFiles();
     loadMoreButton.setEnabled(false);
     loadFiles("", new FileLoadCallback() {
       public void callback() {
         ptr_layout.setRefreshComplete();
       }
-    });
+    }, true);
   }
 
   @Override
