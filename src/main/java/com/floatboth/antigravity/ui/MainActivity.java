@@ -101,13 +101,11 @@ public class MainActivity extends Activity
     loadFiles(beforeId, callback, false);
   }
 
-  private void loadFiles(String beforeId, FileLoadCallback callback, boolean clearOnSuccess) {
-    final FileLoadCallback callbackF = callback; // F is for "Fuck you, Java".
-    final boolean clearOnSuccessF = clearOnSuccess;
+  private void loadFiles(String beforeId, final FileLoadCallback callback, final boolean clearOnSuccess) {
     final MainActivity self = this;
     adnClient.myFiles(beforeId, new Callback<ADNResponse<File.List>>() {
       public void success(ADNResponse<File.List> adnResponse, Response rawResponse) {
-        if (clearOnSuccessF) {
+        if (clearOnSuccess) {
           fileadapter.clearFiles();
         }
         self.adnPrefs.refreshFlag().put(false);
@@ -123,13 +121,13 @@ public class MainActivity extends Activity
           filelist.addFooterView(loadMoreButton);
           self.isShowingWelcome = false;
         }
-        callbackF.callback();
+        callback.callback();
       }
 
       public void failure(RetrofitError err) {
         loadMoreButton.setEnabled(true); // refresh/loadMore disables loadMoreButton -> error -> applyData not invoked -> loadMoreButton not enabled
         Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
-        callbackF.callback();
+        callback.callback();
         err.printStackTrace();
       }
     });
