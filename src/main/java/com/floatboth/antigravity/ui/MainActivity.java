@@ -127,6 +127,7 @@ public class MainActivity extends Activity
       }
 
       public void failure(RetrofitError err) {
+        loadMoreButton.setEnabled(true); // refresh/loadMore disables loadMoreButton -> error -> applyData not invoked -> loadMoreButton not enabled
         Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
         callbackF.callback();
         err.printStackTrace();
