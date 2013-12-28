@@ -148,7 +148,7 @@ public class MainActivity extends Activity
     String minIdFromCache = (String) dataCache.get("minId");
     Boolean moreFromCache = (Boolean) dataCache.get("more");
     boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
-    if (cacheExists && !filesNeedRefreshing()) {
+    if (cacheExists && !shouldRefreshFiles()) {
       applyData(filesFromCache, minIdFromCache, moreFromCache);
       loadMoreButton.setEnabled(true);
       setProgressBarIndeterminateVisibility(false);
@@ -239,7 +239,7 @@ public class MainActivity extends Activity
   @Override
   public void onResume() {
     super.onResume();
-    if (networkIsWiFi() && filesNeedRefreshing()) {
+    if (shouldRefreshFiles()) {
       onRefreshStarted(null);
     }
   }
@@ -326,5 +326,9 @@ public class MainActivity extends Activity
   private boolean filesNeedRefreshing() {
     return adnPrefs.refreshFlag().getOr(false) ||
       (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE);
+  }
+
+  private boolean shouldRefreshFiles() {
+    return networkIsWiFi() && filesNeedRefreshing();
   }
 }
