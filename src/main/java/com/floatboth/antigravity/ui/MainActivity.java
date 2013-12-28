@@ -232,7 +232,7 @@ public class MainActivity extends Activity
   @Override
   public void onResume() {
     super.onResume();
-    if (filesNeedRefreshing()) {
+    if (networkIsWiFi() && filesNeedRefreshing()) {
       onRefreshStarted(null);
     }
   }
@@ -311,9 +311,12 @@ public class MainActivity extends Activity
     if (adnPrefs.accessToken().exists()) loadInitialFiles();
   }
 
+  private boolean networkIsWiFi() {
+    return connManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
+  }
+
   private boolean filesNeedRefreshing() {
-    return connManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI &&
-      (adnPrefs.refreshFlag().getOr(false) ||
-       (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE));
+    return adnPrefs.refreshFlag().getOr(false) ||
+      (new Date().getTime() / 1000L) > adnPrefs.lastUrlExpires().getOr(Long.MAX_VALUE);
   }
 }
