@@ -37,6 +37,7 @@ import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
+import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.main_activity)
 public class MainActivity extends Activity

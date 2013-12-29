@@ -1,4 +1,4 @@
-package com.floatboth.antigravity;
+package com.floatboth.antigravity.net;
 
 import java.io.*;
 import java.net.URL;
@@ -11,6 +11,7 @@ import com.squareup.mimecraft.FormEncoding;
 import com.googlecode.androidannotations.annotations.*;
 import com.google.gson.Gson;
 
+import com.floatboth.antigravity.R;
 import com.floatboth.antigravity.data.ADNAuthResponse;
 import com.floatboth.antigravity.data.ADNAuthError;
 

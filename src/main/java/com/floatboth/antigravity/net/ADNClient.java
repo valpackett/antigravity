@@ -1,4 +1,4 @@
-package com.floatboth.antigravity;
+package com.floatboth.antigravity.net;
 
 import retrofit.Callback;
 import retrofit.http.*;

@@ -34,6 +34,7 @@ import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.post.*;
+import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.post_activity)
 public class PostActivity extends Activity

@@ -26,6 +26,7 @@ import com.googlecode.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
+import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends Activity {
