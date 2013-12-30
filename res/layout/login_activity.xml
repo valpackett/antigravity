@@ -13,21 +13,21 @@
     android:textColorLink="@color/accent_ag"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+    android:layout_marginBottom="@dimen/after_field_margin_2x" />
 
   <Button android:id="@+id/login_with_passport"
     android:visibility="gone"
     android:text="@string/login_with_passport"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+    android:layout_marginBottom="@dimen/after_field_margin_2x" />
 
   <Button android:id="@+id/install_passport"
     android:visibility="gone"
     android:text="@string/install_passport"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+    android:layout_marginBottom="@dimen/after_field_margin_2x" />
 
 
   <TextView android:id="@+id/or_label"
@@ -53,7 +53,7 @@
     android:id="@+id/password_field"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin"
+    android:layout_marginBottom="@dimen/after_field_margin_2x"
     android:hint="@string/password_hint"
     android:inputType="textPassword"
     android:imeOptions="flagNoExtractUi|actionGo" />
@@ -62,7 +62,7 @@
     android:textSize="12sp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+    android:layout_marginBottom="@dimen/after_field_margin_2x" />
 
   <Button android:id="@+id/login_with_password"
     android:text="@string/login_with_password"

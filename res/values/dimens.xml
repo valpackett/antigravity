@@ -5,6 +5,7 @@
   <dimen name="file_horizontal_padding">8dp</dimen>
   <dimen name="file_vertical_padding">8dp</dimen>
   <dimen name="after_field_margin">8dp</dimen>
+	<dimen name="after_field_margin_2x">16dp</dimen>
   <dimen name="ag_button_padding">12dp</dimen>
   <dimen name="list_divider_height">1px</dimen>
 </resources>
