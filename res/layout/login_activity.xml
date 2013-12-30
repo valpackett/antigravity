@@ -1,73 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:paddingBottom="@dimen/activity_vertical_margin"
-  android:paddingLeft="@dimen/activity_horizontal_margin"
-  android:paddingRight="@dimen/activity_horizontal_margin"
-  android:paddingTop="@dimen/activity_vertical_margin">
+  android:layout_height="match_parent">
 
-  <TextView android:id="@+id/adn_info"
-    android:textSize="18sp"
-    android:textColorLink="@color/accent_ag"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin_2x" />
+  <!-- dummy to prevent edittext autofocus -->
+  <LinearLayout
+    android:focusable="true" android:focusableInTouchMode="true"
+    android:layout_width="0dp" android:layout_height="0dp"/>
 
-  <Button android:id="@+id/login_with_passport"
-    android:visibility="gone"
-    android:text="@string/login_with_passport"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin_2x" />
-
-  <Button android:id="@+id/install_passport"
-    android:visibility="gone"
-    android:text="@string/install_passport"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin_2x" />
-
-
-  <TextView android:id="@+id/or_label"
-    android:text="@string/or"
-    android:textSize="14sp"
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:layout_height="wrap_content"
+  <ImageView android:src="@drawable/login_bg"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
     android:layout_width="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+    android:layout_height="wrap_content" />
+
+  <ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/activity_vertical_margin"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      android:orientation="vertical">
+
+      <TextView android:id="@+id/adn_info"
+        android:textSize="22sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/after_field_margin_3x"
+        android:layout_marginBottom="@dimen/after_field_margin_3x" />
+
+      <Button android:id="@+id/login_with_passport"
+        android:visibility="gone"
+        android:text="@string/login_with_passport"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+      <Button android:id="@+id/install_passport"
+        android:visibility="gone"
+        android:text="@string/install_passport"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 
 
-  <EditText
-    android:id="@+id/username_field"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin"
-    android:hint="@string/username_hint"
-    android:inputType="text|textNoSuggestions"
-    android:imeOptions="flagNoExtractUi" />
+      <TextView android:id="@+id/or_label"
+        android:text="@string/or"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/after_field_margin_2x"
+        android:layout_marginBottom="@dimen/after_field_margin_2x" />
 
-  <EditText
-    android:id="@+id/password_field"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin_2x"
-    android:hint="@string/password_hint"
-    android:inputType="textPassword"
-    android:imeOptions="flagNoExtractUi|actionGo" />
 
-  <TextView android:text="@string/perm_info"
-    android:textSize="12sp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/after_field_margin_2x" />
+      <EditText
+        android:id="@+id/username_field"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/after_field_margin"
+        android:hint="@string/username_hint"
+        android:inputType="text|textNoSuggestions"
+        android:imeOptions="flagNoExtractUi" />
 
-  <Button android:id="@+id/login_with_password"
-    android:text="@string/login_with_password"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/after_field_margin" />
+      <EditText
+        android:id="@+id/password_field"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/after_field_margin"
+        android:hint="@string/password_hint"
+        android:inputType="textPassword"
+        android:typeface="normal"
+        android:imeOptions="flagNoExtractUi|actionGo" />
 
-</LinearLayout>
+      <Button android:id="@+id/login_with_password"
+        android:text="@string/login_with_password"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/after_field_margin_2x" />
+
+      <TextView android:text="@string/perm_info"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+  </ScrollView>
+</RelativeLayout>

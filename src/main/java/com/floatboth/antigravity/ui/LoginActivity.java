@@ -3,6 +3,7 @@ package com.floatboth.antigravity.ui;
 import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -40,6 +41,7 @@ public class LoginActivity extends BaseActivity {
   @StringRes String adn_info_text;
   @StringRes String client_id;
   @StringRes String password_secret;
+  @StringRes String login_progress;
 
   @SystemService InputMethodManager inputMethodManager;
   @Pref ADNPrefs_ adnPrefs;
@@ -47,11 +49,9 @@ public class LoginActivity extends BaseActivity {
   @ViewById EditText password_field;
   @ViewById Button login_with_passport;
   @ViewById Button install_passport;
-  @ViewById Button login_with_password;
   @ViewById TextView adn_info;
   @ViewById TextView or_label;
-
-  boolean requestInProgress = false;
+  ProgressDialog loginProgress;
 
   private static final int REQUEST_CODE_AUTHORIZE = 1;
   private static final String AUTHORIZE_ACTION = "net.app.adnpassport.authorize";
@@ -82,7 +82,6 @@ public class LoginActivity extends BaseActivity {
   // UI helpers
 
   public void showError(String title, String message) {
-    setProgressBarIndeterminateVisibility(false);
     new AlertDialog.Builder(this).setTitle(title).setMessage(message)
       .setPositiveButton(R.string.ok, null).show();
   }
@@ -100,7 +99,6 @@ public class LoginActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
     filter.addDataScheme("package");
     registerReceiver(passportInstallReceiver, filter);
@@ -111,7 +109,7 @@ public class LoginActivity extends BaseActivity {
     password_field.setOnEditorActionListener(new TextView.OnEditorActionListener() {
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_GO && requestInProgress == false) {
+        if (actionId == EditorInfo.IME_ACTION_GO) {
           loginWithPassword();
         }
         return false;
@@ -156,10 +154,8 @@ public class LoginActivity extends BaseActivity {
     } else if (password.matches("")) {
       showError(empty_field, password_hint + " " + must_not_be_empty);
     } else {
-      setProgressBarIndeterminateVisibility(true);
-      login_with_password.setEnabled(false);
-      requestInProgress = true;
       inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+      loginProgress = ProgressDialog.show(this, null, login_progress, true, false);
       getSpiceManager().execute(new LoginRequest(client_id, password_secret, username, password, SCOPES),
           new LoginListener());
     }
@@ -168,9 +164,8 @@ public class LoginActivity extends BaseActivity {
   public class LoginListener implements RequestListener<String> {
     @Override
     public void onRequestFailure(SpiceException spiceException) {
+      loginProgress.dismiss();
       spiceException.printStackTrace();
-      login_with_password.setEnabled(true);
-      requestInProgress = false;
       try {
         throw spiceException.getCause();
       } catch (ADNAuthError ex) {
@@ -182,9 +177,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onRequestSuccess(final String token) {
-      login_with_password.setEnabled(true);
-      requestInProgress = false;
-      setProgressBarIndeterminateVisibility(false);
+      loginProgress.dismiss();
       onLoginSuccess(token);
     }
   }

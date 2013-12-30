@@ -34,7 +34,7 @@
     <activity android:configChanges="orientation|screenSize" android:label="@string/post_activity" android:name="com.floatboth.antigravity.ui.PostActivity_">
     </activity>
 
-    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.LoginActivity_">
+    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.LoginActivity_" android:theme="@style/LoginTheme">
     </activity>
 
     <activity android:configChanges="orientation|screenSize" android:label="@string/about_activity" android:launchMode="singleTop" android:name="com.floatboth.antigravity.ui.AboutActivity_">

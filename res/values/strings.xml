@@ -16,6 +16,7 @@
   <string name="username_hint">Username</string>
   <string name="password_hint">Password</string>
   <string name="login_with_password">Log in!</string>
+	<string name="login_progress">Logging in...</string>
   <string name="adn_info_text">
     <![CDATA[
     An <a href="https://app.net">App.net account</a> is required to use Antigravity.
