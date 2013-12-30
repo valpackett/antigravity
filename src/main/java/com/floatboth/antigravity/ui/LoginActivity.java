@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ public class LoginActivity extends BaseActivity {
   @StringRes String client_id;
   @StringRes String password_secret;
 
+  @SystemService InputMethodManager inputMethodManager;
   @Pref ADNPrefs_ adnPrefs;
   @ViewById EditText username_field;
   @ViewById EditText password_field;
@@ -157,6 +159,7 @@ public class LoginActivity extends BaseActivity {
       setProgressBarIndeterminateVisibility(true);
       login_with_password.setEnabled(false);
       requestInProgress = true;
+      inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
       getSpiceManager().execute(new LoginRequest(client_id, password_secret, username, password, SCOPES),
           new LoginListener());
     }
