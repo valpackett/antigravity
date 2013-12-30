@@ -25,5 +25,6 @@ public final class File implements Serializable {
 
   @SuppressWarnings("serial")
   public static class List extends ArrayList<File> {
+    public ADNMeta meta;
   }
 }

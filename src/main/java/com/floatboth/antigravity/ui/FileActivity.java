@@ -20,8 +20,8 @@ import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.text.Html;
 import android.net.Uri;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
 import com.googlecode.androidannotations.annotations.res.StringRes;
@@ -31,7 +31,7 @@ import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.file_activity)
-public class FileActivity extends Activity {
+public class FileActivity extends BaseActivity {
   @StringRes String make_public_success;
   @StringRes String delete_confirm_title;
   @StringRes String delete_confirm_message;
@@ -42,12 +42,11 @@ public class FileActivity extends Activity {
   @StringRes String copied;
   @StringRes String share_chooser_title;
 
-  @Bean ADNClientFactory adnClientFactory;
   @ViewById WebView file_preview;
   @ViewById TextView file_description;
   @Extra File file;
   @Pref ADNPrefs_ adnPrefs;
-  ADNClient adnClient;
+  String adnToken;
   Menu menu;
   ClipboardManager clipboardManager;
 
@@ -61,7 +60,7 @@ public class FileActivity extends Activity {
     if (!adnPrefs.accessToken().exists()) {
       finish();
     } else {
-      adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
+      adnToken = adnPrefs.accessToken().get();
     }
   }
 
@@ -98,25 +97,29 @@ public class FileActivity extends Activity {
   @OptionsItem(R.id.make_public)
   public void makePublic() {
     setProgressBarIndeterminateVisibility(true);
-    final FileActivity self = this;
     File pubDelta = new File();
     pubDelta.isPublic = true;
-    adnClient.updateFile(file.id, pubDelta, new retrofit.Callback<ADNResponse<File>>() {
-      public void success(ADNResponse<File> adnResponse, Response rawResponse) {
-        self.updateFile(adnResponse.data);
-        self.setProgressBarIndeterminateVisibility(false);
-        menu.findItem(R.id.make_public).setVisible(false);
-        menu.findItem(R.id.share).setVisible(true);
-        menu.findItem(R.id.copy_to_clipboard).setVisible(true);
-        menu.findItem(R.id.open_in_browser).setVisible(true);
-        Toast.makeText(self, make_public_success, Toast.LENGTH_SHORT).show();
-      }
+    getSpiceManager().execute(new UpdateFileRequest(adnToken, file.id, pubDelta),
+        new UpdateFileListener());
+  }
 
-      public void failure(RetrofitError err) {
-        self.setProgressBarIndeterminateVisibility(false);
-        Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
-      }
-    });
+  public class UpdateFileListener implements RequestListener<File> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      setProgressBarIndeterminateVisibility(false);
+      Toast.makeText(FileActivity.this, network_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestSuccess(final File data) {
+      updateFile(data);
+      setProgressBarIndeterminateVisibility(false);
+      menu.findItem(R.id.make_public).setVisible(false);
+      menu.findItem(R.id.share).setVisible(true);
+      menu.findItem(R.id.copy_to_clipboard).setVisible(true);
+      menu.findItem(R.id.open_in_browser).setVisible(true);
+      Toast.makeText(FileActivity.this, make_public_success, Toast.LENGTH_SHORT).show();
+    }
   }
 
   @OptionsItem(R.id.share)
@@ -139,24 +142,29 @@ public class FileActivity extends Activity {
       .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           self.setProgressBarIndeterminateVisibility(true);
-          self.adnClient.deleteFile(self.file.id, new retrofit.Callback<ADNResponse<File>>() {
-            public void success(ADNResponse<File> adnResponse, Response rawResponse) {
-              self.file.isDeleted = true;
-              self.updateResultIntent();
-              self.setProgressBarIndeterminateVisibility(false);
-              Toast.makeText(self, delete_success, Toast.LENGTH_SHORT).show();
-              self.finish();
-            }
-
-            public void failure(RetrofitError err) {
-              self.setProgressBarIndeterminateVisibility(false);
-              Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
-            }
-          });
+          self.getSpiceManager().execute(new DeleteFileRequest(self.adnToken, self.file.id),
+              new DeleteFileListener());
         }
       })
       .setNegativeButton(R.string.cancel, null)
       .show();
+  }
+
+  public class DeleteFileListener implements RequestListener<File> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      setProgressBarIndeterminateVisibility(false);
+      Toast.makeText(FileActivity.this, network_error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestSuccess(final File data) {
+      file.isDeleted = true;
+      updateResultIntent();
+      setProgressBarIndeterminateVisibility(false);
+      Toast.makeText(FileActivity.this, delete_success, Toast.LENGTH_SHORT).show();
+      finish();
+    }
   }
 
   @OptionsItem(R.id.create_post)

@@ -25,9 +25,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.provider.MediaStore;
 import android.text.Html;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -40,7 +39,7 @@ import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.main_activity)
-public class MainActivity extends Activity
+public class MainActivity extends BaseActivity
   implements AdapterView.OnItemClickListener,
              OnRefreshListener {
   @StringRes String network_error;
@@ -48,14 +47,13 @@ public class MainActivity extends Activity
   @StringRes String log_out_confirm_title;
   @StringRes String no_posts;
 
-  @Bean ADNClientFactory adnClientFactory;
   @Bean DataCache dataCache;
   @Pref ADNPrefs_ adnPrefs;
   @SystemService LayoutInflater layoutInflater;
   @SystemService ConnectivityManager connManager;
   @ViewById ListView filelist;
   @ViewById PullToRefreshLayout ptr_layout;
-  ADNClient adnClient;
+  String adnToken;
   FileListAdapter fileadapter;
   String minId;
   Button loadMoreButton;
@@ -94,53 +92,45 @@ public class MainActivity extends Activity
     this.minId = minId;
   }
 
-  private interface FileLoadCallback {
-    public void callback();
+  private void loadFiles(String beforeId) {
+    getSpiceManager().execute(new MyFilesRequest(adnToken, beforeId), new MyFilesListener());
   }
 
-  private void loadFiles(String beforeId, FileLoadCallback callback) {
-    loadFiles(beforeId, callback, false);
+  public class MyFilesListener implements RequestListener<File.List> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      loadMoreButton.setEnabled(true); // refresh/loadMore disables loadMoreButton -> error -> applyData not invoked -> loadMoreButton not enabled
+      setProgressBarIndeterminateVisibility(false);
+      Toast.makeText(MainActivity.this, network_error, Toast.LENGTH_SHORT).show();
+      spiceException.printStackTrace();
+    }
+
+    @Override
+    public void onRequestSuccess(final File.List data) {
+      adnPrefs.refreshFlag().put(false);
+      applyData(data, data.meta.minId, data.meta.more); // does loadMoreButton.setEnabled(more)
+      cacheData(fileadapter.getFiles(), data.meta.minId, data.meta.more);
+      boolean isNoFiles = data.size() == 0;
+      if (!isShowingWelcome && isNoFiles) {
+        filelist.removeFooterView(loadMoreButton);
+        filelist.addFooterView(noPostsTextView);
+        isShowingWelcome = true;
+      } else if (isShowingWelcome && !isNoFiles) {
+        filelist.removeFooterView(noPostsTextView);
+        filelist.addFooterView(loadMoreButton);
+        isShowingWelcome = false;
+      }
+      setProgressBarIndeterminateVisibility(false);
+    }
   }
 
-  private void loadFiles(String beforeId, final FileLoadCallback callback, final boolean clearOnSuccess) {
-    final MainActivity self = this;
-    adnClient.myFiles(beforeId, new Callback<ADNResponse<File.List>>() {
-      public void success(ADNResponse<File.List> adnResponse, Response rawResponse) {
-        if (clearOnSuccess) {
-          fileadapter.clearFiles();
-        }
-        self.adnPrefs.refreshFlag().put(false);
-        applyData(adnResponse.data, adnResponse.meta.minId, adnResponse.meta.more);
-        cacheData(fileadapter.getFiles(), adnResponse.meta.minId, adnResponse.meta.more);
-        boolean isNoFiles = ((File.List) adnResponse.data).size() == 0;
-        if (!self.isShowingWelcome && isNoFiles) {
-          filelist.removeFooterView(loadMoreButton);
-          filelist.addFooterView(noPostsTextView);
-          self.isShowingWelcome = true;
-        } else if (self.isShowingWelcome && !isNoFiles) {
-          filelist.removeFooterView(noPostsTextView);
-          filelist.addFooterView(loadMoreButton);
-          self.isShowingWelcome = false;
-        }
-        callback.callback();
-      }
-
-      public void failure(RetrofitError err) {
-        loadMoreButton.setEnabled(true); // refresh/loadMore disables loadMoreButton -> error -> applyData not invoked -> loadMoreButton not enabled
-        Toast.makeText(self, network_error, Toast.LENGTH_SHORT).show();
-        callback.callback();
-        err.printStackTrace();
-      }
-    });
-  }
-
-  private void loadMoreFiles() {
-    final Activity self = this;
-    loadFiles(minId, new FileLoadCallback() {
-      public void callback() {
-        self.setProgressBarIndeterminateVisibility(false);
-      }
-    });
+  public class MyFilesRefreshListener extends MyFilesListener {
+    @Override
+    public void onRequestSuccess(final File.List data) {
+      fileadapter.clearFiles();
+      super.onRequestSuccess(data);
+      ptr_layout.setRefreshComplete();
+    }
   }
 
   private void loadInitialFiles() {
@@ -154,12 +144,7 @@ public class MainActivity extends Activity
       loadMoreButton.setEnabled(true);
       setProgressBarIndeterminateVisibility(false);
     } else {
-      final MainActivity self = this;
-      loadFiles("", new FileLoadCallback() {
-        public void callback() {
-          setProgressBarIndeterminateVisibility(false);
-        }
-      });
+      loadFiles("");
     }
   }
 
@@ -172,7 +157,7 @@ public class MainActivity extends Activity
       public void onClick(View v) {
         loadMoreButton.setEnabled(false);
         setProgressBarIndeterminateVisibility(true);
-        loadMoreFiles();
+        loadFiles(minId);
       }
     });
   }
@@ -230,11 +215,7 @@ public class MainActivity extends Activity
   @Override
   public void onRefreshStarted(View v) {
     loadMoreButton.setEnabled(false);
-    loadFiles("", new FileLoadCallback() {
-      public void callback() {
-        ptr_layout.setRefreshComplete();
-      }
-    }, true);
+    getSpiceManager().execute(new MyFilesRequest(adnToken, ""), new MyFilesRefreshListener());
   }
 
   @Override
@@ -294,7 +275,7 @@ public class MainActivity extends Activity
       startLogin();
     } else {
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-      adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
+      adnToken = adnPrefs.accessToken().get();
     }
   }
 

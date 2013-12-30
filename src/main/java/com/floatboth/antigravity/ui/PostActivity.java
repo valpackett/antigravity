@@ -23,10 +23,9 @@ import android.view.View;
 import android.text.Html;
 import android.text.Editable;
 import android.text.TextWatcher;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.*;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
 import com.googlecode.androidannotations.annotations.res.StringRes;
@@ -37,7 +36,7 @@ import com.floatboth.antigravity.post.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.post_activity)
-public class PostActivity extends Activity
+public class PostActivity extends BaseActivity
   implements AdapterView.OnItemSelectedListener {
   @StringRes String not_logged_in;
   @StringRes String network_error;
@@ -54,12 +53,11 @@ public class PostActivity extends Activity
   @ViewById EditText post_text;
   @ViewById TextView post_chars_left;
   @ViewById Spinner post_type_spinner;
-  @Bean ADNClientFactory adnClientFactory;
   @Extra File file;
   @Extra String text;
   @Extra int postType;
   @Pref ADNPrefs_ adnPrefs;
-  ADNClient adnClient;
+  String adnToken;
   PostFactory currentPostFactory;
   HashMap<String, PostFactory> factoriesMap;
   int postTextLimit;
@@ -77,23 +75,24 @@ public class PostActivity extends Activity
       finish();
     } else {
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-      adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
+      adnToken = adnPrefs.accessToken().get();
       refreshPostTextLimit();
     }
   }
 
   private void refreshPostTextLimit() {
     setPostTextLimit(adnPrefs.postTextLimit().getOr(256));
-    final long curTime = new Date().getTime() / 1000L;
-    final PostActivity self = this;
-    if (!adnPrefs.lastConfigFetch().exists() || curTime - adnPrefs.lastConfigFetch().get() > 60*60*24) {
-      adnClient.getConfiguration(new Callback<ADNResponse<Configuration>>() {
-        public void success(ADNResponse<Configuration> adnResponse, Response rawResponse) {
-          self.setPostTextLimit(adnResponse.data.post.maxLength);
-          adnPrefs.lastConfigFetch().put(curTime);
-        }
-        public void failure(RetrofitError err) { }
-      });
+    getSpiceManager().execute(new ConfigurationRequest(adnToken),
+        "config", DurationInMillis.ONE_DAY, new ConfigurationListener());
+  }
+
+  public final class ConfigurationListener implements RequestListener<Configuration> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) { }
+
+    @Override
+    public void onRequestSuccess(final Configuration data) {
+      setPostTextLimit(data.post.maxLength);
     }
   }
 
@@ -101,7 +100,7 @@ public class PostActivity extends Activity
     postTextLimit = lim;
     adnPrefs.postTextLimit().put(lim);
     try {
-      post_chars_left.setText(Integer.toString(postTextLimit - postCharsCurrent));
+      afterTextChanged();
     } catch (Exception ex) {}
   }
 
@@ -215,22 +214,26 @@ public class PostActivity extends Activity
   @Click(R.id.ok_post)
   public void onOk() {
     setProgressStatus(true);
-    final PostActivity self = this;
     Post post = currentPostFactory.makePost(post_text.getText().toString());
-    adnClient.createPost(post, new Callback<ADNResponse<Post>>() {
-      public void success(ADNResponse<Post> adnResponse, Response rawResponse) {
-        self.setProgressStatus(false);
-        Toast.makeText(self, post_success, Toast.LENGTH_LONG).show();
-        if (self.postType == POST_TYPE_SUPPORT) {
-          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(supportapp_page + "/" + adnResponse.data.id)));
-        }
-        self.finish();
+    getSpiceManager().execute(new CreatePostRequest(adnToken, post), new CreatePostListener());
+  }
+
+  public class CreatePostListener implements RequestListener<Post> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      setProgressStatus(false);
+      Toast.makeText(PostActivity.this, network_error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestSuccess(final Post data) {
+      setProgressStatus(false);
+      Toast.makeText(PostActivity.this, post_success, Toast.LENGTH_LONG).show();
+      if (postType == POST_TYPE_SUPPORT) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(supportapp_page + "/" + data.id)));
       }
-      public void failure(RetrofitError err) {
-        self.setProgressStatus(false);
-        Toast.makeText(self, network_error, Toast.LENGTH_LONG).show();
-      }
-    });
+      finish();
+    }
   }
 
   public void setProgressStatus(boolean p) {

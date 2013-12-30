@@ -3,37 +3,34 @@ package com.floatboth.antigravity.net;
 import java.io.*;
 import java.net.URL;
 import java.net.HttpURLConnection;
-import android.content.Context;
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.mimecraft.FormEncoding;
-import com.googlecode.androidannotations.annotations.*;
-import com.google.gson.Gson;
+import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
+import com.floatboth.antigravity.data.*;
 
-import com.floatboth.antigravity.R;
-import com.floatboth.antigravity.data.ADNAuthResponse;
-import com.floatboth.antigravity.data.ADNAuthError;
+public class LoginRequest extends RetrofitSpiceRequest<String, ADNClient> {
 
-@EBean
-public class ADNClientFactory {
-  @RootContext Context context;
-  OkHttpClient client = new OkHttpClient();
-  Gson gson = new Gson();
-
-  private static final String API_URL = "https://alpha-api.app.net/stream/0";
   private static final String OAUTH_URL = "https://account.app.net/oauth/access_token";
 
-  public ADNClient getClient(String token) {
-    return new RestAdapter.Builder()
-      .setClient(new OkClient(client))
-      .setRequestInterceptor(new ADNAuthInterceptor(token))
-      .setServer(API_URL)
-      .build().create(ADNClient.class);
+  private String clientId;
+  private String passwordSecret;
+  private String username;
+  private String password;
+  private String scopes;
+
+  public LoginRequest(String clientId, String passwordSecret, String username, String password, String scopes) {
+    super(String.class, ADNClient.class);
+    this.clientId = clientId;
+    this.passwordSecret = passwordSecret;
+    this.username = username;
+    this.password = password;
+    this.scopes = scopes;
   }
 
-  public String getAccessToken(String username, String password, String scopes)
-    throws ADNAuthError, IOException {
+  @Override
+  public String loadDataFromNetwork() throws Exception {
+    OkHttpClient client = new OkHttpClient();
     InputStream in = null;
     OutputStream out = null;
     try {
@@ -42,14 +39,15 @@ public class ADNClientFactory {
       conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
       out = conn.getOutputStream();
       new FormEncoding.Builder()
-        .add("client_id", context.getString(R.string.client_id))
-        .add("password_grant_secret", context.getString(R.string.password_secret))
+        .add("client_id", clientId)
+        .add("password_grant_secret", passwordSecret)
         .add("grant_type", "password")
         .add("username", username)
         .add("password", password)
         .add("scopes", scopes)
         .build().writeBodyTo(out);
       out.close();
+      Gson gson = new Gson();
       if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
         in = conn.getErrorStream(); // wtf. "error stream" my ass. http body is fucking http body, always.
         throw gson.fromJson(new InputStreamReader(in), ADNAuthError.class);

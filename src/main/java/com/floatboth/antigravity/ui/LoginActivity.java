@@ -20,6 +20,8 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import net.app.adnlogin.ADNPassportUtility;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
 import com.googlecode.androidannotations.annotations.res.StringRes;
@@ -29,15 +31,15 @@ import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.login_activity)
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
   @StringRes String empty_field;
   @StringRes String username_hint;
   @StringRes String password_hint;
   @StringRes String must_not_be_empty;
   @StringRes String adn_info_text;
   @StringRes String client_id;
+  @StringRes String password_secret;
 
-  @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
   @ViewById EditText username_field;
   @ViewById EditText password_field;
@@ -86,13 +88,11 @@ public class LoginActivity extends Activity {
       .setPositiveButton(R.string.ok, null).show();
   }
 
-  @UiThread
   public void showPasswordADNError(ADNAuthError ex) {
     showError(ex.title, ex.text);
   }
 
-  @UiThread
-  public void showUnknownError(Exception ex) {
+  public void showUnknownError(Throwable ex) {
     showError("Unknown error", ex.getMessage());
   }
 
@@ -158,21 +158,27 @@ public class LoginActivity extends Activity {
       showError(empty_field, password_hint + " " + must_not_be_empty);
     } else {
       setProgressBarIndeterminateVisibility(true);
-      doLoginWithPasswordRequest(username, password);
+      getSpiceManager().execute(new LoginRequest(client_id, password_secret, username, password, SCOPES),
+          new LoginListener());
     }
   }
 
-  @Background
-  public void doLoginWithPasswordRequest(String username, String password) {
-    try {
-      String token = adnClientFactory.getAccessToken(username, password, SCOPES);
+  public class LoginListener implements RequestListener<String> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      spiceException.printStackTrace();
+      try {
+        throw spiceException.getCause();
+      } catch (ADNAuthError ex) {
+        showPasswordADNError(ex);
+      } catch (Throwable ex) {
+        showUnknownError(ex);
+      }
+    }
+
+    @Override
+    public void onRequestSuccess(final String token) {
       onLoginWithPasswordSuccess(token);
-    } catch (ADNAuthError ex) {
-      ex.printStackTrace();
-      showPasswordADNError(ex);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      showUnknownError(ex);
     }
   }
 

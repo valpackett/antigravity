@@ -50,5 +50,7 @@
       <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.AboutActivity_"/>
     </activity>
 
+    <service android:exported="false" android:name="com.floatboth.antigravity.net.ADNSpiceService"/>
+
   </application>
 </manifest>

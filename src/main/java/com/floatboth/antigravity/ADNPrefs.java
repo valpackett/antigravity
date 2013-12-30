@@ -10,5 +10,4 @@ public interface ADNPrefs {
   long lastUrlExpires();
 
   int postTextLimit();
-  long lastConfigFetch();
 }

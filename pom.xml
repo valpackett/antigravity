@@ -12,6 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <platform.version>4.0.1.2</platform.version>
     <android.plugin.version>3.8.1</android.plugin.version>
+    <robospice.version>1.4.9</robospice.version>
   </properties>
 
   <dependencies>
@@ -45,6 +46,16 @@
       <groupId>com.squareup.mimecraft</groupId>
       <artifactId>mimecraft</artifactId>
       <version>1.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.octo.android.robospice</groupId>
+      <artifactId>robospice</artifactId>
+      <version>${robospice.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.octo.android.robospice</groupId>
+      <artifactId>robospice-retrofit</artifactId>
+      <version>${robospice.version}</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.androidannotations</groupId>

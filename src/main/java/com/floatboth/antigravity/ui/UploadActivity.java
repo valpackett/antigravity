@@ -23,11 +23,10 @@ import android.view.Window;
 import android.text.Html;
 import org.apache.tika.Tika;
 import com.squareup.picasso.Picasso;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.*;
 import org.apache.commons.io.IOUtils;
+import retrofit.mime.*;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 import com.samskivert.mustache.*;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.sharedpreferences.*;
@@ -38,7 +37,7 @@ import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.upload_activity)
-public class UploadActivity extends Activity {
+public class UploadActivity extends BaseActivity {
   @StringRes String invalid_intent;
   @StringRes String network_error;
   @StringRes String file_error;
@@ -48,7 +47,6 @@ public class UploadActivity extends Activity {
   @StringRes String not_logged_in;
   Template descTpl;
 
-  @Bean ADNClientFactory adnClientFactory;
   @Pref ADNPrefs_ adnPrefs;
   @ViewById TextView upload_desc;
   @ViewById ImageView image_upload_preview;
@@ -57,7 +55,7 @@ public class UploadActivity extends Activity {
   @ViewById CompoundButton post_after_upload_switch;
   ContentResolver rslv;
   ClipboardManager clipboardManager;
-  ADNClient adnClient;
+  String adnToken;
   Uri uri;
   String mimeType = "";
   String fileName = "";
@@ -75,7 +73,7 @@ public class UploadActivity extends Activity {
       finish();
     } else {
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-      adnClient = adnClientFactory.getClient(adnPrefs.accessToken().get());
+      adnToken = adnPrefs.accessToken().get();
       Intent intent = getIntent();
       String action = intent.getAction();
       String type = intent.getType();
@@ -140,33 +138,36 @@ public class UploadActivity extends Activity {
   @Click(R.id.ok_upload)
   public void onOk() {
     setProgressStatus(true);
-    final UploadActivity self = this;
     try {
       InputStream input = rslv.openInputStream(uri);
-      adnClient.uploadFile(
-          new TypedContent(fileName, mimeType, input),
-          new TypedString("com.floatboth.antigravity.file"),
-          new TypedString("true"),
-          new Callback<ADNResponse<File>>() {
-            public void success(ADNResponse<File> adnResponse, Response rawResponse) {
-              String url = adnResponse.data.shortUrl;
-              clipboardManager.setPrimaryClip(ClipData.newPlainText(url, url));
-              self.adnPrefs.refreshFlag().put(true);
-              self.setProgressStatus(false);
-              Toast.makeText(self, copied + ": " + url, Toast.LENGTH_LONG).show();
-              if (doPostAfterUpload)
-                PostActivity_.intent(self).postType(PostActivity_.POST_TYPE_FILE)
-                  .file(adnResponse.data).start();
-              self.finish();
-            }
-            public void failure(RetrofitError err) {
-              self.setProgressStatus(false);
-              Toast.makeText(self, network_error, Toast.LENGTH_LONG).show();
-            }
-          });
+      getSpiceManager().execute(new UploadFileRequest(adnToken,
+            new TypedContent(fileName, mimeType, input),
+            new TypedString("com.floatboth.antigravity.file"),
+            new TypedString("true")), new UploadFileListener());
     } catch (IOException ex) {
-      self.setProgressStatus(false);
-      Toast.makeText(self, io_error, Toast.LENGTH_LONG).show();
+      setProgressStatus(false);
+      Toast.makeText(this, io_error, Toast.LENGTH_LONG).show();
+    }
+  }
+
+  public class UploadFileListener implements RequestListener<File> {
+    @Override
+    public void onRequestFailure(SpiceException spiceException) {
+      setProgressStatus(false);
+      Toast.makeText(UploadActivity.this, network_error, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestSuccess(final File data) {
+      String url = data.shortUrl;
+      clipboardManager.setPrimaryClip(ClipData.newPlainText(url, url));
+      adnPrefs.refreshFlag().put(true);
+      setProgressStatus(false);
+      Toast.makeText(UploadActivity.this, copied + ": " + url, Toast.LENGTH_LONG).show();
+      if (doPostAfterUpload)
+        PostActivity_.intent(UploadActivity.this).postType(PostActivity_.POST_TYPE_FILE)
+          .file(data).start();
+      finish();
     }
   }
 
