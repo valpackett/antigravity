@@ -45,8 +45,11 @@ public class LoginActivity extends BaseActivity {
   @ViewById EditText password_field;
   @ViewById Button login_with_passport;
   @ViewById Button install_passport;
+  @ViewById Button login_with_password;
   @ViewById TextView adn_info;
   @ViewById TextView or_label;
+
+  boolean requestInProgress = false;
 
   private static final int REQUEST_CODE_AUTHORIZE = 1;
   private static final String AUTHORIZE_ACTION = "net.app.adnpassport.authorize";
@@ -58,12 +61,6 @@ public class LoginActivity extends BaseActivity {
     adnPrefs.accessToken().put(token);
     MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
     finish();
-  }
-
-  @UiThread
-  public void onLoginWithPasswordSuccess(String token) {
-    setProgressBarIndeterminateVisibility(false);
-    onLoginSuccess(token);
   }
 
   @OnActivityResult(REQUEST_CODE_AUTHORIZE)
@@ -112,7 +109,7 @@ public class LoginActivity extends BaseActivity {
     password_field.setOnEditorActionListener(new TextView.OnEditorActionListener() {
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_GO) {
+        if (actionId == EditorInfo.IME_ACTION_GO && requestInProgress == false) {
           loginWithPassword();
         }
         return false;
@@ -158,6 +155,8 @@ public class LoginActivity extends BaseActivity {
       showError(empty_field, password_hint + " " + must_not_be_empty);
     } else {
       setProgressBarIndeterminateVisibility(true);
+      login_with_password.setEnabled(false);
+      requestInProgress = true;
       getSpiceManager().execute(new LoginRequest(client_id, password_secret, username, password, SCOPES),
           new LoginListener());
     }
@@ -167,6 +166,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onRequestFailure(SpiceException spiceException) {
       spiceException.printStackTrace();
+      login_with_password.setEnabled(true);
+      requestInProgress = false;
       try {
         throw spiceException.getCause();
       } catch (ADNAuthError ex) {
@@ -178,7 +179,10 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onRequestSuccess(final String token) {
-      onLoginWithPasswordSuccess(token);
+      login_with_password.setEnabled(true);
+      requestInProgress = false;
+      setProgressBarIndeterminateVisibility(false);
+      onLoginSuccess(token);
     }
   }
 
