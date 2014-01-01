@@ -175,5 +175,6 @@ public class UploadActivity extends BaseActivity {
     setProgressBarIndeterminateVisibility(p);
     cancel_upload.setEnabled(!p);
     ok_upload.setEnabled(!p);
+    post_after_upload_switch.setEnabled(!p);
   }
 }
