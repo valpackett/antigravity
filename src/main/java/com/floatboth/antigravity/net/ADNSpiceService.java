@@ -24,7 +24,10 @@ public class ADNSpiceService extends RetrofitGsonSpiceService {
 
   @Override
   protected RestAdapter.Builder createRestAdapterBuilder() {
-    return super.createRestAdapterBuilder().setClient(new OkClient(client));
+    RestAdapter.Builder ra = super.createRestAdapterBuilder()
+      .setClient(new OkClient(client));
+    // ra.setLogLevel(RestAdapter.LogLevel.HEADERS);
+    return ra;
   }
 
   @Override

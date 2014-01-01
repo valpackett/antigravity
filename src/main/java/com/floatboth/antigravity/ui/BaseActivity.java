@@ -1,5 +1,6 @@
 package com.floatboth.antigravity.ui;
 
+import android.os.Bundle;
 import android.app.Activity;
 
 import com.octo.android.robospice.SpiceManager;
@@ -10,15 +11,15 @@ public abstract class BaseActivity extends Activity {
   private SpiceManager spiceManager = new SpiceManager(ADNSpiceService.class);
 
   @Override
-  protected void onStart() {
+  protected void onCreate(Bundle savedInstanceState) {
     spiceManager.start(this);
-    super.onStart();
+    super.onCreate(savedInstanceState);
   }
 
   @Override
-  protected void onStop() {
+  protected void onDestroy() {
     spiceManager.shouldStop();
-    super.onStop();
+    super.onDestroy();
   }
 
   protected SpiceManager getSpiceManager() {
