@@ -137,15 +137,14 @@ public class UploadActivity extends BaseActivity {
 
   @Click(R.id.ok_upload)
   public void onOk() {
-    setProgressStatus(true);
     try {
       InputStream input = rslv.openInputStream(uri);
+      setProgressStatus(true);
       getSpiceManager().execute(new UploadFileRequest(adnToken,
             new TypedContent(fileName, mimeType, input),
             new TypedString("com.floatboth.antigravity.file"),
             new TypedString("true")), new UploadFileListener());
     } catch (IOException ex) {
-      setProgressStatus(false);
       Toast.makeText(this, io_error, Toast.LENGTH_LONG).show();
     }
   }
