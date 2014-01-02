@@ -20,6 +20,10 @@ import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.text.Html;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.googlecode.androidannotations.annotations.*;
@@ -31,7 +35,8 @@ import com.floatboth.antigravity.data.*;
 import com.floatboth.antigravity.net.*;
 
 @EActivity(R.layout.file_activity)
-public class FileActivity extends BaseActivity {
+public class FileActivity extends BaseActivity
+  implements NfcAdapter.CreateNdefMessageCallback {
   @StringRes String make_public_success;
   @StringRes String delete_confirm_title;
   @StringRes String delete_confirm_message;
@@ -53,15 +58,24 @@ public class FileActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    setProgressBarIndeterminateVisibility(true);
-    clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-    getActionBar().setDisplayHomeAsUpEnabled(true);
     if (!adnPrefs.accessToken().exists()) {
       finish();
     } else {
       adnToken = adnPrefs.accessToken().get();
     }
+    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+    setProgressBarIndeterminateVisibility(true);
+    clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+    getActionBar().setDisplayHomeAsUpEnabled(true);
+    NfcAdapter a = NfcAdapter.getDefaultAdapter(this);
+    if (a != null) {
+      a.setNdefPushMessageCallback(this, this);
+    }
+  }
+
+  @Override
+  public NdefMessage createNdefMessage(NfcEvent event) {
+    return new NdefMessage(new NdefRecord[] { NdefRecord.createUri(file.shortUrl != null ? file.shortUrl : file.url) });
   }
 
   @Override
