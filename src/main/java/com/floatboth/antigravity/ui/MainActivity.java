@@ -135,15 +135,19 @@ public class MainActivity extends BaseActivity
 
   private void loadInitialFiles() {
     setProgressBarIndeterminateVisibility(true);
-    File.List filesFromCache = (File.List) dataCache.get("files");
-    String minIdFromCache = (String) dataCache.get("minId");
-    Boolean moreFromCache = (Boolean) dataCache.get("more");
-    boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
-    if (cacheExists && !shouldRefreshFiles()) {
-      applyData(filesFromCache, minIdFromCache, moreFromCache);
-      loadMoreButton.setEnabled(true);
-      setProgressBarIndeterminateVisibility(false);
-    } else {
+    try {
+      File.List filesFromCache = (File.List) dataCache.get("files");
+      String minIdFromCache = (String) dataCache.get("minId");
+      Boolean moreFromCache = (Boolean) dataCache.get("more");
+      boolean cacheExists = filesFromCache != null && minIdFromCache != null && moreFromCache != null;
+      if (cacheExists && !shouldRefreshFiles()) {
+        applyData(filesFromCache, minIdFromCache, moreFromCache);
+        loadMoreButton.setEnabled(true);
+        setProgressBarIndeterminateVisibility(false);
+      } else {
+        loadFiles("");
+      }
+    } catch (Exception ex) {
       loadFiles("");
     }
   }
