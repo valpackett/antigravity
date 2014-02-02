@@ -24,9 +24,9 @@ import android.text.method.LinkMovementMethod;
 import net.app.adnlogin.ADNPassportUtility;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.sharedpreferences.*;
-import com.googlecode.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.sharedpreferences.*;
+import org.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -99,6 +99,8 @@ public class LoginActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    getTintManager().setStatusBarTintResource(R.color.accent_ag);
+    getTintManager().setNavigationBarTintResource(R.color.accent_ag);
     IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
     filter.addDataScheme("package");
     registerReceiver(passportInstallReceiver, filter);

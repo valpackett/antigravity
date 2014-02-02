@@ -8,14 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.support.v4.app.NavUtils;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.res.DrawableRes;
-import com.googlecode.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.res.DrawableRes;
+import org.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 
 @EActivity(R.layout.about_activity)
-public class AboutActivity extends Activity {
+public class AboutActivity extends BaseActivity {
   @ViewById TextView app_info;
   @ViewById ImageView app_logo;
   @DrawableRes Drawable ic_logo;

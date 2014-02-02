@@ -26,9 +26,9 @@ import android.text.TextWatcher;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.sharedpreferences.*;
-import com.googlecode.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.sharedpreferences.*;
+import org.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -69,12 +69,12 @@ public class PostActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     if (!adnPrefs.accessToken().exists()) {
       Toast.makeText(this, not_logged_in, Toast.LENGTH_LONG).show();
       finish();
     } else {
-      requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
       adnToken = adnPrefs.accessToken().get();
       refreshPostTextLimit();
     }

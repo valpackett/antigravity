@@ -17,6 +17,7 @@ import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.WebSettings;
 import android.text.Html;
 import android.net.Uri;
@@ -26,9 +27,9 @@ import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.sharedpreferences.*;
-import com.googlecode.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.sharedpreferences.*;
+import org.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -57,13 +58,13 @@ public class FileActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     if (!adnPrefs.accessToken().exists()) {
       finish();
     } else {
       adnToken = adnPrefs.accessToken().get();
     }
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     setProgressBarIndeterminateVisibility(true);
     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
     getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -202,6 +203,11 @@ public class FileActivity extends BaseActivity
 
   @AfterViews
   public void setUpViews() {
+    file_preview.setWebViewClient(new WebViewClient() {
+      public void onPageFinished(WebView view, String url) {
+        setProgressBarIndeterminateVisibility(false);
+      }
+    });
     WebSettings ws = file_preview.getSettings();
     ws.setLoadWithOverviewMode(true);
     if ("image".equals(file.kind)) {

@@ -28,9 +28,9 @@ import retrofit.mime.*;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.samskivert.mustache.*;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.sharedpreferences.*;
-import com.googlecode.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.sharedpreferences.*;
+import org.androidannotations.annotations.res.StringRes;
 
 import com.floatboth.antigravity.*;
 import com.floatboth.antigravity.data.*;
@@ -64,6 +64,7 @@ public class UploadActivity extends BaseActivity {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     descTpl = Mustache.compiler().compile(upload_description_template);
     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -72,7 +73,6 @@ public class UploadActivity extends BaseActivity {
       Toast.makeText(this, not_logged_in, Toast.LENGTH_LONG).show();
       finish();
     } else {
-      requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
       adnToken = adnPrefs.accessToken().get();
       Intent intent = getIntent();
       String action = intent.getAction();

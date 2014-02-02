@@ -8,7 +8,7 @@ Upload a file with Antigravity and you'll get a short link you can share on any 
 
 ## Building
 
-You need Maven (at least version 3.1.1) and the following things in `Android SDK Manager`:
+You need the following things in `Android SDK Manager`:
 
 - Android SDK Build-tools
 - Android 4.0 (API 14)
@@ -23,28 +23,25 @@ Make sure you have the `ANDROID_HOME` env variable set to the SDK path:
 $ export ANDROID_HOME=/usr/local/Cellar/android-sdk/22.2.1
 ```
 
-Debug build:
+Make a debug build and install via adb:
 
 ```shell
-$ mvn clean install
+$ gradle installDebug
 ```
 
 Release build (with proguard, signing and zipaligning):
 
-```shell
-$ mvn clean install -Prelease -Djarsigner.keystore=~/path/to/keystore \
-  -Djarsigner.alias=release \
-  -Djarsigner.storepass=storePassword123 \
-  -Djarsigner.keypass=keyPassword456
-$ zipalign -v 4 target/antigravity.apk target/antigravity-a.apk
-```
+You'll need to copy `release-signing.properties.example` to `release-signing.properties`
+and change the values to your actual values.
 
-TODO: Maven doesn't zipalign for some reason
+```shell
+$ gradle assembleRelease
+```
 
 ## License
 
     Antigravity - a file manager for App.net
-    Copyright (C) 2013  Greg V <floatboth@me.com>
+    Copyright (C) 2013-2014  Greg V <floatboth@me.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

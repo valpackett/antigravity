@@ -2,6 +2,7 @@
 <resources>
   <color name="pressed_ag">#bb222222</color>
   <color name="accent_ag">#15a7e2</color>
+  <color name="system_bar_tint">#00b6e6</color>
   <color name="file_description_background">#bbffffff</color>
   <color name="file_description_color">#121212</color>
   <color name="file_in_list_short_desc_color">#666666</color>

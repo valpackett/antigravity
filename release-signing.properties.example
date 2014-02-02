@@ -1,0 +1,4 @@
+storeFile=/Users/user/Documents/android-release.keystore
+storePassword=correctHorse456
+keyAlias=release
+keyPassword=batteryStaple123

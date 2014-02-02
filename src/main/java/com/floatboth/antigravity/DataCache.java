@@ -1,12 +1,11 @@
 package com.floatboth.antigravity;
 
 import java.io.*;
-import android.app.Application;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 
 @EBean
 public class DataCache {
-  @App Application app;
+  @App AntigravityApplication app;
   File cacheDir;
 
   @AfterInject

@@ -1,3 +1,4 @@
 /res/values/credentials.xml
-/target
-/AndroidManifest-merged.xml
+/release-signing.properties
+/.gradle
+/build

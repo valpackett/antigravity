@@ -10,12 +10,12 @@ import android.text.util.Linkify;
 import android.text.method.LinkMovementMethod;
 import android.support.v4.app.NavUtils;
 import org.apache.commons.io.IOUtils;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 
 import com.floatboth.antigravity.*;
 
 @EActivity(R.layout.about_activity)
-public class LicenseActivity extends Activity {
+public class LicenseActivity extends BaseActivity {
   @ViewById TextView app_info;
   Uri uri;
 
