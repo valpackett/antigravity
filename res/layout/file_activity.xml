@@ -15,13 +15,17 @@
 
   <TextView
     android:id="@+id/file_description"
-    android:background="@color/file_description_background"
+    android:background="@drawable/file_description_bg"
     android:textColor="@color/file_description_color"
+    android:shadowColor="@color/file_description_shadow"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="20"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_alignParentBottom="true"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin_2x"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin" />

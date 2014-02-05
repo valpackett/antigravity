@@ -64,10 +64,8 @@
   <string name="share_chooser_title">Share this file with:</string>
   <string name="file_description_template">
     <![CDATA[
-    <b>Name:</b>&nbsp;{{name}}<br>
-    <b>Date:</b>&nbsp;{{date}}<br>
-    <b>Type:</b>&nbsp;{{type}}<br>
-    <b>Size:</b>&nbsp;{{size}}
+    {{name}}<br>
+    {{date}} | {{size}} | {{type}}
     ]]>
   </string>
 
