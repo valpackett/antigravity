@@ -6,5 +6,5 @@
   <color name="file_description_background">#bbffffff</color>
   <color name="file_description_color">#121212</color>
   <color name="file_in_list_short_desc_color">#666666</color>
-  <color name="list_divider">#cccccce0</color>
+  <color name="file_list_background">#e5e5e5</color>
 </resources>

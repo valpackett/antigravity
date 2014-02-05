@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/file_list_background"
     android:id="@+id/ptr_layout"
     android:fitsSystemWindows="true"
     android:clipToPadding="false"
@@ -10,7 +11,7 @@
   <ListView android:id="@+id/filelist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:divider="@color/list_divider"
-    android:dividerHeight="@dimen/list_divider_height" />
+    android:divider="@null"
+    android:dividerHeight="0dp" />
 
 </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
