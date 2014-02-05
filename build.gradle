@@ -31,6 +31,7 @@ dependencies {
   compile 'com.samskivert:jmustache:1.8'
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.1'
   compile 'com.github.chrisbanes.actionbarpulltorefresh:library:0.9.+'
+  compile 'com.github.johnkil.android-robototextview:robototextview:2.0.+'
 }
 
 apt {

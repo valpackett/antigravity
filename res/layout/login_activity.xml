@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:fitsSystemWindows="true"
   android:clipToPadding="false"
   android:layout_width="match_parent"
@@ -26,47 +27,52 @@
       android:paddingRight="@dimen/activity_horizontal_margin"
       android:orientation="vertical">
 
-      <TextView android:id="@+id/adn_info"
+      <com.devspark.robototextview.widget.RobotoTextView android:id="@+id/adn_info"
         android:textSize="22sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/after_field_margin_3x"
-        android:layout_marginBottom="@dimen/after_field_margin_3x" />
+        android:layout_marginBottom="@dimen/after_field_margin_3x"
+        app:typeface="roboto_slab_light" />
 
-      <Button android:id="@+id/login_with_passport"
+      <com.devspark.robototextview.widget.RobotoButton android:id="@+id/login_with_passport"
         android:visibility="gone"
         android:text="@string/login_with_passport"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        app:typeface="roboto_condensed_regular" />
 
-      <Button android:id="@+id/install_passport"
+      <com.devspark.robototextview.widget.RobotoButton android:id="@+id/install_passport"
         android:visibility="gone"
         android:text="@string/install_passport"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        app:typeface="roboto_condensed_regular" />
 
 
-      <TextView android:id="@+id/or_label"
+      <com.devspark.robototextview.widget.RobotoTextView android:id="@+id/or_label"
         android:text="@string/or"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/after_field_margin_2x"
-        android:layout_marginBottom="@dimen/after_field_margin_2x" />
+        android:layout_marginBottom="@dimen/after_field_margin_2x"
+        app:typeface="roboto_condensed_bold_italic" />
 
 
-      <EditText
+      <com.devspark.robototextview.widget.RobotoEditText
         android:id="@+id/username_field"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/after_field_margin"
         android:hint="@string/username_hint"
         android:inputType="text|textNoSuggestions"
-        android:imeOptions="flagNoExtractUi" />
+        android:imeOptions="flagNoExtractUi"
+        app:typeface="roboto_condensed_regular" />
 
-      <EditText
+      <com.devspark.robototextview.widget.RobotoEditText
         android:id="@+id/password_field"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -74,18 +80,21 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:typeface="normal"
-        android:imeOptions="flagNoExtractUi|actionGo" />
+        android:imeOptions="flagNoExtractUi|actionGo"
+        app:typeface="roboto_condensed_regular" />
 
-      <Button android:id="@+id/login_with_password"
+      <com.devspark.robototextview.widget.RobotoButton android:id="@+id/login_with_password"
         android:text="@string/login_with_password"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/after_field_margin_2x" />
+        android:layout_marginBottom="@dimen/after_field_margin_2x"
+        app:typeface="roboto_condensed_regular" />
 
-      <TextView android:text="@string/perm_info"
+      <com.devspark.robototextview.widget.RobotoTextView android:text="@string/perm_info"
         android:textSize="12sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:typeface="roboto_condensed_light" />
 
     </LinearLayout>
   </ScrollView>
