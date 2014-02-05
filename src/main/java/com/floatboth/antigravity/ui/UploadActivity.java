@@ -97,9 +97,9 @@ public class UploadActivity extends BaseActivity {
             InputStream input = rslv.openInputStream(uri);
             mimeType = new Tika().detect(input);
             input.close();
-            java.io.File f = new java.io.File(uriString);
+            java.io.File f = new java.io.File(uriString.replace("file://", ""));
             fileName = f.getName();
-            fileSize = -1;
+            fileSize = f.length();
           }
         } catch (IOException ex) {
           Toast.makeText(this, file_error + ": " + uri.toString(), Toast.LENGTH_SHORT).show();
