@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
   compile 'com.android.support:support-v4:18.0.+'
-  compile 'com.squareup.retrofit:retrofit:1.4.0' // WTF: 1.4.1 jar not found by gradle?! although you can download it from search.maven.org
+  compile 'com.squareup.retrofit:retrofit:1.4.+'
   compile 'com.squareup.picasso:picasso:2.2.+'
   compile 'com.squareup.okhttp:okhttp:1.3.+'
   compile 'com.squareup.mimecraft:mimecraft:1.1.+'
