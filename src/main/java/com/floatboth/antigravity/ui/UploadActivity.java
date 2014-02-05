@@ -94,10 +94,8 @@ public class UploadActivity extends BaseActivity {
             fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
             fileSize = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
           } else {
-            InputStream input = rslv.openInputStream(uri);
-            mimeType = new Tika().detect(input);
-            input.close();
             java.io.File f = new java.io.File(uriString.replace("file://", ""));
+            mimeType = new Tika().detect(f);
             fileName = f.getName();
             fileSize = f.length();
           }
