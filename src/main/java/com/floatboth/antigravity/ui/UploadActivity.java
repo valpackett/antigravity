@@ -141,7 +141,7 @@ public class UploadActivity extends BaseActivity {
       InputStream input = rslv.openInputStream(uri);
       setProgressStatus(true);
       getSpiceManager().execute(new UploadFileRequest(adnToken,
-            new TypedContent(fileName, mimeType, input),
+            new TypedContent(fileName, fileSize, mimeType, input),
             new TypedString("com.floatboth.antigravity.file"),
             new TypedString("true")), new UploadFileListener());
     } catch (IOException ex) {

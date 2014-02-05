@@ -6,11 +6,13 @@ import org.apache.commons.io.IOUtils;
 
 public class TypedContent implements TypedOutput {
   private final String fileName;
+  private final long fileSize;
   private final String mimeType;
   private final InputStream stream;
 
-  public TypedContent(String fileName, String mimeType, InputStream stream) {
+  public TypedContent(String fileName, long fileSize, String mimeType, InputStream stream) {
     this.fileName = fileName;
+    this.fileSize = fileSize;
     this.mimeType = mimeType;
     this.stream = stream;
   }
@@ -19,18 +21,17 @@ public class TypedContent implements TypedOutput {
     return mimeType;
   }
 
-
   @Override public String fileName() {
     return fileName;
   }
 
   @Override public long length() {
-    return -1;
+    return fileSize;
   }
 
   @Override public void writeTo(OutputStream out) throws IOException {
     try {
-      IOUtils.copy(stream, out);
+      IOUtils.copyLarge(stream, out);
     } catch (NullPointerException ex) {}
   }
 }
