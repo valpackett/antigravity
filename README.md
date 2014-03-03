@@ -20,13 +20,13 @@ the tags and change the values to your actual App.net API credentials.
 Make sure you have the `ANDROID_HOME` env variable set to the SDK path:
 
 ```shell
-$ export ANDROID_HOME=/usr/local/Cellar/android-sdk/22.2.1
+$ export ANDROID_HOME=/usr/local/Cellar/android-sdk/22.3
 ```
 
 Make a debug build and install via adb:
 
 ```shell
-$ gradle installDebug
+$ ./gradlew installDebug
 ```
 
 Release build (with proguard, signing and zipaligning):
@@ -35,7 +35,7 @@ You'll need to copy `release-signing.properties.example` to `release-signing.pro
 and change the values to your actual values.
 
 ```shell
-$ gradle assembleRelease
+$ ./gradlew assembleRelease
 ```
 
 ## License
