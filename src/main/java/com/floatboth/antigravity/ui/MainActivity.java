@@ -230,6 +230,18 @@ public class MainActivity extends BaseActivity
     }
   }
 
+  @Override
+  public void onSaveInstanceState(Bundle savedInstanceState) {
+    super.onSaveInstanceState(savedInstanceState);
+    savedInstanceState.putParcelable("camImageUri", camImageUri);
+  }
+
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    camImageUri = (Uri) savedInstanceState.getParcelable("camImageUri");
+  }
+
   @OptionsItem(R.id.pick_to_upload)
   public void pickToUpload() {
     Intent pickIntent = new Intent(Intent.ACTION_GET_CONTENT);
