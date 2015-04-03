@@ -21,12 +21,6 @@ public class AboutActivity extends BaseActivity {
   @DrawableRes Drawable ic_logo;
   @StringRes String app_info_text;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    getActionBar().setDisplayHomeAsUpEnabled(true);
-  }
-
   @AfterViews
   public void setUpViews() {
     app_info.setText(Html.fromHtml(app_info_text));

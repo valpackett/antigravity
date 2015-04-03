@@ -8,7 +8,7 @@
   <uses-feature android:name="android.hardware.camera" android:required="false"/>
   <uses-feature android:name="android.hardware.nfc" android:required="false"/>
 
-  <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.floatboth.antigravity.AntigravityApplication_" android:theme="@style/AppTheme">
+  <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:name="com.floatboth.antigravity.AntigravityApplication_" android:theme="@style/Theme.Ag">
 
     <!-- why the underscore in SomeActivity_:
          https://github.com/excilys/androidannotations/wiki/HowItWorks -->
@@ -36,7 +36,7 @@
     <activity android:configChanges="orientation|screenSize" android:label="@string/post_activity" android:name="com.floatboth.antigravity.ui.PostActivity_">
     </activity>
 
-    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.LoginActivity_" android:theme="@style/LoginTheme">
+    <activity android:configChanges="orientation|screenSize" android:name="com.floatboth.antigravity.ui.LoginActivity_" android:theme="@style/Theme.Ag.Login">
     </activity>
 
     <activity android:configChanges="orientation|screenSize" android:label="@string/about_activity" android:launchMode="singleTop" android:name="com.floatboth.antigravity.ui.AboutActivity_">

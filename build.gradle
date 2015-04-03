@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
   compile 'com.android.support:support-v4:21.0.+'
+  compile 'com.android.support:appcompat-v7:21.0.+'
   compile 'com.squareup.retrofit:retrofit:1.9.+'
   compile 'com.squareup.picasso:picasso:2.5.+'
   compile 'com.squareup.okhttp:okhttp:2.3.+'
@@ -33,9 +34,8 @@ dependencies {
   compile 'commons-io:commons-io:2.4'
   compile 'org.apache.tika:tika-core:1.7'
   compile 'com.samskivert:jmustache:1.10'
-  compile 'com.readystatesoftware.systembartint:systembartint:1.0.+'
-  compile 'com.github.chrisbanes.actionbarpulltorefresh:library:0.9.+'
   compile 'com.github.johnkil.android-robototextview:robototextview:2.3.+'
+  compile 'com.github.castorflex.smoothprogressbar:library:1.1.+'
 }
 
 apt {

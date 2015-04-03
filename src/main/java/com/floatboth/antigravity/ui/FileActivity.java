@@ -13,6 +13,7 @@ import android.content.ClipData;
 import android.view.Window;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.support.v4.app.NavUtils;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import org.androidannotations.annotations.*;
@@ -50,6 +52,7 @@ public class FileActivity extends BaseActivity
 
   @ViewById WebView file_preview;
   @ViewById TextView file_description;
+  @ViewById SmoothProgressBar file_progress;
   @Extra File file;
   @Pref ADNPrefs_ adnPrefs;
   String adnToken;
@@ -58,16 +61,13 @@ public class FileActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     if (!adnPrefs.accessToken().exists()) {
       finish();
     } else {
       adnToken = adnPrefs.accessToken().get();
     }
-    setProgressBarIndeterminateVisibility(true);
     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-    getActionBar().setDisplayHomeAsUpEnabled(true);
     NfcAdapter a = NfcAdapter.getDefaultAdapter(this);
     if (a != null) {
       a.setNdefPushMessageCallback(this, this);
@@ -111,7 +111,7 @@ public class FileActivity extends BaseActivity
 
   @OptionsItem(R.id.make_public)
   public void makePublic() {
-    setProgressBarIndeterminateVisibility(true);
+    file_progress.setVisibility(View.VISIBLE);
     File pubDelta = new File();
     pubDelta.isPublic = true;
     getSpiceManager().execute(new UpdateFileRequest(adnToken, file.id, pubDelta),
@@ -121,14 +121,14 @@ public class FileActivity extends BaseActivity
   public class UpdateFileListener implements RequestListener<File> {
     @Override
     public void onRequestFailure(SpiceException spiceException) {
-      setProgressBarIndeterminateVisibility(false);
+      file_progress.setVisibility(View.INVISIBLE);
       Toast.makeText(FileActivity.this, network_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRequestSuccess(final File data) {
       updateFile(data);
-      setProgressBarIndeterminateVisibility(false);
+      file_progress.setVisibility(View.INVISIBLE);
       menu.findItem(R.id.make_public).setVisible(false);
       menu.findItem(R.id.share).setVisible(true);
       menu.findItem(R.id.copy_to_clipboard).setVisible(true);
@@ -156,7 +156,7 @@ public class FileActivity extends BaseActivity
       .setMessage(deleteConfirmMsg)
       .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
-          self.setProgressBarIndeterminateVisibility(true);
+          file_progress.setVisibility(View.VISIBLE);
           self.getSpiceManager().execute(new DeleteFileRequest(self.adnToken, self.file.id),
               new DeleteFileListener());
         }
@@ -168,7 +168,7 @@ public class FileActivity extends BaseActivity
   public class DeleteFileListener implements RequestListener<File> {
     @Override
     public void onRequestFailure(SpiceException spiceException) {
-      setProgressBarIndeterminateVisibility(false);
+      file_progress.setVisibility(View.INVISIBLE);
       Toast.makeText(FileActivity.this, network_error, Toast.LENGTH_SHORT).show();
     }
 
@@ -176,7 +176,7 @@ public class FileActivity extends BaseActivity
     public void onRequestSuccess(final File data) {
       file.isDeleted = true;
       updateResultIntent();
-      setProgressBarIndeterminateVisibility(false);
+      file_progress.setVisibility(View.INVISIBLE);
       Toast.makeText(FileActivity.this, delete_success, Toast.LENGTH_SHORT).show();
       finish();
     }
@@ -205,7 +205,7 @@ public class FileActivity extends BaseActivity
   public void setUpViews() {
     file_preview.setWebViewClient(new WebViewClient() {
       public void onPageFinished(WebView view, String url) {
-        setProgressBarIndeterminateVisibility(false);
+        file_progress.setVisibility(View.INVISIBLE);
       }
     });
     WebSettings ws = file_preview.getSettings();

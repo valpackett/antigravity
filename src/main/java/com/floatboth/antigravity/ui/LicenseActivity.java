@@ -22,7 +22,6 @@ public class LicenseActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    getActionBar().setDisplayHomeAsUpEnabled(true);
     uri = getIntent().getData();
     if (uri == null) {
       finish();

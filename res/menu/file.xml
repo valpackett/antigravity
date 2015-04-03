@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item android:id="@+id/make_public"
     android:orderInCategory="100"
-    android:showAsAction="ifRoom"
+    app:showAsAction="ifRoom"
     android:visible="false"
     android:title="@string/make_public" />
 
   <item android:id="@+id/share"
     android:orderInCategory="200"
-    android:showAsAction="ifRoom"
+    app:showAsAction="ifRoom"
     android:icon="@drawable/ic_action_share"
     android:visible="false"
     android:title="@string/share" />
 
   <item android:id="@+id/create_post"
     android:orderInCategory="300"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/create_post" />
 
   <item android:id="@+id/open_in_browser"
     android:orderInCategory="400"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:visible="false"
     android:title="@string/open_in_browser" />
 
   <item android:id="@+id/copy_to_clipboard"
     android:orderInCategory="500"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:visible="false"
     android:title="@string/copy_to_clipboard" />
 
   <item android:id="@+id/delete"
     android:orderInCategory="600"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/delete" />
 
 </menu>

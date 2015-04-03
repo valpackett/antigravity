@@ -99,8 +99,6 @@ public class LoginActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    getTintManager().setStatusBarTintResource(R.color.accent_ag);
-    getTintManager().setNavigationBarTintResource(R.color.accent_ag);
     IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
     filter.addDataScheme("package");
     registerReceiver(passportInstallReceiver, filter);

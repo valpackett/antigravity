@@ -4,7 +4,7 @@
   android:clipToPadding="false"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:theme="@android:style/Theme.Holo.Dialog">
+  android:theme="@style/Theme.Ag.Dialog">
 
   <LinearLayout android:id="@+id/buttons"
     style="?android:attr/buttonBarStyle"
@@ -61,7 +61,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="preview" />
 
-      <Switch android:id="@+id/post_after_upload_switch"
+      <android.support.v7.widget.SwitchCompat android:id="@+id/post_after_upload_switch"
         android:text="@string/post_after_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,5 +69,12 @@
 
     </LinearLayout>
   </ScrollView>
+
+  <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+    android:id="@+id/upload_progress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/buttons"
+    android:indeterminate="true" />
 
 </RelativeLayout>

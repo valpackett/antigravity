@@ -20,11 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.text.Html;
+import android.support.v4.widget.SwipeRefreshLayout;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import org.androidannotations.annotations.*;
 import org.androidannotations.annotations.sharedpreferences.*;
 import org.androidannotations.annotations.res.StringRes;
@@ -36,7 +34,8 @@ import com.floatboth.antigravity.net.*;
 @EFragment(R.layout.file_list_fragment)
 public class FileListFragment extends Fragment
   implements AdapterView.OnItemClickListener,
-             OnRefreshListener {
+             SwipeRefreshLayout.OnRefreshListener {
+
   @StringRes String network_error;
   @StringRes String no_posts;
 
@@ -45,7 +44,7 @@ public class FileListFragment extends Fragment
   @SystemService LayoutInflater layoutInflater;
   @SystemService ConnectivityManager connManager;
   @ViewById ListView filelist;
-  @ViewById PullToRefreshLayout ptr_layout;
+  @ViewById SwipeRefreshLayout ptr_layout;
   String adnToken;
   FileListAdapter fileadapter;
   String minId;
@@ -80,7 +79,7 @@ public class FileListFragment extends Fragment
     @Override
     public void onRequestFailure(SpiceException spiceException) {
       loadMoreButton.setEnabled(true); // refresh/loadMore disables loadMoreButton -> error -> applyData not invoked -> loadMoreButton not enabled
-      getActivity().setProgressBarIndeterminateVisibility(false);
+      setProgressBarVisibility(false);
       Toast.makeText(getActivity(), network_error, Toast.LENGTH_SHORT).show();
       spiceException.printStackTrace();
     }
@@ -100,7 +99,7 @@ public class FileListFragment extends Fragment
         filelist.addFooterView(loadMoreButton);
         isShowingWelcome = false;
       }
-      getActivity().setProgressBarIndeterminateVisibility(false);
+      setProgressBarVisibility(false);
     }
   }
 
@@ -109,12 +108,12 @@ public class FileListFragment extends Fragment
     public void onRequestSuccess(final File.List data) {
       fileadapter.clearFiles();
       super.onRequestSuccess(data);
-      ptr_layout.setRefreshComplete();
+      ptr_layout.setRefreshing(false);
     }
   }
 
   @Override
-  public void onRefreshStarted(View v) {
+  public void onRefresh() {
     loadMoreButton.setEnabled(false);
     ((BaseActivity) getActivity()).getSpiceManager().execute(new MyFilesRequest(adnToken, ""), new MyFilesRefreshListener());
   }
@@ -124,7 +123,7 @@ public class FileListFragment extends Fragment
   }
 
   private void loadInitialFiles() {
-    getActivity().setProgressBarIndeterminateVisibility(true);
+    setProgressBarVisibility(true);
     try {
       File.List filesFromCache = (File.List) dataCache.get("files");
       String minIdFromCache = (String) dataCache.get("minId");
@@ -133,7 +132,7 @@ public class FileListFragment extends Fragment
       if (cacheExists && !shouldRefreshFiles()) {
         applyData(filesFromCache, minIdFromCache, moreFromCache);
         loadMoreButton.setEnabled(true);
-        getActivity().setProgressBarIndeterminateVisibility(false);
+        setProgressBarVisibility(false);
       } else {
         loadFiles("");
       }
@@ -150,7 +149,7 @@ public class FileListFragment extends Fragment
       @Override
       public void onClick(View v) {
         loadMoreButton.setEnabled(false);
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        setProgressBarVisibility(true);
         loadFiles(minId);
       }
     });
@@ -173,7 +172,7 @@ public class FileListFragment extends Fragment
   public void onResume() {
     super.onResume();
     if (shouldRefreshFiles()) {
-      onRefreshStarted(null);
+      onRefresh();
     }
   }
 
@@ -207,8 +206,8 @@ public class FileListFragment extends Fragment
     filelist.setAdapter(fileadapter);
     filelist.setOnItemClickListener(this);
     filelist.addFooterView(loadMoreButton);
-    ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-      .listener(this).setup(ptr_layout);
+    ptr_layout.setOnRefreshListener(this);
+    ptr_layout.setColorScheme(R.color.accent_ag);
     if (adnPrefs.accessToken().exists()) loadInitialFiles();
   }
 
@@ -225,4 +224,9 @@ public class FileListFragment extends Fragment
   private boolean shouldRefreshFiles() {
     return networkIsWiFi() && filesNeedRefreshing();
   }
+
+  private void setProgressBarVisibility(boolean value) {
+    ptr_layout.setRefreshing(value);
+  }
+
 }

@@ -23,6 +23,7 @@ import android.view.View;
 import android.text.Html;
 import android.text.Editable;
 import android.text.TextWatcher;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -53,6 +54,7 @@ public class PostActivity extends BaseActivity
   @ViewById EditText post_text;
   @ViewById TextView post_chars_left;
   @ViewById Spinner post_type_spinner;
+  @ViewById SmoothProgressBar post_progress;
   @Extra File file;
   @Extra String text;
   @Extra int postType;
@@ -69,7 +71,6 @@ public class PostActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     if (!adnPrefs.accessToken().exists()) {
       Toast.makeText(this, not_logged_in, Toast.LENGTH_LONG).show();
@@ -174,6 +175,7 @@ public class PostActivity extends BaseActivity
       public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
       public void onTextChanged(CharSequence s, int start, int before, int count) { }
     });
+    post_progress.setVisibility(View.INVISIBLE);
   }
 
   public void afterTextChanged() {
@@ -237,7 +239,7 @@ public class PostActivity extends BaseActivity
   }
 
   public void setProgressStatus(boolean p) {
-    setProgressBarIndeterminateVisibility(p);
+    post_progress.setVisibility(p ? View.VISIBLE : View.INVISIBLE);
     cancel_post.setEnabled(!p);
     ok_post.setEnabled(!p);
     post_text.setFocusable(!p);

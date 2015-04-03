@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.view.Window;
+import android.view.View;
 import android.text.Html;
 import org.apache.tika.Tika;
 import com.squareup.picasso.Picasso;
 import org.apache.commons.io.IOUtils;
 import retrofit.mime.*;
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 import com.samskivert.mustache.*;
@@ -53,6 +55,7 @@ public class UploadActivity extends BaseActivity {
   @ViewById Button cancel_upload;
   @ViewById Button ok_upload;
   @ViewById CompoundButton post_after_upload_switch;
+  @ViewById SmoothProgressBar upload_progress;
   ContentResolver rslv;
   ClipboardManager clipboardManager;
   String adnToken;
@@ -64,7 +67,6 @@ public class UploadActivity extends BaseActivity {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     descTpl = Mustache.compiler().compile(upload_description_template);
     clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -126,6 +128,7 @@ public class UploadActivity extends BaseActivity {
         self.doPostAfterUpload = isChecked;
       }
     });
+    upload_progress.setVisibility(View.INVISIBLE);
   }
 
   @Click(R.id.cancel_upload)
@@ -169,7 +172,7 @@ public class UploadActivity extends BaseActivity {
   }
 
   public void setProgressStatus(boolean p) {
-    setProgressBarIndeterminateVisibility(p);
+    upload_progress.setVisibility(p ? View.VISIBLE : View.INVISIBLE);
     cancel_upload.setEnabled(!p);
     ok_upload.setEnabled(!p);
     post_after_upload_switch.setEnabled(!p);

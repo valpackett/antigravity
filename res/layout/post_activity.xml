@@ -4,7 +4,7 @@
   android:clipToPadding="false"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:theme="@android:style/Theme.Holo.Dialog">
+  android:theme="@style/Theme.Ag.Dialog">
 
   <LinearLayout android:id="@+id/buttons"
     style="?android:attr/buttonBarStyle"
@@ -79,4 +79,12 @@
 
     </LinearLayout>
   </ScrollView>
+
+  <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+    android:id="@+id/post_progress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/buttons"
+    android:indeterminate="true" />
+
 </RelativeLayout>

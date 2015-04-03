@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <item android:id="@+id/pick_to_upload"
     android:orderInCategory="100"
-    android:showAsAction="ifRoom"
+    app:showAsAction="ifRoom"
     android:icon="@drawable/ic_action_upload"
     android:title="@string/upload" />
 
   <item android:id="@+id/camera_to_upload"
     android:orderInCategory="200"
-    android:showAsAction="ifRoom"
+    app:showAsAction="ifRoom"
     android:icon="@drawable/ic_action_camera"
     android:visible="false"
     android:title="@string/camera" />
 
   <item android:id="@+id/log_out"
     android:orderInCategory="300"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/log_out" />
 
   <item android:id="@+id/support"
     android:orderInCategory="400"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/support" />
 
   <item android:id="@+id/about"
     android:orderInCategory="500"
-    android:showAsAction="never"
+    app:showAsAction="never"
     android:title="@string/about" />
 
 </menu>

@@ -6,12 +6,12 @@ import android.view.MenuItem;
 import android.os.Bundle;
 import android.content.DialogInterface;
 import android.view.Window;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.widget.FrameLayout;
 import android.widget.ArrayAdapter;
 import android.provider.MediaStore;
+import android.support.v7.widget.Toolbar;
 import org.androidannotations.annotations.*;
 import org.androidannotations.annotations.sharedpreferences.*;
 import org.androidannotations.annotations.res.StringRes;
@@ -22,8 +22,7 @@ import com.floatboth.antigravity.ADNPrefs_;
 import com.floatboth.antigravity.data.File;
 
 @EActivity(R.layout.main_activity)
-public class MainActivity extends BaseActivity
-  implements ActionBar.OnNavigationListener {
+public class MainActivity extends BaseActivity {
   @StringRes String pick_chooser_title;
   @StringRes String log_out_confirm_title;
   @Pref ADNPrefs_ adnPrefs;
@@ -37,17 +36,11 @@ public class MainActivity extends BaseActivity
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     super.onCreate(savedInstanceState);
     if (!adnPrefs.accessToken().exists()) {
       startLogin();
       return;
     }
-    getActionBar().setDisplayShowTitleEnabled(false);
-    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-    ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(this, R.array.tabs, R.layout.actionbar_spinner);
-    list.setDropDownViewResource(R.layout.actionbar_spinner_dropdown);
-    getActionBar().setListNavigationCallbacks(list, this);
     file_list = new FileListFragment_();
     getFragmentManager().beginTransaction().replace(R.id.fragment_frame, file_list).commit();
   }
@@ -75,11 +68,6 @@ public class MainActivity extends BaseActivity
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putParcelable("camImageUri", camImageUri);
-  }
-
-  @Override
-  public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-    return true;
   }
 
   @OptionsItem(R.id.pick_to_upload)
