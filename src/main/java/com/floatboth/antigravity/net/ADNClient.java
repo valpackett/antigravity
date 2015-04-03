@@ -18,6 +18,9 @@ public interface ADNClient {
   @POST("/files")
   ADNResponse<File> uploadFile(@Query("access_token") String accessToken, @Part("content") TypedContent content, @Part("type") TypedString type, @Part("public") TypedString isPublic);
 
+  @GET("/posts/stream/unified?include_deleted=0&include_annotations=1&has_oembed_photo=1")
+  ADNResponse<Post.List> getPhotoStream(@Query("access_token") String accessToken, @Query("before_id") String beforeId);
+
   @POST("/posts")
   ADNResponse<Post> createPost(@Query("access_token") String accessToken, @Body Post post);
 

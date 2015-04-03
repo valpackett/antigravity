@@ -11,7 +11,7 @@ Upload a file with Antigravity and you'll get a short link you can share on any 
 You need the following things in `Android SDK Manager`:
 
 - Android SDK Build-tools
-- Android 4.0 (API 14)
+- Android 5.1.1 (API 22)
 - Android Support Repository
 
 Then, copy `res/values/credentials.xml.example` to `res/values/credentials.xml`, uncomment
@@ -20,7 +20,7 @@ the tags and change the values to your actual App.net API credentials.
 Make sure you have the `ANDROID_HOME` env variable set to the SDK path:
 
 ```shell
-$ export ANDROID_HOME=/usr/local/Cellar/android-sdk/22.3
+$ export ANDROID_HOME=/usr/local/Cellar/android-sdk/24.1.2
 ```
 
 Make a debug build and install via adb:
@@ -41,7 +41,7 @@ $ ./gradlew assembleRelease
 ## License
 
     Antigravity - a file manager for App.net
-    Copyright (C) 2013-2014  Greg V <floatboth@me.com>
+    Copyright (C) 2013-2015  Greg V <greg@unrelenting.technology>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

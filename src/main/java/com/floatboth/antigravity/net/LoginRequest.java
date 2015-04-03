@@ -1,10 +1,8 @@
 package com.floatboth.antigravity.net;
 
 import java.io.*;
-import java.net.URL;
-import java.net.HttpURLConnection;
 import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.*;
 import com.squareup.mimecraft.FormEncoding;
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 import com.floatboth.antigravity.data.*;
@@ -12,6 +10,7 @@ import com.floatboth.antigravity.data.*;
 public class LoginRequest extends RetrofitSpiceRequest<String, ADNClient> {
 
   private static final String OAUTH_URL = "https://account.app.net/oauth/access_token";
+  private static final MediaType Form = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 
   private String clientId;
   private String passwordSecret;
@@ -29,15 +28,9 @@ public class LoginRequest extends RetrofitSpiceRequest<String, ADNClient> {
   }
 
   @Override
-  public String loadDataFromNetwork() throws Exception {
-    OkHttpClient client = new OkHttpClient();
-    InputStream in = null;
-    OutputStream out = null;
+  public String loadDataFromNetwork() throws ADNAuthError {
     try {
-      HttpURLConnection conn = client.open(new URL(OAUTH_URL));
-      conn.setRequestMethod("POST");
-      conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      out = conn.getOutputStream();
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
       new FormEncoding.Builder()
         .add("client_id", clientId)
         .add("password_grant_secret", passwordSecret)
@@ -46,21 +39,20 @@ public class LoginRequest extends RetrofitSpiceRequest<String, ADNClient> {
         .add("password", password)
         .add("scopes", scopes)
         .build().writeBodyTo(out);
-      out.close();
+      OkHttpClient client = new OkHttpClient();
+      Request request = new Request.Builder()
+        .url(OAUTH_URL)
+        .post(RequestBody.create(Form, out.toByteArray()))
+        .build();
+      Response response = client.newCall(request).execute();
       Gson gson = new Gson();
-      if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-        in = conn.getErrorStream(); // wtf. "error stream" my ass. http body is fucking http body, always.
-        throw gson.fromJson(new InputStreamReader(in), ADNAuthError.class);
+      InputStreamReader rdr = new InputStreamReader(response.body().byteStream());
+      if (response.code() != 200) {
+        throw gson.fromJson(rdr, ADNAuthError.class);
       }
-      in = conn.getInputStream();
-      return gson.fromJson(new InputStreamReader(in), ADNAuthResponse.class).accessToken;
-    } finally {
-      try { // Fuck you.
-        if (out != null) out.close();
-        if (in != null) in.close();
-      } catch (IOException ex) {
-        throw new ADNAuthError();
-      }
+      return gson.fromJson(rdr, ADNAuthResponse.class).accessToken;
+    } catch (IOException ex) {
+      throw new ADNAuthError();
     }
   }
 }
