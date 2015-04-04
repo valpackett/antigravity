@@ -51,8 +51,8 @@ android {
 
   defaultConfig {
     applicationId 'com.floatboth.antigravity'
-    versionCode 7
-    versionName '1.4.0-SNAPSHOT'
+    versionCode 8
+    versionName '1.4.0'
     minSdkVersion 14
     targetSdkVersion 22
   }
